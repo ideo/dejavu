@@ -2,6 +2,8 @@ const { readFileSync, writeFileSync } = require('fs');
 const path = require('path');
 const { google_client_id, google_project_id, google_client_secret } = process.env;
 
+console.log('________________________ HI MA!');
+
 const template = readFileSync(path.join(__dirname, '../credentials.example.json')).toString();
 
 const output = JSON.parse(template);
