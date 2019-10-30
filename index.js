@@ -20,7 +20,7 @@ const { add, search } = require("./google");
 // Load process.env values from .env file
 // require("dotenv").config();
 // Load in google creds
-require("./scripts/google-credentials")();
+// require("./scripts/google-credentials")();
 
 
 let storage = null;
