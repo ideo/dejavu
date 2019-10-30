@@ -18,7 +18,10 @@ const { MongoDbStorage } = require("botbuilder-storage-mongodb");
 const { add, search } = require("./google");
 
 // Load process.env values from .env file
-require("dotenv").config();
+// require("dotenv").config();
+// Load in google creds
+require("./scripts/google-credentials")();
+
 
 let storage = null;
 if (process.env.MONGO_URI) {
@@ -383,7 +386,7 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
           responseBody,
           process.env.botToken
         );
-        
+
         console.log(search(topic))
       }
       
