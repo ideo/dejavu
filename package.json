@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js; npm run poststart",
+    "start": "node index.js; node scripts/google-credentials.js",
     "poststart": "node scripts/google-credentials.js"
   },
   "dependencies": {
