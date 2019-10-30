@@ -10,9 +10,9 @@ const template = readFileSync(path.join(__dirname, '../credentials.example.json'
 
 const output = JSON.parse(template);
 
-output.installed[client_id] = google_client_id;
-output.installed[project_id] = google_project_id;
-output.installed[client_secret] = google_client_secret;
+output.installed['client_id'] = google_client_id;
+output.installed['project_id'] = google_project_id;
+output.installed['client_secret'] = google_client_secret;
 
 module.exports = function initGoogleCredentials() {
   console.log('________________________ HI MA!');
