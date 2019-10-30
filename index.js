@@ -364,7 +364,25 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
           })
           .catch(e => console.log("Woops. ", e));
       } else if (verb === "search") {
-        console.log('************* search!');
+        const responseBody = {
+          response_type: "ephemeral",
+          blocks: [
+            {
+              type: "section",
+              text: {
+                type: "plain_text",
+                text:
+                  `Copy that. Searching for insights related to ${topic}. Hang tight ...`
+              }
+            }
+          ]
+        };
+        // Push the response to Slack.
+        sendMessageToSlackResponseURL(
+          cachedResponseUrl,
+          responseBody,
+          process.env.botToken
+        );
       }
       
     } else if (value === "false") {
