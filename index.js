@@ -15,6 +15,7 @@ const {
 } = require("botbuilder-adapter-slack");
 // MongoDB to store conversations
 const { MongoDbStorage } = require("botbuilder-storage-mongodb");
+const { add, search } = require("./google");
 
 // Load process.env values from .env file
 require("dotenv").config();
@@ -143,9 +144,13 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
 /* 
   A little hello.
 */
-controller.webserver.get("*", (req, res, next) => {
-  res.status(200).end('✌🏼Deja Vu')
+controller.webserver.get("/", (req, res, next) => {
+  res.status(200).end('Hello from Deja Vu');
+  return next();
 });
+
+// keeping this in the closure.
+let verb = null;
 
 /* 
   The following endpoing processes every slash command  ala `/dejavu search amex`
@@ -184,7 +189,7 @@ controller.webserver.post("/api/slash-commands", (req, res, next) => {
   );
 
   // The verb entered by the user
-  const verb = commandText.split(" ").shift();
+  verb = commandText.split(" ").shift();
 
   // Decide what the appropriate response should be
   if (!KNOWN_VERBS.includes(verb)) {
@@ -315,49 +320,53 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
     const { actions, trigger_id: triggerId } = parsedPayload;
     const [{ value }] = actions;
     if (value === "true") {
-      // User clicked on 'Yep' button
-      fetch("https://slack.com/api/views.open", {
-        method: "POST",
-        headers: {  
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.botToken}`
-        },
-        body: JSON.stringify({
-          trigger_id: triggerId,
-          view: JSON.stringify(
-            createInsightsCollectionForm(insightsCollectionTemplate, topic)
-          )
-        })
-      })
-        .then(res => res.json())
-        .then(parsedResponse => {
-          if (parsedResponse.ok) {
-            console.log("> Dejavu: successfully opened modal");
-          } else {
-            const responseBody = {
-              response_type: "ephemeral",
-              blocks: [
-                {
-                  type: "section",
-                  text: {
-                    type: "plain_text",
-                    text:
-                      "Oops. Something is amiss. I have notified my developer to resolve this issue ASAP. Sorry about that!"
+      if (verb === "add") {
+        // User clicked on 'Yep' button and they want to 'add' insight
+        fetch("https://slack.com/api/views.open", {
+          method: "POST",
+          headers: {  
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.botToken}`
+          },
+          body: JSON.stringify({
+            trigger_id: triggerId,
+            view: JSON.stringify(
+              createInsightsCollectionForm(insightsCollectionTemplate, topic)
+            )
+          })
+        }).then(res => res.json())
+          .then(parsedResponse => {
+            if (parsedResponse.ok) {
+              console.log("> Dejavu: successfully opened modal");
+            } else {
+              const responseBody = {
+                response_type: "ephemeral",
+                blocks: [
+                  {
+                    type: "section",
+                    text: {
+                      type: "plain_text",
+                      text:
+                        "Oops. Something is amiss. I have notified my developer to resolve this issue ASAP. Sorry about that!"
+                    }
                   }
-                }
-              ]
-            };
+                ]
+              };
 
-            // Push the response to Slack.
-            sendMessageToSlackResponseURL(
-              cachedResponseUrl,
-              responseBody,
-              process.env.botToken
-            );
-            throw new Error(parsedResponse.error);
-          }
-        })
-        .catch(e => console.log("Woops. ", e));
+              // Push the response to Slack.
+              sendMessageToSlackResponseURL(
+                cachedResponseUrl,
+                responseBody,
+                process.env.botToken
+              );
+              throw new Error(parsedResponse.error);
+            }
+          })
+          .catch(e => console.log("Woops. ", e));
+      } else if (verb === "search") {
+        console.log('************* search!');
+      }
+      
     } else if (value === "false") {
       // User clicked on 'Nope' button
       const responseBody = {
