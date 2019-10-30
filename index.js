@@ -141,6 +141,13 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
 }
 
 /* 
+  A little hello.
+*/
+controller.webserver.get("*", (req, res, next) => {
+  res.status(200).end('✌🏼Deja Vu')
+});
+
+/* 
   The following endpoing processes every slash command  ala `/dejavu search amex`
 */
 controller.webserver.post("/api/slash-commands", (req, res, next) => {
