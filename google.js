@@ -28,7 +28,7 @@ function search(auth, topic) {
   const docs = google.docs({ version: "v1", auth });
   const query = `mimeType = 'application/vnd.google-apps.document' and name contains '${topic}'`;
 
-  drive.files.list(
+  return drive.files.list(
     {
       q: query,
       pageSize: 10,
@@ -48,7 +48,7 @@ function search(auth, topic) {
       const files = res.data.files;
 
       if (files.length) {
-        files.map(file => {
+        return files.map(file => {
           console.log(`#search: Found a match: ${file.name} (${file.id})`);
           return docs.documents.get(
             {
@@ -77,11 +77,12 @@ function search(auth, topic) {
                 }
               });
 
-              console.log(
-                "#search found the following relevant paragraphs in relevant docs:\n"
-              );
-              console.log(result);
-              console.log("\n");
+              // console.log(
+              //   "#search found the following relevant paragraphs in relevant docs:\n"
+              // );
+              // console.log(result);
+              // console.log("\n");
+              return result;
             }
           );
         });

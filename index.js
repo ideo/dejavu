@@ -383,6 +383,8 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
           responseBody,
           process.env.botToken
         );
+        
+        console.log(search(topic))
       }
       
     } else if (value === "false") {
