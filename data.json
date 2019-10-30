@@ -1,0 +1,96 @@
+{
+  "insightsCollectionTemplate": {
+    "type": "modal",
+    "title": {
+      "type": "plain_text",
+      "text": "Add Insight",
+      "emoji": true
+    },
+    "submit": {
+      "type": "plain_text",
+      "text": "Save",
+      "emoji": true
+    },
+    "close": {
+      "type": "plain_text",
+      "text": "Cancel",
+      "emoji": true
+    },
+    "blocks": [
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "mrkdwn",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "type": "input",
+        "element": {
+          "type": "plain_text_input",
+          "action_id": "insight",
+          "multiline": true,
+          "placeholder": {
+            "type": "plain_text",
+            "text": "What research insight would you like to share with your fellow IDEO-ers? Short and sweet insights are the best insights!"
+          }
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Research Insight",
+          "emoji": true
+        }
+      },
+      {
+        "type": "input",
+        "element": {
+          "type": "plain_text_input",
+          "action_id": "context",
+          "multiline": true,
+          "placeholder": {
+            "type": "plain_text",
+            "text": "Insightas are more most useful when formulated as a response to a line of inquiry. What was the context for this one?"
+          }
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Guiding Question(s)",
+          "emoji": true
+        }
+      },
+      {
+        "type": "input",
+        "element": {
+          "type": "plain_text_input",
+          "action_id": "tags",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "A comma separated list of tags related to this research insight."
+          }
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Tags"
+        }
+      },
+      {
+        "type": "input",
+        "optional": true,
+        "element": {
+          "type": "plain_text_input",
+          "action_id": "client",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "Who is the client on this project?"
+          }
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Client"
+        }
+      }
+    ]
+  }
+}
