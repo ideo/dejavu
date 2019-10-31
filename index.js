@@ -390,7 +390,7 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
 
         search(topic).then(res => {
           console.log('------------------> search came back: ', res)
-        }).catch(e => {
+        }).catch(err => {
           console.log('------------------> search failed: ', err)
         });
       }
