@@ -44,12 +44,12 @@ jwtClient.authorize(function (err, tokens) {
  * Search in IDEO G-Drive for a given topic
  * @param {string} topic The topic to search for.
  */
-function search(auth = jwtClient, topic) {
+async function search(auth = jwtClient, topic) {
   const drive = google.drive({ version: "v3", auth });
   const docs = google.docs({ version: "v1", auth });
   const query = `mimeType = 'application/vnd.google-apps.document' and name contains '${topic}'`;
 
-  return drive.files.list(
+  const results = await drive.files.list(
     {
       q: query,
       pageSize: 10,
@@ -81,7 +81,7 @@ function search(auth = jwtClient, topic) {
                   "#search: Error while digging into a matchinc file: " + err
                 );
               }
-              let result = "";
+              let output = "";
               res.data.body.content.forEach(block => {
                 if (block.paragraph && block.paragraph.elements) {
                   block.paragraph.elements.forEach(element => {
@@ -91,8 +91,8 @@ function search(auth = jwtClient, topic) {
                       typeof element.textRun.content === "string" &&
                       element.textRun.content.includes(topic)
                     ) {
-                      result = result.concat("\n");
-                      result = result.concat(element.textRun.content);
+                      output = output.concat("\n");
+                      output = output.concat(element.textRun.content);
                     }
                   });
                 }
@@ -101,15 +101,18 @@ function search(auth = jwtClient, topic) {
               // console.log(
               //   "#search found the following relevant paragraphs in relevant docs:\n"
               // );
-              // console.log(result);
+              // console.log(output);
               // console.log("\n");
-              return result;
+              return output;
             }
           );
         });
+
       }
     }
   );
+  console.log('Results is: -------', results);
+  return results;
 }
 
 /**
