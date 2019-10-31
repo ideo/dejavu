@@ -388,7 +388,11 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
 
 
 
-        console.log(search(undefined, topic));
+        search(undefined, topic).then(res => {
+          console.log('------------------> search came back: ', res)
+        }).catch(e => {
+          console.log('------------------> search failed: ', err)
+        });
       }
       
     } else if (value === "false") {
