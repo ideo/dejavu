@@ -20,10 +20,7 @@ const { add, search } = require("./google");
 // Load process.env values from .env file
 // require("dotenv").config();
 // Load in google creds
-const privatekey = require("./google-credentials-heroku.json");
 
-console.log('_______ PRIVATE KEY IS HERE _______');
-console.log(privatekey);
 
 let storage = null;
 if (process.env.MONGO_URI) {

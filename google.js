@@ -2,6 +2,11 @@ const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
 
+const privatekey = require("./google-credentials-heroku.json");
+
+console.log('_______ PRIVATE KEY IS HERE _______');
+console.log(privatekey);
+
 // temp. this should come from Slack App.
 let topic = "future";
 
@@ -18,6 +23,22 @@ const SCOPES = [
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = "token.json";
+
+// configure a JWT auth client
+const jwtClient = new google.auth.JWT(
+  privatekey.client_email,
+  null,
+  privatekey.private_key,
+  SCOPES);
+//authenticate request
+jwtClient.authorize(function (err, tokens) {
+  if (err) {
+    console.log('* ____ authorize ERROR _____ *', err);
+    return;
+  } else {
+    console.log('* ____ authorize SUCCESS _____ *');
+  }
+});
 
 /**
  * Search in IDEO G-Drive for a given topic
