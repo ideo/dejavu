@@ -44,7 +44,19 @@ jwtClient.authorize(function (err, tokens) {
  * Search in IDEO G-Drive for a given topic
  * @param {string} topic The topic to search for.
  */
-async function search(auth = jwtClient, topic) {
+
+async function search(topic) {
+  const drive = google.drive({ version: "v3", auth });
+  const query = `mimeType = 'application/vnd.google-apps.document' and name contains '${topic}'`;
+  const results = await drive.files.list({
+    q: query,
+    pageSize: 10,
+    fields: "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
+  })
+  return results;
+}
+
+async function _search(auth = jwtClient, topic) {
   const drive = google.drive({ version: "v3", auth });
   const docs = google.docs({ version: "v1", auth });
   const query = `mimeType = 'application/vnd.google-apps.document' and name contains '${topic}'`;
