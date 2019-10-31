@@ -44,7 +44,7 @@ jwtClient.authorize(function (err, tokens) {
  * Search in IDEO G-Drive for a given topic
  * @param {string} topic The topic to search for.
  */
-function search(auth, topic) {
+function search(auth = jwtClient, topic) {
   const drive = google.drive({ version: "v3", auth });
   const docs = google.docs({ version: "v1", auth });
   const query = `mimeType = 'application/vnd.google-apps.document' and name contains '${topic}'`;
@@ -266,7 +266,11 @@ function getAccessToken(oAuth2Client, callback) {
   });
 }
 
+// module.exports = {
+//   add: authorizeAndMakeAPICall(add),
+//   search: authorizeAndMakeAPICall(search)
+// };
+
 module.exports = {
-  add: authorizeAndMakeAPICall(add),
-  search: authorizeAndMakeAPICall(search)
-};
+  add, search
+}

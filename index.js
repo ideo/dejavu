@@ -386,7 +386,9 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
           process.env.botToken
         );
 
-        console.log(search(topic))
+
+
+        console.log(search(undefined, topic));
       }
       
     } else if (value === "false") {
