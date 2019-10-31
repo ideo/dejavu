@@ -46,7 +46,7 @@ jwtClient.authorize(function (err, tokens) {
  */
 
 async function search(topic) {
-  const drive = google.drive({ version: "v3", auth });
+  const drive = google.drive({ version: "v3", jwtClient });
   const query = `mimeType = 'application/vnd.google-apps.document' and name contains '${topic}'`;
   const results = await drive.files.list({
     q: query,
