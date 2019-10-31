@@ -4,7 +4,8 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "preinstall": "node preinstall.js"
   },
   "dependencies": {
     "botbuilder-adapter-slack": "^1.0.5",
