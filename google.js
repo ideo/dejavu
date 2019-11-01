@@ -2,12 +2,9 @@ const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
 const privatekey = require("./google-credentials-heroku.json");
-const { JWT } = require("google-auth-library");
+// const { JWT } = require("google-auth-library");
 const path = require("path");
 
-console.log('_______ BEGIN PRIVATE KEY _______');
-console.log(privatekey);
-console.log('_______ END PRIVATE KEY _______');
 
 // temp. this should come from Slack App.
 let topic = "amex";
@@ -81,10 +78,9 @@ async function runSample() {
       // console.log(doc);
       doc.data.body.content.forEach(block => {
         if (block.paragraph && block.paragraph.elements) {
-          console.log('_________ block.paragraph.elements');
+          // console.log('_________ block.paragraph.elements');
           block.paragraph.elements.forEach(element => {
-            console.log(JSON.stringify(element));
-
+            // console.log(JSON.stringify(element));
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
               output = output.concat("\n");
               output = output.concat(element.textRun.content);
@@ -96,7 +92,7 @@ async function runSample() {
   }
 
   return output;
-}
+}   
 
 
 runSample()
