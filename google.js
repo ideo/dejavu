@@ -78,11 +78,12 @@ async function runSample() {
       const doc = await docs.documents.get({ documentId: file.id });
       // console.log('____________________________ doc ____________________________');
       // console.log(doc);
-      fs.writeFileSync('./doc.json', JSON.stringify(doc));
       doc.data.body.content.forEach(block => {
         if (block.paragraph && block.paragraph.elements) {
+          console.log('_________ block.paragraph.elements');
           block.paragraph.elements.forEach(element => {
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
+              console.log('_________ block.paragraph.elements ', element.textRun.content);
               output = output.concat("\n");
               output = output.concat(element.textRun.content);
             }
