@@ -54,8 +54,15 @@ async function runSample() {
     auth: client,
   });
 
+  const query = `mimeType = 'application/vnd.google-apps.document'`;
+
   // Make an authorized request to list Drive files.
-  const res = await drive.files.list();
+  const res = await drive.files.list({
+    q: query,
+    pageSize: 10,
+    fields:
+      "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
+  });
 
   return res.data;
 }
@@ -70,34 +77,7 @@ runSample()
     console.log(e)
   })
 
-async function testAuth() {
-  const client = new JWT({
-    email: privatekey.client_email,
-    key: privatekey.private_key,
-    scopes: SCOPES
-  });
-  const url = `https://dns.googleapis.com/dns/v1/projects/${privatekey.projec_id}`;
-  const res = await client.request({url});
-  console.log('DNS info:');
-  console.log(res.data);
-  return res.data;
-}
 
-
- 
-
-// test the auth function
-// testAuth().then(res => {
-  
-//   console.log('______________ begin DNS info: ______________');
-//   console.log(res);
-//   console.log('______________ end DNS info: ______________');
-
-// }).catch(e => {
-//   console.log('______________ Failed DNS info: ______________');
-//   console.log(e);
-//   console.log('______________ Failed DNS info: ______________');
-// })
 /**
  * Search in IDEO G-Drive for a given topic
  * @param {string} topic The topic to search for.
