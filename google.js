@@ -82,6 +82,7 @@ async function runSample() {
           block.paragraph.elements.forEach(element => {
             // console.log(JSON.stringify(element));
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
+              console.log('================= Found a match! =================')
               output = output.concat("\n");
               output = output.concat(element.textRun.content);
             }
