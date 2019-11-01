@@ -55,8 +55,6 @@ async function runSample() {
     auth
   });
 
-  const resultPromise = new Promise();
-
   const query = `mimeType = 'application/vnd.google-apps.document'`;
 
   // Make an authorized request to list Drive files.
