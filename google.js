@@ -95,10 +95,12 @@ async function runSample() {
               output = output.concat(element.textRun.content);
             }
           });
-          console.log(textContents);
 
         }
       });
+      
+      console.log('_________TEXT CONTENT', textContents);
+
     });
 
   }
