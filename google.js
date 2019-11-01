@@ -10,7 +10,7 @@ console.log(privatekey);
 console.log('_______ END PRIVATE KEY _______');
 
 // temp. this should come from Slack App.
-let topic = "future";
+let topic = "amex";
 
 function createDocNameForTopic(_topic) {
   return `Dejavu Insights - ${_topic}`;
@@ -76,8 +76,8 @@ async function runSample() {
     const files = res.data.files;
     files.forEach(async (file) => {
       const doc = await docs.documents.get({ documentId: file.id });
-      console.log('____________________________ doc ____________________________');
-      console.log(doc);
+      // console.log('____________________________ doc ____________________________');
+      // console.log(doc);
       doc.data.body.content.forEach(block => {
         if (block.paragraph && block.paragraph.elements) {
           block.paragraph.elements.forEach(element => {
