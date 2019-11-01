@@ -69,6 +69,8 @@ async function runSample() {
       "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
   });
 
+  let output = "";
+
   // if we found qualifying files
   if (res.data.files && res.data.files.length) {
     const files = res.data.files;
@@ -76,11 +78,22 @@ async function runSample() {
       const doc = await docs.documents.get({ documentId: file.id });
       console.log('____________________________ doc ____________________________');
       console.log(doc);
+      file.data.body.content.forEach(block => {
+        if (block.paragraph && block.paragraph.elements) {
+          block.paragraph.elements.forEach(element => {
+            if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
+              output = output.concat("\n");
+              output = output.concat(element.textRun.content);
+            }
+          });
+        }
+      });
     });
   }
 
-  return res.data;
+  return output;
 }
+
 
 runSample()
   .then((res) => {
