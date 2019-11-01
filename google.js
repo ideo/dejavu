@@ -76,13 +76,17 @@ async function runSample() {
       const doc = await docs.documents.get({ documentId: file.id });
       // console.log('____________________________ doc ____________________________');
       // console.log(doc);
+      const textContents = [];
+      
       doc.data.body.content.forEach(block => {
+
         if (block.paragraph && block.paragraph.elements) {
           // console.log('_________ block.paragraph.elements');
           block.paragraph.elements.forEach(element => {
-            // console.log(JSON.stringify(element));
-            console.log('_______ typeof element.textRun.content === "string"', !!(typeof element.textRun.content) === "string", typeof element.textRun.content);
-            console.log('_______ Includes:', !!element.textRun.content.toLowerCase().includes(topic.toLowerCase()), 'topic is: ', topic);
+            
+            if (element.textRun && element.textRun.content) {
+              textContents.push(element.textRun.content);
+            }
             
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
               console.log('================= Found a match! =================')
@@ -93,6 +97,8 @@ async function runSample() {
         }
       });
     });
+
+    console.log(textContents);
   }
 
   return output;
