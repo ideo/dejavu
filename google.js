@@ -55,6 +55,7 @@ async function runSample() {
     auth
   });
 
+  const resultPromise = new Promise();
 
   const query = `mimeType = 'application/vnd.google-apps.document'`;
 
@@ -66,40 +67,52 @@ async function runSample() {
       "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
   });
 
-  const textContents = [];
 
-  // if we found qualifying files
-  if (res.data.files && res.data.files.length) {
-    const files = res.data.files;
+  return new Promise((resolveTop, rejectTop) => {
+    let textContents = [];
 
-    files.forEach(async (file) => {
-      const doc = await docs.documents.get({ documentId: file.id });
-      // console.log('____________________________ doc ____________________________');
-      // console.log(doc);
+    // if we found qualifying files
+    if (res.data.files && res.data.files.length) {
+      const files = res.data.files;
 
-      doc.data.body.content.forEach(block => {
+      const filesPromises = files.map(async (file) => {
+        const doc = await docs.documents.get({ documentId: file.id });
+        // console.log('____________________________ doc ____________________________');
+        // console.log(doc);
+        const thisFileResults = [];
+        doc.data.body.content.forEach(block => {
 
-        if (block.paragraph && block.paragraph.elements) {
-          // console.log('_________ block.paragraph.elements');
-          block.paragraph.elements.forEach(element => {
-            
-            if (!!element.textRun && !!element.textRun.content) {
-              textContents.push(element.textRun.content);
-              console.log(textContents.length);
-            }
-            
-          });
+          if (block.paragraph && block.paragraph.elements) {
+            // console.log('_________ block.paragraph.elements');
+            block.paragraph.elements.forEach(element => {
+              
+              if (!!element.textRun && !!element.textRun.content) {
+                thisFileResults.push(element.textRun.content);
+                //console.log(textContents.length);
+                
+              }
+              
+            });
 
-        }
+          }
+        
+        });
+
+        return new Promise((resolve, reject) => {
+          resolve(thisFileResults);
+        });
+
       });
 
+      Promise.all(filesPromises).then((filesPromisesArr) => {
+        textContents = [...filesPromisesArr];
+        resolveTop(textContents)
+      }).catch(e =>  console.log('promise all failed ', e));
 
+    }
+  });
+  
 
-    });
-
-  }
-
-  return textContents;
 }   
 
 
