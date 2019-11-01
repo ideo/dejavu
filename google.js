@@ -1,11 +1,12 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
-
 const privatekey = require("./google-credentials-heroku.json");
+const { JWT } = require("google-auth-library");
 
-console.log('_______ PRIVATE KEY IS HERE _______');
+console.log('_______ BEGIN PRIVATE KEY _______');
 console.log(privatekey);
+console.log('_______ END PRIVATE KEY _______');
 
 // temp. this should come from Slack App.
 let topic = "future";
@@ -19,27 +20,49 @@ const SCOPES = [
   "https://www.googleapis.com/auth/drive",
   "https://www.googleapis.com/auth/documents"
 ];
-// The file token.json stores the user's access and refresh tokens, and is
-// created automatically when the authorization flow completes for the first
-// time.
-const TOKEN_PATH = "token.json";
 
 // configure a JWT auth client
-const jwtClient = new google.auth.JWT(
-  privatekey.client_email,
-  null,
-  privatekey.private_key,
-  SCOPES);
+// const jwtClient = new google.auth.JWT(
+//   privatekey.client_email,
+//   null,
+//   privatekey.private_key,
+//   SCOPES);
 //authenticate request
-jwtClient.authorize(function (err, tokens) {
-  if (err) {
-    console.log('* ____ authorize ERROR _____ *', err);
-    return;
-  } else {
-    console.log('* ____ authorize SUCCESS _____ *');
-  }
-});
+// jwtClient.authorize(function (err, tokens) {
+//   if (err) {
+//     console.log('* ____ authorize ERROR _____ *', err);
+//     return;
+//   } else {
+//     console.log('* ____ authorize SUCCESS _____ *');
+//   }
+// });
 
+async function testAuth() {
+  const client = new JWT({
+    email: privatekey.client_email,
+    key: privatekey.private_key,
+    scopes: SCOPES
+  });
+  const url = `https://dns.googleapis.com/dns/v1/projects/${privatekey.projec_id}`;
+  const res = await client.request({url});
+  console.log('DNS info:');
+  console.log(res.data);
+  return res.data;
+}
+
+
+// test the auth function
+testAuth.then(res => {
+  
+  console.log('______________ begin DNS info: ______________');
+  console.log(res);
+  console.log('______________ end DNS info: ______________');
+
+}).catch(e => {
+  console.log('______________ Failed DNS info: ______________');
+  console.log(e);
+  console.log('______________ Failed DNS info: ______________');
+})
 /**
  * Search in IDEO G-Drive for a given topic
  * @param {string} topic The topic to search for.

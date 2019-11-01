@@ -13,6 +13,7 @@
     "botkit": "^4.5.0",
     "botkit-plugin-cms": "^1.0.2",
     "dotenv": "^8.2.0",
+    "google-auth-library": "^5.5.1",
     "googleapis": "^44.0.0",
     "node-fetch": "^2.6.0"
   }
