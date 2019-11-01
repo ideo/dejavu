@@ -69,10 +69,11 @@ async function runSample() {
       "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
   });
 
-  let output = "";
+  let output = "Empty";
 
   // if we found qualifying files
   if (res.data.files && res.data.files.length) {
+    output = '';
     const files = res.data.files;
     files.forEach(async (file) => {
       const doc = await docs.documents.get({ documentId: file.id });
