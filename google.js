@@ -3,6 +3,7 @@ const readline = require("readline");
 const { google } = require("googleapis");
 const privatekey = require("./google-credentials-heroku.json");
 const { JWT } = require("google-auth-library");
+const path = require("path");
 
 console.log('_______ BEGIN PRIVATE KEY _______');
 console.log(privatekey);
@@ -38,6 +39,37 @@ const SCOPES = [
 //   }
 // });
 
+
+async function runSample() {
+  // Create a new JWT client using the key file downloaded from the Google Developer Console
+  const auth = new google.auth.GoogleAuth({
+    keyFile: path.join(__dirname, './google-credentials-heroku.json'),
+    scopes: SCOPES,
+  });
+  const client = await auth.getClient();
+
+  // Obtain a new drive client, making sure you pass along the auth client
+  const drive = google.drive({
+    version: 'v3',
+    auth: client,
+  });
+
+  // Make an authorized request to list Drive files.
+  const res = await drive.files.list();
+
+  return res.data;
+}
+
+runSample()
+  .then((res) => {
+    console.log('_________ run sample success __________')
+    console.log(res)
+  })
+  .catch(e => {
+    console.log('_________ run sample failed __________')
+    console.log(e)
+  })
+
 async function testAuth() {
   const client = new JWT({
     email: privatekey.client_email,
@@ -52,20 +84,20 @@ async function testAuth() {
 }
 
 
-
+ 
 
 // test the auth function
-testAuth().then(res => {
+// testAuth().then(res => {
   
-  console.log('______________ begin DNS info: ______________');
-  console.log(res);
-  console.log('______________ end DNS info: ______________');
+//   console.log('______________ begin DNS info: ______________');
+//   console.log(res);
+//   console.log('______________ end DNS info: ______________');
 
-}).catch(e => {
-  console.log('______________ Failed DNS info: ______________');
-  console.log(e);
-  console.log('______________ Failed DNS info: ______________');
-})
+// }).catch(e => {
+//   console.log('______________ Failed DNS info: ______________');
+//   console.log(e);
+//   console.log('______________ Failed DNS info: ______________');
+// })
 /**
  * Search in IDEO G-Drive for a given topic
  * @param {string} topic The topic to search for.
