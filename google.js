@@ -66,7 +66,7 @@ async function runSample() {
       "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
   });
 
-  const textContent = [];
+  const textContents = [];
 
   // if we found qualifying files
   if (res.data.files && res.data.files.length) {
@@ -93,14 +93,13 @@ async function runSample() {
         }
       });
 
-      console.log('_________TEXT CONTENT', textContents);
 
 
     });
 
   }
 
-  return textContent;
+  return textContents;
 }   
 
 
