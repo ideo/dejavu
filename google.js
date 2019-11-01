@@ -53,6 +53,11 @@ async function runSample() {
     version: 'v3',
     auth: client,
   });
+  const docs = google.docs({
+    version: "v1",
+    auth
+  });
+
 
   const query = `mimeType = 'application/vnd.google-apps.document'`;
 
@@ -63,6 +68,16 @@ async function runSample() {
     fields:
       "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
   });
+
+  // if we found qualifying files
+  if (res.data.files && res.data.files.length) {
+    const files = res.data.files;
+    files.forEach((file) => {
+      const doc = await docs.documents.get({ documentId: file.id });
+      console.log('____________________________ doc ____________________________');
+      console.log(doc);
+    });
+  }
 
   return res.data;
 }
