@@ -83,8 +83,8 @@ async function runSample() {
             // console.log(JSON.stringify(element));
             console.log('_______ element.textRun', !!element.textRun);
             console.log('_______ element.textRun.content', !!element.textRun.content);
-            console.log('_______ typeof element.textRun.content === "string"', !!typeof element.textRun.content === "string", typeof element.textRun.content);
-            console.log('_______ element.textRun.content.includes(topic)', !!element.textRun.content.includes(topic));
+            console.log('_______ typeof element.textRun.content === "string"', (!!typeof element.textRun.content) === "string", typeof element.textRun.content);
+            console.log('_______ element.textRun.content.includes(topic)', !!element.textRun.content.includes(topic), 'topic is: ', topic);
             
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
               console.log('================= Found a match! =================')
