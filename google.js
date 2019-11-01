@@ -18,7 +18,8 @@ function createDocNameForTopic(_topic) {
 // If modifying these scopes, delete token.json.
 const SCOPES = [
   "https://www.googleapis.com/auth/drive",
-  "https://www.googleapis.com/auth/documents"
+  "https://www.googleapis.com/auth/documents",
+  "https://www.googleapis.com/auth/cloud-platform"
 ];
 
 // configure a JWT auth client
