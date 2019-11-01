@@ -85,6 +85,7 @@ async function runSample() {
             
             if (!!element.textRun && !!element.textRun.content) {
               textContents.push(element.textRun.content);
+              console.log(textContents.length);
             }
             
           });
