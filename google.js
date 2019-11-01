@@ -78,6 +78,7 @@ async function runSample() {
       const doc = await docs.documents.get({ documentId: file.id });
       // console.log('____________________________ doc ____________________________');
       // console.log(doc);
+      fs.writeFileSync('./doc.json', JSON.stringify(doc));
       doc.data.body.content.forEach(block => {
         if (block.paragraph && block.paragraph.elements) {
           block.paragraph.elements.forEach(element => {
