@@ -72,11 +72,12 @@ async function runSample() {
   if (res.data.files && res.data.files.length) {
     output = '';
     const files = res.data.files;
+    const textContents = [];
+
     files.forEach(async (file) => {
       const doc = await docs.documents.get({ documentId: file.id });
       // console.log('____________________________ doc ____________________________');
       // console.log(doc);
-      const textContents = [];
       
       doc.data.body.content.forEach(block => {
 
