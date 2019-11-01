@@ -82,8 +82,9 @@ async function runSample() {
         if (block.paragraph && block.paragraph.elements) {
           console.log('_________ block.paragraph.elements');
           block.paragraph.elements.forEach(element => {
+            console.log(JSON.stringify(element));
+
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
-              console.log('_________ block.paragraph.elements ', JSON.stringify(element));
               output = output.concat("\n");
               output = output.concat(element.textRun.content);
             }
