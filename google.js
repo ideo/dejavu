@@ -117,7 +117,7 @@ async function runSample() {
 runSample()
   .then((res) => {
     console.log('_________ run sample success __________')
-    console.log(res.length)
+    console.log(res)
   })
   .catch(e => {
     console.log('_________ run sample failed __________')
