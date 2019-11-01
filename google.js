@@ -66,18 +66,16 @@ async function runSample() {
       "nextPageToken, files(id, name, lastModifyingUser, webViewLink, modifiedTime)"
   });
 
-  let output = "Empty";
+  const textContent = [];
 
   // if we found qualifying files
   if (res.data.files && res.data.files.length) {
-    output = '';
     const files = res.data.files;
 
     files.forEach(async (file) => {
       const doc = await docs.documents.get({ documentId: file.id });
       // console.log('____________________________ doc ____________________________');
       // console.log(doc);
-      const textContents = [];
 
       doc.data.body.content.forEach(block => {
 
@@ -89,30 +87,26 @@ async function runSample() {
               textContents.push(element.textRun.content);
             }
             
-            if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
-              console.log('================= Found a match! =================')
-              output = output.concat("\n");
-              output = output.concat(element.textRun.content);
-            }
           });
 
         }
       });
-      
+
       console.log('_________TEXT CONTENT', textContents);
+
 
     });
 
   }
 
-  return output;
+  return textContent;
 }   
 
 
 runSample()
   .then((res) => {
     console.log('_________ run sample success __________')
-    console.log(res)
+    console.log(res.length)
   })
   .catch(e => {
     console.log('_________ run sample failed __________')
