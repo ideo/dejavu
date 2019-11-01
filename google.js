@@ -85,7 +85,7 @@ async function runSample() {
           // console.log('_________ block.paragraph.elements');
           block.paragraph.elements.forEach(element => {
             
-            if (element.textRun && element.textRun.content) {
+            if (!!element.textRun && !!element.textRun.content) {
               textContents.push(element.textRun.content);
             }
             
