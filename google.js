@@ -52,7 +52,7 @@ async function testAuth() {
 
 
 // test the auth function
-testAuth.then(res => {
+testAuth().then(res => {
   
   console.log('______________ begin DNS info: ______________');
   console.log(res);
