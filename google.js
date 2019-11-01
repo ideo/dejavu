@@ -78,7 +78,7 @@ async function runSample() {
       const doc = await docs.documents.get({ documentId: file.id });
       console.log('____________________________ doc ____________________________');
       console.log(doc);
-      file.data.body.content.forEach(block => {
+      doc.data.body.content.forEach(block => {
         if (block.paragraph && block.paragraph.elements) {
           block.paragraph.elements.forEach(element => {
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
