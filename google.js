@@ -72,7 +72,7 @@ async function runSample() {
   // if we found qualifying files
   if (res.data.files && res.data.files.length) {
     const files = res.data.files;
-    files.forEach((file) => {
+    files.forEach(async (file) => {
       const doc = await docs.documents.get({ documentId: file.id });
       console.log('____________________________ doc ____________________________');
       console.log(doc);
