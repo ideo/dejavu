@@ -81,8 +81,8 @@ async function runSample() {
           // console.log('_________ block.paragraph.elements');
           block.paragraph.elements.forEach(element => {
             // console.log(JSON.stringify(element));
-            console.log('_______ typeof element.textRun.content === "string"', (!!typeof element.textRun.content) === "string", typeof element.textRun.content);
-            console.log('_______ Includes:', !!element.textRun.content,toLowerCase().includes(topic.toLowerCase()), 'topic is: ', topic);
+            console.log('_______ typeof element.textRun.content === "string"', !!(typeof element.textRun.content) === "string", typeof element.textRun.content);
+            console.log('_______ Includes:', !!element.textRun.content.toLowerCase().includes(topic.toLowerCase()), 'topic is: ', topic);
             
             if (element.textRun && element.textRun.content && typeof element.textRun.content === "string" && element.textRun.content.includes(topic)) {
               console.log('================= Found a match! =================')
