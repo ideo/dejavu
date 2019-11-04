@@ -7,7 +7,7 @@ const path = require("path");
 
 
 // temp. this should come from Slack App.
-let topic = "Amex";
+// let topic = "Amex";
 
 function createDocNameForTopic(_topic) {
   return `Dejavu Insights - ${_topic}`;
@@ -37,7 +37,7 @@ const SCOPES = [
 // });
 
 
-async function runSample() {
+async function search(topic) {
   // Create a new JWT client using the key file downloaded from the Google Developer Console
   const auth = new google.auth.GoogleAuth({
     keyFile: path.join(__dirname, './google-credentials-heroku.json'),
@@ -115,15 +115,6 @@ async function runSample() {
 }   
 
 
-runSample()
-  .then((res) => {
-    console.log('_________ run sample success __________')
-    console.log(res)
-  })
-  .catch(e => {
-    console.log('_________ run sample failed __________')
-    console.log(e)
-  })
 
 
 /**
@@ -131,7 +122,7 @@ runSample()
  * @param {string} topic The topic to search for.
  */
 
-async function search(topic) {
+async function __search(topic) {
   const drive = google.drive({ version: "v3", jwtClient });
   const query = `mimeType = 'application/vnd.google-apps.document' and name contains '${topic}'`;
   const results = await drive.files.list({
