@@ -390,6 +390,31 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
 
         search(topic).then(res => {
           console.log('------------------> search came back: ', res)
+          function getBlock(input) {
+            return input.map(insight => (
+              {
+                type: "section",
+                text: {
+                  type: "plain_text",
+                  text: insight
+                }
+              }
+            ));
+          }
+
+          const insights = getBlock(res)
+
+          const responseBody = {
+            response_type: "ephemeral",
+            blocks: insights
+          };
+
+          sendMessageToSlackResponseURL(
+            cachedResponseUrl,
+            responseBody,
+            process.env.botToken
+          );
+
         }).catch(err => {
           console.log('------------------> search failed: ', err)
         });
