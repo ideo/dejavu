@@ -7,7 +7,7 @@ const path = require("path");
 
 
 // temp. this should come from Slack App.
-let topic = "is";
+let topic = "Amex";
 
 function createDocNameForTopic(_topic) {
   return `Dejavu Insights - ${_topic}`;
