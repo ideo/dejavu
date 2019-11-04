@@ -103,7 +103,7 @@ async function runSample() {
       });
 
       Promise.all(filesPromises).then((filesPromisesArr) => {
-        textContents = [...filesPromisesArr[0]];
+        textContents = [...filesPromisesArr];
         console.log('__________ the length of the response is: ', textContents.length);
         resolveTop(textContents); 
       }).catch(e =>  console.log('promise all failed ', e));
