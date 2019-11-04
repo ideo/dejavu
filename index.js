@@ -402,7 +402,13 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
             ));
           }
 
-          const insights = getBlock(res)
+          const insights = getBlock(res).length ? getBlock(res) : {
+            type: "section",
+            text: {
+              type: "plain_text",
+              text: `Woops, could not find any insight with this keyword. Try something else?`
+            }
+          }
 
           const responseBody = {
             response_type: "ephemeral",
