@@ -84,7 +84,7 @@ async function runSample() {
             // console.log('_________ block.paragraph.elements');
             block.paragraph.elements.forEach(element => {
               
-              if (!!element.textRun && !!element.textRun.content) {
+              if (!!element.textRun && !!element.textRun.content && !!element.textRun.content.includes(topic)) {
                 thisFileResults.push(element.textRun.content);
                 //console.log(textContents.length);
                 
@@ -103,8 +103,9 @@ async function runSample() {
       });
 
       Promise.all(filesPromises).then((filesPromisesArr) => {
-        textContents = [...filesPromisesArr];
-        resolveTop(textContents)
+        textContents = [...filesPromisesArr[0]];
+        console.log('__________ the length of the response is: ', textContents.length);
+        resolveTop(textContents); 
       }).catch(e =>  console.log('promise all failed ', e));
 
     }
