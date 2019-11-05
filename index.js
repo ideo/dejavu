@@ -479,6 +479,8 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
       process.env.botToken
     );
 
+    add(topic)
+
     topic = ""; // reset the topic
   } else if (type === ACTIONS.VIEW_CLOSED) {
     console.log("View Closed");
