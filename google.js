@@ -163,8 +163,8 @@ async function add(topic) {
         folderId = res.data.files[0].id;
 
         // check to see if we have a file with today's date
-        const { getUTCFullYear, getUTCMonth, getUTCDate } = new Date();
-        const fileName = `dejavu-${(getUTCMonth()+1)}/${getUTCDate()}/${getUTCFullYear()}`
+        const date = new Date();
+        const fileName = `dejavu-${(date.getUTCMonth()+1)}/${date.getUTCDate()}/${date.getUTCFullYear()}`;
 
         drive.files.list({
           q: `mimeType = 'application/vnd.google-apps.document' and name = '${fileName}'`,
