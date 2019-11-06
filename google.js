@@ -156,6 +156,7 @@ async function add(topic) {
       }
 
       if (res.data.files.length) {
+        console.log('--------- ', JSON.stringify(res))
         console.log("#add: dejavu folder exists: ", res.data.files[0].id);
         // folder exists. let's make a doc
         // keep the reference to the folder
