@@ -191,7 +191,7 @@ async function add(topic) {
             drive.files.create({
               name: fileName,
               mimeType: `application/vnd.google-apps.document`,
-              parents: [parentId]
+              parents: [folderId]
             }, (err, res) => {
               if (err) return console.log('#add failed to create file ', fileName);
               console.log('#add successfully created the file', fileName);
