@@ -194,7 +194,7 @@ async function add(topic) {
               parents: [folderId]
             }, (err, res) => {
               if (err) return console.log('#add failed to create file ', fileName);
-              console.log('#add successfully created the file', fileName);
+              console.log('#add successfully created the file', fileName, JSON.stringify(res));
             })
           }
         })
