@@ -262,10 +262,6 @@ function getAccessToken(oAuth2Client, callback) {
   });
 }
 
-// module.exports = {
-//   add: authorizeAndMakeAPICall(add),
-//   search: authorizeAndMakeAPICall(search)
-// };
 
 module.exports = {
   add, search

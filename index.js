@@ -471,17 +471,23 @@ controller.webserver.post("/api/interactions", (req, res, next) => {
         }
       ]
     };
-    console.log("Insight recorded response body: ", responseUrl, responseBody);
+    console.log("Insight recorded response body: ", responseBody);
     // Push the response to Slack.
     sendMessageToSlackResponseURL(
       cachedResponseUrl,
       responseBody,
       process.env.botToken
-    );
+    ).then((res) => {
+      console.log('--> sendMessageToSlackResponseURL then', res);
+      topic = ""; // reset the topic
 
-    add(topic)
+      add(topic)
+    }).catch((e) => {
+      console.log('--> sendMessageToSlackResponseURL error', e);
+      topic = ""; // reset the topic
+    });
 
-    topic = ""; // reset the topic
+
   } else if (type === ACTIONS.VIEW_CLOSED) {
     console.log("View Closed");
   }
