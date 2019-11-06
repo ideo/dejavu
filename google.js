@@ -161,6 +161,45 @@ async function add(topic) {
         // folder exists. let's make a doc
         // keep the reference to the folder
         folderId = res.data.files[0].id;
+
+        // check to see if we have a file with today's date
+        const { getUTCFullYear, getUTCMonth, getUTCDate } = new Date();
+        const fileName = `dejavu-${(getUTCMonth()+1)}/${getUTCDate()}/${getUTCFullYear()}`
+
+        drive.files.list({
+          q: `mimeType = 'application/vnd.google-apps.document' and name = '${fileName}'`,
+          fields: "files(id, name)"
+        }, (err, res) => {
+          if (err) return console.log('#add: failed to locate file ', fileName);
+          if (res.data.files.length) {
+            const fileId = res.data.files[0].id;
+            const parentId = folderId;
+            
+            console.log('#add: found the file with name ', fileName, ' ', JSON.stringify(res.data.files), ' file id: ', fileId);
+            // a dejavu file with today's date already exists!
+            // let's get its current content from it
+            drive.files.get({
+              fileId,
+              fields: '*'
+            }, (err, res) => {
+              if (err) return console.log('#add: failed to get the contents of the file ', fileId);
+              console.log('#add: success in getting contents of the file ', JSON.stringify(res.data));
+
+            })
+          } else {
+            // file does not exist
+            drive.files.create({
+              name: fileName,
+              mimeType: `application/vnd.google-apps.document`,
+              parents: [parentId]
+            }, (err, res) => {
+              if (err) return console.log('#add failed to create file ', fileName);
+              console.log('#add successfully created the file', fileName);
+            })
+          }
+        })
+
+
       } else {
         // folder does not exist. let's make it
         const fileMetadata = {
