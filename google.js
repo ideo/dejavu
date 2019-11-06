@@ -120,7 +120,7 @@ async function search(topic) {
  * @param {string} content The research insight itself.
  */
 async function add(topic) {
-  
+  console.log('##### add is called');
    // Create a new JWT client using the key file downloaded from the Google Developer Console
    const auth = new google.auth.GoogleAuth({
     keyFile: path.join(__dirname, './google-credentials-heroku.json'),
