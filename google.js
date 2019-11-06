@@ -189,29 +189,6 @@ async function add(topic) {
 
       return Promise.resolve(true);
 
-      // drive.files.create(
-      //   {
-      //     resource: {
-      //       name: `dejavu-insights-${topic}`,
-      //       parents: [folderId]
-      //     }
-      //   },
-      //   (err, file) => {
-      //     if (err) {
-      //       return console.log(
-      //         "#add: failed to create the documnt ",
-      //         `dejavu-insights-${topic} `,
-      //         err
-      //       );
-      //     }
-      //     console.log(
-      //       "#add: successfully created insight document: ",
-      //       `dejavu-insights-${topic}`,
-      //       " and file id is: ",
-      //       file.data.id
-      //     );
-      //   }
-      // );
     }
   );
 }
