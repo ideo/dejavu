@@ -46,6 +46,7 @@ async function search(topic) {
     scopes: SCOPES,
   });
   const client = await auth.getClient();
+  
 
   // Obtain a new drive client, making sure you pass along the auth client
   const drive = google.drive({
@@ -132,6 +133,11 @@ async function add(topic) {
 
   const auth = new JWT(clientEmail, null, privateKey, SCOPES)
   
+
+  const url = `https://dns.googleapis.com/dns/v1/projects/${keyFile.project_id}`;
+  const res = await auth.request({url});
+  console.log('======================================================================================== ', res.data);
+
   // Create a new JWT client using the key file downloaded from the Google Developer Console
    
   //  const auth = new google.auth.GoogleAuth({
