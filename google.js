@@ -53,6 +53,7 @@ async function main(
     auth: client
   }, (err, res) => {
     if (err) return console.log('#add failed to create file ', err);
+    console.log(res)
   })
 
 
