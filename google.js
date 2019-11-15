@@ -129,7 +129,7 @@ async function add(topic) {
   const clientEmail = key['client_email']
   const privateKey = key['private_key']
 
-  const jwt = JWT(clientEmail, null, privatekey, SCOPES)
+  const jwt = new JWT(clientEmail, null, privatekey, SCOPES)
   
   console.log('------------------------------------> Got JWT and it is: ', jwt)
 
