@@ -129,18 +129,18 @@ async function add(topic) {
   const clientEmail = key['client_email']
   const privateKey = key['private_key']
 
-  const jwt = new JWT(clientEmail, null, privatekey, SCOPES)
+  const client = new JWT(clientEmail, null, privatekey, SCOPES)
   
   console.log('------------------------------------> Got JWT and it is: ', jwt)
 
   // Create a new JWT client using the key file downloaded from the Google Developer Console
    
-   const auth = new google.auth.GoogleAuth({
-    keyFile: path.join(__dirname, './google-credentials-heroku.json'),
-    scopes: SCOPES,
-  });
+  //  const auth = new google.auth.GoogleAuth({
+  //   keyFile: path.join(__dirname, './google-credentials-heroku.json'),
+  //   scopes: SCOPES,
+  // });
   
-  const client = await auth.getClient();
+  // const client = await auth.getClient();
 
   // Obtain a new drive client, making sure you pass along the auth client
   const drive = google.drive({
