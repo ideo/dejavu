@@ -16,11 +16,21 @@ async function main(
   // Full path to the sevice account credential
   keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS
 ) {
+
+
+  const SCOPES = [
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive.appdata",
+    "https://www.googleapis.com/auth/documents",
+    "https://www.googleapis.com/auth/cloud-platform"
+  ];
+
   const keys = require(keyFile);
   const client = new JWT({
     email: keys.client_email,
     key: keys.private_key,
-    scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    scopes: SCOPES,
   });
   const url = `https://dns.googleapis.com/dns/v1/projects/${keys.project_id}`;
   const res = await client.request({url});
