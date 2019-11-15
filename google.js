@@ -6,6 +6,45 @@ const { JWT } = require("google-auth-library");
 const path = require("path");
 
 
+
+
+
+
+
+
+async function main(
+  // Full path to the sevice account credential
+  keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS
+) {
+  const keys = require(keyFile);
+  const client = new JWT({
+    email: keys.client_email,
+    key: keys.private_key,
+    scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+  });
+  const url = `https://dns.googleapis.com/dns/v1/projects/${keys.project_id}`;
+  const res = await client.request({url});
+  console.log('DNS Info:');
+  console.log(res.data);
+
+  // After acquiring an access_token, you may want to check on the audience, expiration,
+  // or original scopes requested.  You can do that with the `getTokenInfo` method.
+  const tokenInfo = await client.getTokenInfo(client.credentials.access_token);
+  console.log(tokenInfo);
+}
+
+main().catch(console.error);
+
+
+
+
+
+
+
+
+
+
+
 // temp. this should come from Slack App.
 // let topic = "Amex";
 
