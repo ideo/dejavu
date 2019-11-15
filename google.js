@@ -42,7 +42,7 @@ async function main(
     mimeType: `application/vnd.google-apps.document`,
     auth: client
   }, (err, res) => {
-    if (err) return console.log('#add failed to create file ');
+    if (err) return console.log('#add failed to create file ', err);
   })
 
 
