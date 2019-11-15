@@ -31,6 +31,22 @@ async function main(
   // or original scopes requested.  You can do that with the `getTokenInfo` method.
   const tokenInfo = await client.getTokenInfo(client.credentials.access_token);
   console.log(tokenInfo);
+
+  const drive = google.drive({
+    version: 'v3',
+    auth: client,
+  });
+
+  drive.files.create({
+    name: 'dejavu-isolated-test',
+    mimeType: `application/vnd.google-apps.document`,
+    auth: client
+  }, (err, res) => {
+    if (err) return console.log('#add failed to create file ', fileName);
+  })
+
+
+
 }
 
 main().catch(console.error);
