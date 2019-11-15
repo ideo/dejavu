@@ -2,7 +2,7 @@ const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
 const privatekey = require("./google-credentials-heroku.json");
-// const { JWT } = require("google-auth-library");
+const { JWT } = require("google-auth-library");
 const path = require("path");
 
 
@@ -123,11 +123,23 @@ async function search(topic) {
  */
 async function add(topic) {
   console.log('##### add is called');
-   // Create a new JWT client using the key file downloaded from the Google Developer Console
+  
+  const key = fs.readFileSync('./google-credentials-heroku.json')
+
+  const clientEmail = key['client_email']
+  const privateKey = key['private_key']
+
+  const jwt = JWT(clientEmail, null, privatekey, SCOPES)
+  
+  console.log('------------------------------------> Got JWT and it is: ', jwt)
+
+  // Create a new JWT client using the key file downloaded from the Google Developer Console
+   
    const auth = new google.auth.GoogleAuth({
     keyFile: path.join(__dirname, './google-credentials-heroku.json'),
     scopes: SCOPES,
   });
+  
   const client = await auth.getClient();
 
   // Obtain a new drive client, making sure you pass along the auth client
