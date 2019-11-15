@@ -1,8 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
-const {GoogleAuth} = require('google-auth-library');
-
 const keyFile = require("./google-credentials-heroku.json");
 const { JWT } = require("google-auth-library");
 const path = require("path");
@@ -124,11 +122,15 @@ async function search(topic) {
  * @param {string} content The research insight itself.
  */
 async function add(topic) {
+  console.log('##### add is called');
   
-  const auth = new GoogleAuth({
-    scopes: SCOPES
-  });
-  const client = await auth.getClient();
+  console.log('======= key file is: ', keyFile);
+  const clientEmail = keyFile['client_email']
+  console.log('clientEmail: ', clientEmail)
+  const privateKey = keyFile['private_key']
+  console.log('privateKey: ', privateKey)
+
+  const auth = new JWT(clientEmail, null, privateKey, SCOPES)
   
   // Create a new JWT client using the key file downloaded from the Google Developer Console
    
@@ -137,16 +139,17 @@ async function add(topic) {
   //   scopes: SCOPES,
   // });
   
+  const tokens = await auth.authorize()
   // const client = await auth.getClient();
 
   // Obtain a new drive client, making sure you pass along the auth client
   const drive = google.drive({
     version: 'v3',
-    auth: client,
+    auth: auth,
   });
   const docs = google.docs({
     version: "v1",
-    auth: client
+    auth: auth
   });
 
   // Folder ID for Dejavu. This folder contains all research insights in IDEO Google Drive.
@@ -155,7 +158,8 @@ async function add(topic) {
   drive.files.list(
     {
       q: `mimeType = 'application/vnd.google-apps.folder' and name = 'dejavu'`,
-      fields: "files(id, name)"
+      fields: "files(id, name)",
+      auth
     },
     (err, res) => {
       if (err) {
@@ -179,7 +183,8 @@ async function add(topic) {
 
         drive.files.list({
           q: `mimeType = 'application/vnd.google-apps.document' and name = '${fileName}'`,
-          fields: "files(id, name)"
+          fields: "files(id, name)",
+          auth
         }, (err, res) => {
           if (err) return console.log('#add: failed to locate file ', fileName);
           if (res.data.files.length) {
@@ -191,7 +196,8 @@ async function add(topic) {
             // let's get its current content from it
             drive.files.get({
               fileId,
-              fields: '*'
+              fields: '*',
+              auth
             }, (err, res) => {
               if (err) return console.log('#add: failed to get the contents of the file ', fileId);
               console.log('#add: success in getting contents of the file ', JSON.stringify(res.data));
@@ -202,7 +208,8 @@ async function add(topic) {
             drive.files.create({
               name: fileName,
               mimeType: `application/vnd.google-apps.document`,
-              parents: [folderId]
+              parents: [folderId],
+              auth
             }, (err, res) => {
               if (err) return console.log('#add failed to create file ', fileName);
               console.log('#add successfully created the file', fileName, JSON.stringify(res));
@@ -220,7 +227,8 @@ async function add(topic) {
         drive.files.create(
           {
             resource: fileMetadata,
-            fields: "id"
+            fields: "id",
+            auth
           },
           (err, file) => {
             if (err) {
