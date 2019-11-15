@@ -124,7 +124,7 @@ async function search(topic) {
 async function add(topic) {
   console.log('##### add is called');
   
-  const key = fs.readFileSync('./google-credentials-heroku.json')
+  const key = fs.readFileSync(path.join(__dirname, './google-credentials-heroku.json'))
 
   const clientEmail = key['client_email']
   console.log('clientEmail: ', clientEmail)
