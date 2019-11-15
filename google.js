@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
-const privatekey = require("./google-credentials-heroku.json");
+const keyFile = require("./google-credentials-heroku.json");
 const { JWT } = require("google-auth-library");
 const path = require("path");
 
@@ -124,11 +124,10 @@ async function search(topic) {
 async function add(topic) {
   console.log('##### add is called');
   
-  const key = fs.readFileSync(path.join(__dirname, './google-credentials-heroku.json'))
-  console.log('======= key file is: ', key);
-  const clientEmail = key['client_email']
+  console.log('======= key file is: ', keyFile);
+  const clientEmail = keyFile['client_email']
   console.log('clientEmail: ', clientEmail)
-  const privateKey = key['private_key']
+  const privateKey = keyFile['private_key']
   console.log('privateKey: ', privateKey)
 
   const auth = new JWT(clientEmail, null, privateKey, SCOPES)
