@@ -147,7 +147,7 @@ async function add(topic) {
   });
   const docs = google.docs({
     version: "v1",
-    auth
+    auth: client
   });
 
   // Folder ID for Dejavu. This folder contains all research insights in IDEO Google Drive.
