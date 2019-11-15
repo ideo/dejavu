@@ -129,7 +129,7 @@ async function add(topic) {
   const clientEmail = key['client_email']
   const privateKey = key['private_key']
 
-  const client = new JWT(clientEmail, null, privatekey, SCOPES)
+  const client = new JWT(clientEmail, null, privateKey, SCOPES)
   
   // Create a new JWT client using the key file downloaded from the Google Developer Console
    
