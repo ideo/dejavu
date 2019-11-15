@@ -1,6 +1,8 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
+const {GoogleAuth} = require('google-auth-library');
+
 const keyFile = require("./google-credentials-heroku.json");
 const { JWT } = require("google-auth-library");
 const path = require("path");
@@ -122,15 +124,11 @@ async function search(topic) {
  * @param {string} content The research insight itself.
  */
 async function add(topic) {
-  console.log('##### add is called');
   
-  console.log('======= key file is: ', keyFile);
-  const clientEmail = keyFile['client_email']
-  console.log('clientEmail: ', clientEmail)
-  const privateKey = keyFile['private_key']
-  console.log('privateKey: ', privateKey)
-
-  const auth = new JWT(clientEmail, null, privateKey, SCOPES)
+  const auth = new GoogleAuth({
+    scopes: SCOPES
+  });
+  const client = await auth.getClient();
   
   // Create a new JWT client using the key file downloaded from the Google Developer Console
    
@@ -144,11 +142,11 @@ async function add(topic) {
   // Obtain a new drive client, making sure you pass along the auth client
   const drive = google.drive({
     version: 'v3',
-    auth: auth,
+    auth: client,
   });
   const docs = google.docs({
     version: "v1",
-    auth: auth
+    auth: client
   });
 
   // Folder ID for Dejavu. This folder contains all research insights in IDEO Google Drive.
