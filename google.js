@@ -127,9 +127,11 @@ async function add(topic) {
   const key = fs.readFileSync('./google-credentials-heroku.json')
 
   const clientEmail = key['client_email']
+  console.log('clientEmail: ', clientEmail)
   const privateKey = key['private_key']
+  console.log('privateKey: ', privateKey)
 
-  const client = new JWT(clientEmail, null, privateKey, SCOPES)
+  const auth = new JWT(clientEmail, null, privateKey, SCOPES)
   
   // Create a new JWT client using the key file downloaded from the Google Developer Console
    
@@ -143,11 +145,11 @@ async function add(topic) {
   // Obtain a new drive client, making sure you pass along the auth client
   const drive = google.drive({
     version: 'v3',
-    auth: client,
+    auth: auth,
   });
   const docs = google.docs({
     version: "v1",
-    auth: client
+    auth: auth
   });
 
   // Folder ID for Dejavu. This folder contains all research insights in IDEO Google Drive.
