@@ -21,10 +21,7 @@ async function main(
   const SCOPES = [
     "https://www.googleapis.com/auth/drive",
     "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/upload/drive/v3/files",
-    "https://www.googleapis.com/auth/drive.appdata",
-    "https://www.googleapis.com/auth/documents",
-    "https://www.googleapis.com/auth/cloud-platform"
+    "https://www.googleapis.com/auth/drive.appdata"
   ];
 
   const keys = require(keyFile);
