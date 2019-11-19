@@ -11,7 +11,7 @@ const firebaseConfig = process.env.FIREBASE_CONFIG
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig)
 
-let db = admin.firestore()
+let db = app.firestore()
 let docRef = db.collection('users').doc('alovelace')
 
 function main() {
