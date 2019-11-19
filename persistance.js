@@ -10,6 +10,8 @@ require('firebase/firestore')
 const firebaseConfig = process.env.FIREBASE_CONFIG
 const { apiKey, authDomain, projectId } = JSON.parse(firebaseConfig)
 
+console.log(apiKey, authDomain, projectId)
+
 // Initialize Firebase
 firebase.initializeApp({ apiKey, authDomain, projectId })
 
