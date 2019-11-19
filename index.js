@@ -41,11 +41,7 @@ adapter.use(new SlackEventMiddleware())
 // Use SlackMessageType middleware to further classify messages as direct_message, direct_mention, or mention
 adapter.use(new SlackMessageTypeMiddleware());
 
-const controller = new Botkit({
-  webhook_uri: '/api/messages',
-  adapter,
-  storage
-})
+const controller = new Botkit({ webhook_uri: '/api/messages', adapter })
 
 // Once the bot has booted up its internal services, you can use them to do stuff.
 controller.ready(() => {
