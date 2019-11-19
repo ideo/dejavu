@@ -9,7 +9,7 @@ require('firebase/firestore')
 // Your web app's Firebase configuration
 const firebaseConfig = process.env.FIREBASE_CONFIG
 console.log('firebaseConfig: \n\n')
-console.log(FIREBASE_CONFIG)
+console.log(firebaseConfig)
 
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig)
