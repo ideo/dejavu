@@ -1,21 +1,14 @@
+const path = require('path')
+const admin = require('firebase-admin');
 
-// Firebase App (the core Firebase SDK) is always required and
-// must be listed before other Firebase SDKs
-const firebase = require('firebase/app')
+let serviceAccount = require(path.join(__dirname, './google-credentials-heroku.json'))
 
-// Add the Firebase products that you want to use
-require('firebase/firestore')
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
-// Your web app's Firebase configuration
-const firebaseConfig = process.env.FIREBASE_CONFIG
-const { apiKey, authDomain, projectId } = JSON.parse(firebaseConfig)
+let db = admin.firestore()
 
-console.log(apiKey, authDomain, projectId)
-
-// Initialize Firebase
-firebase.initializeApp({ apiKey, authDomain, projectId })
-
-var db = firebase.firestore();
 let docRef = db.collection('users').doc('alovelace')
 
 function main() {

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 try {
   fs.writeFileSync(path.join(__dirname, '../google-credentials-heroku.json'), process.env.GOOGLE_CONFIG);
