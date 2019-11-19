@@ -8,13 +8,12 @@ require('firebase/firestore')
 
 // Your web app's Firebase configuration
 const firebaseConfig = process.env.FIREBASE_CONFIG
-console.log('firebaseConfig: \n\n')
-console.log(firebaseConfig)
+const { apiKey, authDomain, projectId } = firebaseConfig
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig)
+firebase.initializeApp({ apiKey, authDomain, projectId })
 
-let db = app.firestore()
+var db = firebase.firestore();
 let docRef = db.collection('users').doc('alovelace')
 
 function main() {
