@@ -8,6 +8,7 @@ const fetch = require('node-fetch');
 // Import data for Slack blocks
 const { insightsCollectionTemplate } = require('./data.json');
 
+
 // Import a platform-specific adapter for slack.
 const {
   SlackAdapter,
