@@ -1,3 +1,6 @@
+const { main } = require('./persistance')
+main().catch(e => { console.log('__________ main failed ', e) })
+
 // Botkit's core features
 const { Botkit } = require('botkit');
 // Fetch
