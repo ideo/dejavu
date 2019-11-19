@@ -1,7 +1,5 @@
 // Botkit's core features
 const { Botkit } = require('botkit');
-// Botkit CMS integration
-const { BotkitCMSHelper } = require('botkit-plugin-cms');
 // Fetch
 const fetch = require('node-fetch');
 // Import data for Slack blocks
