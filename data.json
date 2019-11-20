@@ -3,7 +3,7 @@
     "type": "modal",
     "title": {
       "type": "plain_text",
-      "text": "Add Insight",
+      "text": "Add Key Learning",
       "emoji": true
     },
     "submit": {
@@ -30,11 +30,11 @@
         "type": "input",
         "element": {
           "type": "plain_text_input",
-          "action_id": "insight",
+          "action_id": "keyLearning",
           "multiline": true,
           "placeholder": {
             "type": "plain_text",
-            "text": "What research insight would you like to share with your fellow IDEO-ers? Short and sweet insights are the best insights!"
+            "text": "What key learnings would you like to share with your fellow IDEO-ers? Short and sweet insights are the best insights!"
           }
         },
         "label": {
@@ -51,13 +51,54 @@
           "multiline": true,
           "placeholder": {
             "type": "plain_text",
-            "text": "Insightas are more most useful when formulated as a response to a line of inquiry. What was the context for this one?"
+            "text": "Tell us a story about a research participant or some other way you learned this."
           }
         },
         "label": {
           "type": "plain_text",
-          "text": "Guiding Question(s)",
+          "text": "Guiding Context",
           "emoji": true
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "Pick one or more items from the list"
+        },
+        "accessory": {
+          "type": "multi_static_select",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "Select items",
+            "emoji": true
+          },
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Choice 1",
+                "emoji": true
+              },
+              "value": "value-0"
+            },
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Choice 2",
+                "emoji": true
+              },
+              "value": "value-1"
+            },
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Choice 3",
+                "emoji": true
+              },
+              "value": "value-2"
+            }
+          ]
         }
       },
       {
