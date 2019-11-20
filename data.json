@@ -61,10 +61,11 @@
         }
       },
       {
+        "id": "clientTags",
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "Pick one or more items from the list"
+          "text": "Client Tags"
         },
         "accessory": {
           "type": "multi_static_select",

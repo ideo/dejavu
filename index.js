@@ -105,11 +105,20 @@ controller.webserver.get('/', (req, res, next) => {
   return next();
 });
 
+/* 
+  The following endpoint serves "inustry tags"
+*/
+controller.webserver.post('/api/select-menus/', (req, res, next) => {
+  console.log(' ------> /api/select-menus/  ', JSON.stringify(req.body))
+  res.status(200).end('Hello from Deja Vu');
+  return next();
+});
+
 // keeping this in the closure.
 let verb = null;
 
 /* 
-  The following endpoing processes every slash command  ala `/dejavu search amex`
+  The following endpoint processes every slash command  ala `/dejavu search amex`
 */
 controller.webserver.post('/api/slash-commands', (req, res, next) => {
   // Collect datapoints of interest & create some consts.
