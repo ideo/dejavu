@@ -61,7 +61,6 @@
         }
       },
       {
-        "id": "clientTags",
         "type": "section",
         "text": {
           "type": "mrkdwn",

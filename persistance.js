@@ -9,12 +9,16 @@ let db = admin.firestore()
 
 let docRef = db.collection('users').doc('alovelace')
 
+function normalize(inputString) {
+  return inputString.toLowerCase()
+}
+
 function add({
-  keyLearning = 'default key learning value', 
-  guidingContext = 'default guiding context value', 
-  clientTags = 'default client tags value', 
-  industryTags = 'default industry tags value', 
-  relatedThemes = 'default related themes value' }) {
+  keyLearning = '', 
+  guidingContext = '', 
+  clientTags = '', 
+  industryTags = '', 
+  relatedThemes = '' }) {
 
   return db
     .collection('keyLearnings')
