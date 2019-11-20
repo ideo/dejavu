@@ -55,8 +55,13 @@ function main() {
   
 }
 
+function getClientTags() {
+  return db.collection('clientTags').get()
+}
+
 module.exports = {
-  add
+  add,
+  getClientTags
 }
 
 
