@@ -435,7 +435,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
       console.log('--> sendMessageToSlackResponseURL then', res);
       topic = '' // reset the topic
 
-      add().then((args) => {
+      add({}).then((args) => {
         console.log('-------> success in add', args)
       }).catch(e => console.log('-------> failed to add ', e))
     
