@@ -111,7 +111,7 @@ controller.webserver.get('/', (req, res, next) => {
 controller.webserver.get('/client-tags/', async (req, res, next) => {
   console.log(' ------> hit the endpoint: /api/client tags/')
   const clientTags = await getClientTags()
-  console.log(' ------> hit the endpoint: /api/client tags/')
+  console.log(' ------> hit the endpoint: client tags ', clientTags)
   res.status(200).end('Hello from Deja Vu');
 
   return next();
