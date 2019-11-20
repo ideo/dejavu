@@ -77,7 +77,8 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
   */
   const form = Object.assign({}, collectionTemplate);
   const clientTagsResource = await getClientTags()
-  const clientTags = clientTagsResource.map(doc => doc.data().tag)
+  const clientTags = [] 
+  clientTagsResource.forEach(doc => { clientTags.push(doc.data().tag)})
   console.log('clientTags: ', clientTags)
 
   form.blocks[3].accessory.options = clientTags.map(tag => (
