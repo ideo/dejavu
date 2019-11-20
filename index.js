@@ -13,7 +13,7 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { add } = require('./persistance')
+const { add, getClientTags } = require('./persistance')
 
 const adapter = new SlackAdapter({
   // parameters used to secure webhook endpoint
@@ -108,9 +108,12 @@ controller.webserver.get('/', (req, res, next) => {
 /* 
   The following endpoint serves "inustry tags"
 */
-controller.webserver.post('/api/select-menus/', (req, res, next) => {
-  console.log(' ------> /api/select-menus/  ', JSON.stringify(req.body))
+controller.webserver.get('/client-tags/', async (req, res, next) => {
+  console.log(' ------> hit the endpoint: /api/client tags/')
+  const clientTags = await getClientTags()
+  console.log(' ------> hit the endpoint: /api/client tags/')
   res.status(200).end('Hello from Deja Vu');
+
   return next();
 });
 
