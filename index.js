@@ -1,4 +1,3 @@
-const { main } = require('./persistance')
 main().catch(e => { console.log('__________ main failed ', e) })
 
 // Botkit's core features
@@ -6,14 +5,17 @@ const { Botkit } = require('botkit');
 // Fetch
 const fetch = require('node-fetch');
 // Import data for Slack blocks
-const { insightsCollectionTemplate } = require('./data.json');
+const { insightsCollectionTemplate } = require('./data.json') 
 
 // Import a platform-specific adapter for slack.
 const {
   SlackAdapter,
   SlackMessageTypeMiddleware,
   SlackEventMiddleware
-} = require('botbuilder-adapter-slack');
+} = require('botbuilder-adapter-slack')
+
+// Import persistance layer
+const { add } = require('./persistance')
 
 const adapter = new SlackAdapter({
   // parameters used to secure webhook endpoint
@@ -435,7 +437,9 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
       console.log('--> sendMessageToSlackResponseURL then', res);
       topic = '' // reset the topic
 
-      //add(topic)
+      add().then((args) => {
+        console.log('-------> success in add', args)
+      }).catch(e => console.log('-------> failed to add ', e))
     
     }).catch((e) => {
       console.log('--> sendMessageToSlackResponseURL error', e);
