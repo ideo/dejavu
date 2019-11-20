@@ -111,7 +111,7 @@ controller.webserver.get('/', (req, res, next) => {
 controller.webserver.get('/client-tags/', async (req, res, next) => {
   console.log(' ------> hit the endpoint: /api/client tags/')
   const clientTags = await getClientTags()
-  clientTags.forEach(tag => console.log(tag))
+  clientTags.forEach(doc => console.log(doc.data()))
   console.log(' ------> hit the endpoint: client tags ')
   res.status(200).end('Hello from Deja Vu');
 
