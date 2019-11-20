@@ -64,8 +64,28 @@ let topic = '';
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
 let cachedResponseUrl = null;
 
-function createInsightsCollectionForm(collectionTemplate, topic) {
+async function createInsightsCollectionForm(collectionTemplate, topic) {
+  /* 
+    {
+        "text": {
+          "type": "plain_text",
+          "text": "Choice 1",
+          "emoji": true
+        },
+        "value": "value-0"
+      }
+  */
   const form = Object.assign({}, collectionTemplate);
+  form.blocks[3].accessory.options = await getClientTags().map(doc => (
+    {
+      "text": {
+        "type": "plain_text",
+        "text": doc.data().tag,
+        "emoji": true
+      },
+      "value": doc.data().tag
+    }
+  ))
   form.blocks[0].elements[0].text = `Topic: ${topic}`;
   return form;
 }
