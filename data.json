@@ -61,8 +61,10 @@
     },
     {
       "type": "input",
-      "label": "Client tags",
-      "hint": "hint",
+      "label": {
+        "type": "plain_text",
+        "text": "Client Tags"
+      },
       "element": {
         "type": "multi_static_select",
         "action_id": "clientTags",
@@ -92,8 +94,10 @@
     },
     {
       "type": "input",
-      "label": "Industry tags",
-      "hint": "hint",
+      "label": {
+        "type": "plain_text",
+        "text": "Industry Tags"
+      },
       "element": {
         "type": "multi_static_select",
         "action_id": "industryTags",
