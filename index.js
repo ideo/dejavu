@@ -74,7 +74,7 @@ let topic = '';
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
 let cachedResponseUrl = null;
 
-async function createInsightsCollectionForm(collectionTemplate, topic, clientTags) {
+function createInsightsCollectionForm(collectionTemplate, topic, clientTags) {
   const form = Object.assign({}, collectionTemplate);
   form.blocks[3].accessory.options = clientTags.map(tag => (
     {
@@ -87,7 +87,6 @@ async function createInsightsCollectionForm(collectionTemplate, topic, clientTag
     }
   ))
   form.blocks[0].elements[0].text = `Topic: ${topic}`;
-  
   return form;
 }
 
@@ -291,7 +290,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
 /* 
   The following endpoing processes modal interactions
 */
-controller.webserver.post('/api/interactions', async (req, res, next) => {
+controller.webserver.post('/api/interactions', (req, res, next) => {
   // Best practice to respond with empty 200
   res.status(200).end();
 
