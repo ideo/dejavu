@@ -7,8 +7,6 @@ admin.initializeApp({ credential: admin.credential.cert(serviceAccount)});
 
 let db = admin.firestore()
 
-let docRef = db.collection('users').doc('alovelace')
-
 function normalize(inputString) {
   return inputString.toLowerCase()
 }

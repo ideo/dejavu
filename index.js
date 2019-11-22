@@ -15,6 +15,15 @@ const {
 // Import persistance layer
 const { add, getClientTags } = require('./persistance')
 
+let clientTags = []
+
+try {
+  clientTags = getClientTags()
+  console.log('Successfully received client tags ', clientTags)
+} catch (e) {
+  console.log('Error while getting client tags ', e)
+}
+
 const adapter = new SlackAdapter({
   // parameters used to secure webhook endpoint
   verificationToken: process.env.verificationToken,
