@@ -80,6 +80,7 @@ let cachedResponseUrl = null;
 
 function createInsightsCollectionForm(collectionTemplate, topic, clientTags, industryTags) {
   const form = Object.assign({}, collectionTemplate);
+  console.log('form is: ', form)
   form.blocks[3].accessory.options = clientTags.map(tag => (
     {
       "text": {
