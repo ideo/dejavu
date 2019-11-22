@@ -26,7 +26,41 @@
       ]
     },
     {
-      "type": "section",
+      "type": "input",
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "keyLearning",
+        "multiline": true,
+        "placeholder": {
+          "type": "plain_text",
+          "text": "What key learnings would you like to share with your fellow IDEO-ers? Short and sweet insights are the best insights!"
+        }
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Research Insight",
+        "emoji": true
+      }
+    },
+    {
+      "type": "input",
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "context",
+        "multiline": true,
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Tell us a story about a research participant or some other way you learned this."
+        }
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Guiding Context",
+        "emoji": true
+      }
+    },
+    {
+      "type": "input",
       "block_id": "clientTagsBlock",
       "text": {
         "type": "mrkdwn",
@@ -44,7 +78,23 @@
       }
     },
     {
-      "type": "section",
+      "type": "input",
+      "optional": true,
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "otherClientTags",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Any other client tags that you'd like to add, separated by commas."
+        }
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "More Client Tags"
+      }
+    },
+    {
+      "type": "input",
       "block_id": "industryTagsBlock",
       "text": {
         "type": "mrkdwn",
@@ -59,6 +109,38 @@
           "emoji": true
         },
         "options": []
+      }
+    },
+    {
+      "type": "input",
+      "optional": true,
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "otherIndustryTags",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Any other industry tags that you'd like to add, separated by commas."
+        }
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "More Industry Tags"
+      }
+    },
+    {
+      "type": "input",
+      "optional": true,
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "client",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Who is the client on this project?"
+        }
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Client"
       }
     }
   ]
