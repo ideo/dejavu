@@ -325,7 +325,6 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
     const [{ value }] = actions;
     if (value === 'true') {
       if (verb === 'add') {
-        console.log(JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic, clientTags)))
         // User clicked on 'Yep' button and they want to 'add' insight
         fetch('https://slack.com/api/views.open', {
           method: 'POST',
