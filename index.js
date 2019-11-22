@@ -95,7 +95,7 @@ function flatten(arr) {
 function createInsightsCollectionForm(collectionTemplate, topic, clientTags, industryTags) {
   const form = Object.assign({}, collectionTemplate);
   console.log('form is: ', form)
-  form.blocks[3].accessory.options = clientTags.map(tag => (
+  form.blocks[3].element.options = clientTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
@@ -105,7 +105,7 @@ function createInsightsCollectionForm(collectionTemplate, topic, clientTags, ind
       "value": tag
     }
   ))
-  form.blocks[5].accessory.options = industryTags.map(tag => (
+  form.blocks[5].element.options = industryTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
