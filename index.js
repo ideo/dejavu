@@ -497,12 +497,18 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
       console.log('--> sendMessageToSlackResponseURL then', res);
       
       const insightPayload = {
-         
+        keyLearning: submissionData.keyLearning,
+        context: submissionData.context,
+        clientTags: submissionData.clientTags.map(({value}) => value),
+        industryTags: submissionData.industryTags.map(({value}) => value),
+        otherIndustryTags: submissionData.otherIndustryTags.split(','),
+        otherClientTags: submissionData.otherClientTags.split(','),
+        client: submissionData.client
       }
 
       topic = '' // reset the topic
 
-      add({  }).then((args) => {
+      add(insightPayload).then((args) => {
         console.log('-------> success in add', args)
       }).catch(e => console.log('-------> failed to add ', e))
     
