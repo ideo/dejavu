@@ -504,7 +504,8 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
         otherIndustryTags: submissionData.otherIndustryTags.split(','),
         otherClientTags: submissionData.otherClientTags.split(','),
         client: submissionData.client,
-        relatedThemes: submissionData.relatedThemes
+        relatedThemes: submissionData.relatedThemes,
+        topic
       }
 
       topic = '' // reset the topic
