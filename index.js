@@ -18,10 +18,7 @@ const { add, getClientTags, getIndustryTags } = require('./persistance')
 let clientTags = []
 let industryTags = []
 
-Promise.all([getClientTags, getIndustryTags]).then(([clientTagsQuerySnapshot, industryTagsQuerySnapshot]) => {
-  console.log('clientTagsQuerySnapshot', clientTagsQuerySnapshot);
-  console.log('industryTagsQuerySnapshot', industryTagsQuerySnapshot);
-  
+Promise.all([getClientTags(), getIndustryTags()]).then(([clientTagsQuerySnapshot, industryTagsQuerySnapshot]) => {  
   clientTagsQuerySnapshot.forEach(documentSnapshot => {
     const data = documentSnapshot.data()
     clientTags.push(data.tag)
