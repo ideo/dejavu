@@ -80,7 +80,7 @@ let cachedResponseUrl = null;
 
 function flatten(arr) {
   let obj = {}
-  const keys = ['keyLearning', 'context', 'otherClientTags', 'otherIndustryTags', 'client', 'clientTags', 'industryTags']
+  const keys = ['keyLearning', 'context', 'otherClientTags', 'otherIndustryTags', 'client', 'clientTags', 'industryTags', 'relatedThemes']
   arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
@@ -498,12 +498,13 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
       
       const insightPayload = {
         keyLearning: submissionData.keyLearning,
-        context: submissionData.context,
+        guidingContext: submissionData.context,
         clientTags: submissionData.clientTags.map(({value}) => value),
         industryTags: submissionData.industryTags.map(({value}) => value),
         otherIndustryTags: submissionData.otherIndustryTags.split(','),
         otherClientTags: submissionData.otherClientTags.split(','),
-        client: submissionData.client
+        client: submissionData.client,
+        relatedThemes: submissionData.relatedThemes
       }
 
       topic = '' // reset the topic

@@ -132,6 +132,22 @@
       "optional": true,
       "element": {
         "type": "plain_text_input",
+        "action_id": "relatedThemes",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "What are some related themes?"
+        }
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Related Themes"
+      }
+    },
+    {
+      "type": "input",
+      "optional": true,
+      "element": {
+        "type": "plain_text_input",
         "action_id": "client",
         "placeholder": {
           "type": "plain_text",
