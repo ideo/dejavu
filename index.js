@@ -80,11 +80,11 @@ let cachedResponseUrl = null;
 
 function flatten(arr) {
   let obj = {}
-  const keys = ['keyLearning', 'context', 'otherClientTags', 'otherIndustryTags', 'client']
-  arr.forEach((element, index, array) => {
+  const keys = ['keyLearning', 'context', 'otherClientTags', 'otherIndustryTags', 'client', 'clientTags', 'industryTags']
+  arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
-        let value = element[key].value || null
+        let value = element[key].value || element[key].selected_options || null
         obj[key] = value
       }
     })
@@ -464,11 +464,11 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
     }
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
     // A Modal submission happened
-    const data = Object.values(parsedPayload.view.state.values);
-
+    const submissionPayload = Object.values(parsedPayload.view.state.values);
+    const submissionData = flatten(submissionPayload)
     console.log(
       '\n -->We got a submission!',
-      JSON.stringify(Object.values(parsedPayload.view.state.values)),
+      JSON.stringify(submissionData),
       '---> topic is: ',
       topic,
       '\n'
