@@ -334,7 +334,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
           },
           body: JSON.stringify({
             trigger_id: triggerId,
-            view: JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic, clientTags))
+            view: JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic, clientTags, industryTags))
           })
         }).then(res => res.json())
           .then(parsedResponse => {
