@@ -468,7 +468,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
 
     console.log(
       '\n -->We got a submission!',
-      Object.values(parsedPayload.view.state.values),
+      JSON.stringify(Object.values(parsedPayload.view.state.values)),
       '---> topic is: ',
       topic,
       '\n'
