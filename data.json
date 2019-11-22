@@ -63,15 +63,15 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "*Client Tags*",
-        "optional": true
+        "text": "*Client Tags*"
       },
       "accessory": {
         "type": "multi_static_select",
         "placeholder": {
           "type": "plain_text",
           "text": "Select items",
-          "emoji": true
+          "emoji": true,
+          
         },
         "options": [
           
@@ -80,10 +80,10 @@
     },
     {
       "type": "input",
+      "optional": true,
       "element": {
         "type": "plain_text_input",
         "action_id": "otherClientTags",
-        "optional": true,
         "placeholder": {
           "type": "plain_text",
           "text": "Any other client tags that you'd like to add, separated by commas."
@@ -114,10 +114,10 @@
     },
     {
       "type": "input",
+      "optional": true,
       "element": {
         "type": "plain_text_input",
         "action_id": "otherIndustryTags",
-        "optional": true,
         "placeholder": {
           "type": "plain_text",
           "text": "Any other industry tags that you'd like to add, separated by commas."
