@@ -25,6 +25,7 @@ getClientTags().then(querySnapshot => {
   return clientTags
 }).then(clientTags => {
   insightsCollectionTemplate.blocks[3].accessory.options  = clientTags
+  console.log(insightsCollectionTemplate)
 }).catch(e => console.log('Failed to get client tags: ', e))
 
 const adapter = new SlackAdapter({
