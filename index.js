@@ -23,11 +23,6 @@ getClientTags().then(querySnapshot => {
     clientTags.push(data.tag)
   })
   return clientTags
-}).then(clientTags => {
-  // insightsCollectionTemplate.blocks[3].accessory.options  = clientTags.map(clientTag => (
-  //   { "text": { "type": "plain_text", "text": clientTag, "emoji": true }, "value": clientTag }
-  // ))
-  console.log(JSON.stringify(insightsCollectionTemplate))
 }).catch(e => console.log('Failed to get client tags: ', e))
 
 const adapter = new SlackAdapter({
@@ -79,36 +74,21 @@ let topic = '';
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
 let cachedResponseUrl = null;
 
-// async function createInsightsCollectionForm(collectionTemplate, topic) {
-//   /* 
-//     {
-//         "text": {
-//           "type": "plain_text",
-//           "text": "Choice 1",
-//           "emoji": true
-//         },
-//         "value": "value-0"
-//       }
-//   */
-//   const form = Object.assign({}, collectionTemplate);
-//   const clientTagsResource = await getClientTags()
-//   const clientTags = [] 
-//   clientTagsResource.forEach(doc => { clientTags.push(doc.data().tag)})
-//   console.log('clientTags: ', clientTags)
-
-//   form.blocks[3].accessory.options = clientTags.map(tag => (
-//     {
-//       "text": {
-//         "type": "plain_text",
-//         "text": tag,
-//         "emoji": true
-//       },
-//       "value": tag
-//     }
-//   ))
-//   form.blocks[0].elements[0].text = `Topic: ${topic}`;
-//   return form;
-// }
+async function createInsightsCollectionForm(collectionTemplate, topic, clientTags) {
+  const form = Object.assign({}, collectionTemplate);
+  form.blocks[3].accessory.options = clientTags.map(tag => (
+    {
+      "text": {
+        "type": "plain_text",
+        "text": tag,
+        "emoji": true
+      },
+      "value": tag
+    }
+  ))
+  form.blocks[0].elements[0].text = `Topic: ${topic}`;
+  return form;
+}
 
 function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
   return fetch(responseURL, {
@@ -339,7 +319,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
           },
           body: JSON.stringify({
             trigger_id: triggerId,
-            view: JSON.stringify(insightsCollectionTemplate)
+            view: JSON.stringify(createInsightsCollectionForm(topic, clientTags))
           })
         }).then(res => res.json())
           .then(parsedResponse => {
