@@ -19,6 +19,9 @@ let clientTags = []
 let industryTags = []
 
 Promise.all([getClientTags, getIndustryTags]).then(([clientTagsQuerySnapshot, industryTagsQuerySnapshot]) => {
+  console.log('clientTagsQuerySnapshot', clientTagsQuerySnapshot);
+  console.log('industryTagsQuerySnapshot', industryTagsQuerySnapshot);
+  
   clientTagsQuerySnapshot.forEach(documentSnapshot => {
     const data = documentSnapshot.data()
     clientTags.push(data.tag)
