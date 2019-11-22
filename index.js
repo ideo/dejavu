@@ -24,9 +24,9 @@ getClientTags().then(querySnapshot => {
   })
   return clientTags
 }).then(clientTags => {
-  insightsCollectionTemplate.blocks[3].accessory.options  = clientTags.map(clientTag => (
-    { "text": { "type": "plain_text", "text": clientTag, "emoji": true }, "value": clientTag }
-  ))
+  // insightsCollectionTemplate.blocks[3].accessory.options  = clientTags.map(clientTag => (
+  //   { "text": { "type": "plain_text", "text": clientTag, "emoji": true }, "value": clientTag }
+  // ))
   console.log(JSON.stringify(insightsCollectionTemplate))
 }).catch(e => console.log('Failed to get client tags: ', e))
 

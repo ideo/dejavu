@@ -74,7 +74,14 @@
             "emoji": true
           },
           "options": [
-            
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "tag",
+                "emoji": true
+              },
+              "value": "tag"
+            }
           ]
         }
       },
