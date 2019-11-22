@@ -78,6 +78,20 @@ let topic = '';
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
 let cachedResponseUrl = null;
 
+function flatten(arr) {
+  let obj = {}
+  const keys = ['keyLearning', 'context', 'otherClientTags', 'otherIndustryTags', 'client']
+  arr.forEach((element, index, array) => {
+    keys.forEach(key => {
+      if (key in element) {
+        let value = element[key].value || null
+        obj[key] = value
+      }
+    })
+  })
+  return obj
+}
+
 function createInsightsCollectionForm(collectionTemplate, topic, clientTags, industryTags) {
   const form = Object.assign({}, collectionTemplate);
   console.log('form is: ', form)
@@ -451,9 +465,10 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
     // A Modal submission happened
     const data = Object.values(parsedPayload.view.state.values);
+
     console.log(
       '\n -->We got a submission!',
-      Object.values(parsedPayload.view.state.values),
+      JSON.stringify(parsedPayload.view.state),
       '---> topic is: ',
       topic,
       '\n'
@@ -471,6 +486,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
         }
       ]
     };
+
     console.log('Insight recorded response body: ', responseBody);
     // Push the response to Slack.
     sendMessageToSlackResponseURL(
@@ -479,9 +495,14 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
       process.env.botToken
     ).then((res) => {
       console.log('--> sendMessageToSlackResponseURL then', res);
+      
+      const insightPayload = {
+         
+      }
+
       topic = '' // reset the topic
 
-      add({}).then((args) => {
+      add({  }).then((args) => {
         console.log('-------> success in add', args)
       }).catch(e => console.log('-------> failed to add ', e))
     
