@@ -67,6 +67,7 @@
       },
       "accessory": {
         "type": "multi_static_select",
+        "action_id": "clientTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Select items",
@@ -99,6 +100,7 @@
       },
       "accessory": {
         "type": "multi_static_select",
+        "action_id": "industryTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Select items",
