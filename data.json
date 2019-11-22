@@ -61,6 +61,7 @@
     },
     {
       "type": "section",
+      "block_id": "clientTagsBlock",
       "text": {
         "type": "mrkdwn",
         "text": "*Client Tags*"
@@ -94,6 +95,7 @@
     },
     {
       "type": "section",
+      "block_id": "industryTagsBlock",
       "text": {
         "type": "mrkdwn",
         "text": "*Industry Tags*"
