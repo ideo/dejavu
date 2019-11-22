@@ -87,6 +87,7 @@ async function createInsightsCollectionForm(collectionTemplate, topic, clientTag
     }
   ))
   form.blocks[0].elements[0].text = `Topic: ${topic}`;
+  
   return form;
 }
 
@@ -310,6 +311,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const [{ value }] = actions;
     if (value === 'true') {
       if (verb === 'add') {
+        console.log(JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic, clientTags)))
         // User clicked on 'Yep' button and they want to 'add' insight
         fetch('https://slack.com/api/views.open', {
           method: 'POST',
