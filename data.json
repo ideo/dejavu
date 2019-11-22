@@ -61,17 +61,14 @@
     },
     {
       "type": "input",
-      "block_id": "clientTagsBlock",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*Client Tags*"
-      },
-      "accessory": {
+      "label": "Client tags",
+      "hint": "hint",
+      "element": {
         "type": "multi_static_select",
         "action_id": "clientTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Select items",
+          "text": "Select tag items",
           "emoji": true
         },
         "options": []
@@ -95,17 +92,14 @@
     },
     {
       "type": "input",
-      "block_id": "industryTagsBlock",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*Industry Tags*"
-      },
-      "accessory": {
+      "label": "Industry tags",
+      "hint": "hint",
+      "element": {
         "type": "multi_static_select",
         "action_id": "industryTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Select items",
+          "text": "Select tag items",
           "emoji": true
         },
         "options": []
