@@ -13,17 +13,21 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { add, getClientTags } = require('./persistance')
+const { add, getClientTags, getIndustryTags } = require('./persistance')
 
 let clientTags = []
+let industryTags = []
 
-getClientTags().then(querySnapshot => {
-  querySnapshot.forEach(documentSnapshot => {
+Promise.all([getClientTags, getIndustryTags]).then(([clientTagsQuerySnapshot, industryTagsQuerySnapshot]) => {
+  clientTagsQuerySnapshot.forEach(documentSnapshot => {
     const data = documentSnapshot.data()
     clientTags.push(data.tag)
   })
-  return clientTags
-}).catch(e => console.log('Failed to get client tags: ', e))
+  industryTagsQuerySnapshot.forEach(documentSnapshot => {
+    const data = documentSnapshot.data()
+    industryTags.push(data.tag)
+  })
+}).catch(e => console.log('Failed to get client or industry tags: ', e))
 
 const adapter = new SlackAdapter({
   // parameters used to secure webhook endpoint
@@ -74,9 +78,19 @@ let topic = '';
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
 let cachedResponseUrl = null;
 
-function createInsightsCollectionForm(collectionTemplate, topic, clientTags) {
+function createInsightsCollectionForm(collectionTemplate, topic, clientTags, industryTags) {
   const form = Object.assign({}, collectionTemplate);
   form.blocks[3].accessory.options = clientTags.map(tag => (
+    {
+      "text": {
+        "type": "plain_text",
+        "text": tag,
+        "emoji": true
+      },
+      "value": tag
+    }
+  ))
+  form.blocks[5].accessory.options = industryTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
