@@ -99,7 +99,6 @@
       },
       "accessory": {
         "type": "multi_static_select",
-        "optional": true,
         "placeholder": {
           "type": "plain_text",
           "text": "Select items",
