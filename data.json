@@ -70,12 +70,9 @@
         "placeholder": {
           "type": "plain_text",
           "text": "Select items",
-          "emoji": true,
-          
+          "emoji": true
         },
-        "options": [
-          
-        ]
+        "options": []
       }
     },
     {
@@ -108,8 +105,7 @@
           "text": "Select items",
           "emoji": true
         },
-        "options": [
-        ]
+        "options": []
       }
     },
     {
