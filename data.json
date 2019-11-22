@@ -38,7 +38,7 @@
       },
       "label": {
         "type": "plain_text",
-        "text": "Research Insight",
+        "text": "Key Learning",
         "emoji": true
       }
     },
@@ -61,6 +61,7 @@
     },
     {
       "type": "input",
+      "optional": true,
       "label": {
         "type": "plain_text",
         "text": "Client Tags"
@@ -94,6 +95,7 @@
     },
     {
       "type": "input",
+      "optional": true,
       "label": {
         "type": "plain_text",
         "text": "Industry Tags"
