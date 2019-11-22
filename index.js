@@ -18,7 +18,12 @@ const { add, getClientTags } = require('./persistance')
 let clientTags = []
 
 try {
-  clientTags = getClientTags()
+  getClientTags().then(querySnapshot => {
+    querySnapshot.forEach(documentSnapshot => {
+      const data = documentSnapshot.data()
+      clientTags.push(data.tag)
+    })
+  })
   console.log('Successfully received client tags ', clientTags)
 } catch (e) {
   console.log('Error while getting client tags ', e)
