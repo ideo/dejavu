@@ -499,10 +499,10 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
       const insightPayload = {
         keyLearning: submissionData.keyLearning,
         guidingContext: submissionData.context,
-        clientTags: submissionData.clientTags.map(({value}) => value),
-        industryTags: submissionData.industryTags.map(({value}) => value),
-        otherIndustryTags: submissionData.otherIndustryTags.split(','),
-        otherClientTags: submissionData.otherClientTags.split(','),
+        clientTags: submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : [],
+        industryTags: submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : [],
+        otherIndustryTags: submissionData.otherIndustryTags.length > 0 ? submissionData.otherIndustryTags.split(',') : '',
+        otherClientTags: submissionData.otherClientTags.length > 0 ? submissionData.otherClientTags.split(',') : '',
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes,
         topic
