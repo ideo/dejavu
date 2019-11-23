@@ -11,7 +11,7 @@ function normalize(inputString) {
   return inputString.toLowerCase()
 }
 
-function add({
+function addKeyLearning({
   topic = '',
   keyLearning = '',
   guidingContext = '', 
@@ -39,7 +39,7 @@ function getIndustryTags() {
 }
 
 module.exports = {
-  add,
+  addKeyLearning,
   getClientTags,
   getIndustryTags
 }

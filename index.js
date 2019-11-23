@@ -13,7 +13,7 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { add, getClientTags, getIndustryTags } = require('./persistance')
+const { addKeyLearning, getClientTags, getIndustryTags } = require('./persistance')
 
 let clientTags = []
 let industryTags = []
@@ -510,7 +510,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
 
       topic = '' // reset the topic
 
-      add(insightPayload).then((args) => {
+      addKeyLearning(insightPayload).then((args) => {
         console.log('-------> success in add', args)
       }).catch(e => console.log('-------> failed to add ', e))
     
