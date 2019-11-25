@@ -502,13 +502,20 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     ).then((res) => {
       console.log('--> sendMessageToSlackResponseURL then', res);
       
+      const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
+      const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
+
+      const newIndustryTags = submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : []
+      const newClientTags = submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : []
+
+      const clientTags = [...predefinedClientTags, newClientTags]
+      const industryTags = [...predefinedIndustryTags, newIndustryTags]
+
       const insightPayload = {
         keyLearning: submissionData.keyLearning,
         guidingContext: submissionData.context,
-        clientTags: submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : [],
-        industryTags: submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : [],
-        otherIndustryTags: submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : [],
-        otherClientTags: submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : '',
+        clientTags,
+        industryTags,
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes,
         topic
