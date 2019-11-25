@@ -119,6 +119,7 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
       "value": tag
     }
   ))
+  console.log(JSON.stringify(form))
   form.blocks[0].elements[0].text = `Topic: ${topic}`;
   return form;
 }
