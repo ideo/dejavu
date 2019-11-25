@@ -526,8 +526,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes.split(','),
         topic,
-        createdBy: cachedUserName || '',
-        createdAt: new Date()
+        // createdBy: cachedUserName || '',
+        // createdAt: new Date()
       }
       console.log('payload: ', JSON.stringify(insightPayload))
 
