@@ -508,8 +508,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       const newIndustryTags = submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : []
       const newClientTags = submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : []
 
-      const clientTags = [...predefinedClientTags, newClientTags]
-      const industryTags = [...predefinedIndustryTags, newIndustryTags]
+      const clientTags = [...predefinedClientTags, ...newClientTags]
+      const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
 
       const insightPayload = {
         keyLearning: submissionData.keyLearning,
@@ -528,6 +528,9 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
         ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
       ]
+
+      console.log('=----- db calls: ', dbCalls)
+
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
 
       return Promise.all(dbCallPromises)
