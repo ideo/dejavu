@@ -521,7 +521,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         clientTags,
         industryTags,
         client: submissionData.client,
-        relatedThemes: (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : []
+        relatedThemes: (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : [],
+        createdBy: cachedUserName || ''
       }
 
       console.log('-> before topic')
