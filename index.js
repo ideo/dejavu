@@ -333,8 +333,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   // Best practice to respond with empty 200
   res.status(200).end();
 
-  console.log('-----> user name: ', req.body.user_name)
-
   const {
     body: { payload }
   } = req;
@@ -416,7 +414,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
 
         search(topic).then(res => {
-          console.log('------------------> search came back: ', res)
           function getBlock(input) {
             return input.map(insight => (
               {
