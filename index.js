@@ -15,19 +15,10 @@ const {
 // Import persistance layer
 const { addKeyLearning, getClientTags, getIndustryTags, addTag } = require('./persistance')
 
-let clientTags = []
-let industryTags = []
+// let clientTags = []
+// let industryTags = []
 
-Promise.all([getClientTags(), getIndustryTags()]).then(([clientTagsQuerySnapshot, industryTagsQuerySnapshot]) => {  
-  clientTagsQuerySnapshot.forEach(documentSnapshot => {
-    const data = documentSnapshot.data()
-    clientTags.push(data.tag)
-  })
-  industryTagsQuerySnapshot.forEach(documentSnapshot => {
-    const data = documentSnapshot.data()
-    industryTags.push(data.tag)
-  })
-}).catch(e => console.log('Failed to get client or industry tags: ', e))
+
 
 const adapter = new SlackAdapter({
   // parameters used to secure webhook endpoint
@@ -92,9 +83,22 @@ function flatten(arr) {
   return obj
 }
 
-function createInsightsCollectionForm(collectionTemplate, topic, clientTags, industryTags) {
+async function createInsightsCollectionForm(collectionTemplate, topic) {
   const form = Object.assign({}, collectionTemplate);
-  console.log('form is: ', form)
+  const clientTags = []
+  const industryTags = []
+
+  const [clientTagsQuerySnapshot, industryTagsQuerySnapshot] = await Promise.all([getClientTags(), getIndustryTags()])
+
+  clientTagsQuerySnapshot.forEach(documentSnapshot => {
+    const data = documentSnapshot.data()
+    clientTags.push(data.tag)
+  })
+  industryTagsQuerySnapshot.forEach(documentSnapshot => {
+    const data = documentSnapshot.data()
+    industryTags.push(data.tag)
+  })
+
   form.blocks[3].element.options = clientTags.map(tag => (
     {
       "text": {
@@ -348,7 +352,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
           },
           body: JSON.stringify({
             trigger_id: triggerId,
-            view: JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic, clientTags, industryTags))
+            view: JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic))
           })
         }).then(res => res.json())
           .then(parsedResponse => {
