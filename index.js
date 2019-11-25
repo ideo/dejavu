@@ -100,7 +100,7 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
   populateTagData(clientTagsQuerySnapshot, clientTags)
   populateTagData(industryTagsQuerySnapshot, industryTags)
 
-  form.blocks[3].element.options = clientTags.map(tag => (
+  form.blocks[4].element.options = clientTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
@@ -111,7 +111,7 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
     }
   ))
 
-  form.blocks[5].element.options = industryTags.map(tag => (
+  form.blocks[6].element.options = industryTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
