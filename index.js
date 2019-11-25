@@ -324,7 +324,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
 /* 
   The following endpoing processes modal interactions
 */
-controller.webserver.post('/api/interactions', (req, res, next) => {
+controller.webserver.post('/api/interactions', async (req, res, next) => {
   // Best practice to respond with empty 200
   res.status(200).end();
 
@@ -353,7 +353,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
           },
           body: JSON.stringify({
             trigger_id: triggerId,
-            view: createInsightsCollectionForm(insightsCollectionTemplate, topic)
+            view: JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic))
           })
         }).then(res => res.json())
           .then(parsedResponse => {
