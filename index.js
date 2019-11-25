@@ -194,6 +194,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
   } = req;
 
   cachedUserName = userName
+  console.log('-------------------------------------------------------------------------------------------------- ', userName)
 
   // Immediately respond to Slack
   if (process.env.verificationToken !== token) {
@@ -446,7 +447,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           );
 
         }).catch(err => {
-          console.log('------------------> search failed: ', err)
+          console.log('Failed to search: ', err)
         });
       }
       
@@ -526,6 +527,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         // createdBy: cachedUserName || '',
         // createdAt: new Date()
       }
+
       console.log('payload: ', JSON.stringify(insightPayload))
 
       topic = '' // reset the topic
