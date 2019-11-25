@@ -534,6 +534,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
 
+      console.log('payload: ', JSON.stringify(insightPayload))
+
       return Promise.all(dbCallPromises)
         .then((res) => {
           console.log('Successfully performed one or more DB writes ', JSON.stringify(res))
