@@ -524,7 +524,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes.split(','),
         topic,
-        // createdBy: cachedUserName || '',
+        createdBy: cachedUserName || '',
         // createdAt: new Date()
       }
 
