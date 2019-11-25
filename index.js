@@ -500,7 +500,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       responseBody,
       process.env.botToken
     ).then((res) => {
-      console.log('--> sendMessageToSlackResponseURL then', res);
+      // console.log('--> sendMessageToSlackResponseURL then', res);
       
       const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
       const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
@@ -517,7 +517,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         clientTags,
         industryTags,
         client: submissionData.client,
-        relatedThemes: submissionData.relatedThemes,
+        relatedThemes: submissionData.relatedThemes.split(','),
         topic
       }
 
@@ -529,24 +529,25 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
       ]
 
-      console.log('=----- db calls: ', dbCalls)
-
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
 
       return Promise.all(dbCallPromises)
         .then((res) => {
-          console.log('Successfully performed one or more DB writes ', res)
+          console.log('Successfully performed one or more DB writes ', JSON.stringify(res))
         }).catch(e => {
-          console.log('Failed  to perform one  or more DB writes: ', e)
+          console.log('Failed  to perform one  or more DB writes: ', JSON.stringify(e))
         })
     
     }).catch((e) => {
-      console.log('--> sendMessageToSlackResponseURL error', e);
+      console.log('Failed at #sendMessageToSlackResponseURL', JSON.stringify(e))
+
       topic = '' // reset the topic
     });
 
   } else if (type === ACTIONS.VIEW_CLOSED) {
-    console.log('View Closed');
+
+    console.log('Modal view closed')
+  
   }
 
   return next();

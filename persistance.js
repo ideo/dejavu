@@ -15,9 +15,9 @@ function addKeyLearning({
   topic = '',
   keyLearning = '',
   guidingContext = '', 
-  clientTags = '', 
-  industryTags = '', 
-  relatedThemes = '' }) {
+  clientTags = [], 
+  industryTags = [], 
+  relatedThemes = [] }) {
 
   return db
     .collection('keyLearnings')
@@ -27,9 +27,11 @@ function addKeyLearning({
 
 function addTag({tag}, type) {
   const validTypes = ['client', 'industry']
+
   if (!validTypes.includes(type)) {
     throw new Error('Tag type is invalid. Use one of: ', validTypes.join(' '))
   }
+
   const COLLECTIONS_MAP = { client: 'clientTags', industry: 'industryTags' }
 
   return db
