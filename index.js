@@ -353,7 +353,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
           },
           body: JSON.stringify({
             trigger_id: triggerId,
-            view: JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic))
+            view: createInsightsCollectionForm(insightsCollectionTemplate, topic)
           })
         }).then(res => res.json())
           .then(parsedResponse => {
@@ -538,7 +538,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
     console.log('View Closed');
   }
 
-  // return next();
+  return next();
 });
 
 controller.webserver.get('/', (req, res) => {
