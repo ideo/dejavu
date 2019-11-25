@@ -13,7 +13,7 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { addKeyLearning, getClientTags, getIndustryTags } = require('./persistance')
+const { addKeyLearning, getClientTags, getIndustryTags, addTag } = require('./persistance')
 
 let clientTags = []
 let industryTags = []
@@ -501,7 +501,7 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
         guidingContext: submissionData.context,
         clientTags: submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : [],
         industryTags: submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : [],
-        otherIndustryTags: submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : '',
+        otherIndustryTags: submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : [],
         otherClientTags: submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : '',
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes,
@@ -510,9 +510,19 @@ controller.webserver.post('/api/interactions', (req, res, next) => {
 
       topic = '' // reset the topic
 
-      addKeyLearning(insightPayload).then((args) => {
-        console.log('-------> success in add', args)
-      }).catch(e => console.log('-------> failed to add ', e))
+      const dbCalls = [
+        addKeyLearning.bind(null, insightPayload),
+        ...insightPayload.industryTags.map(tag => addTag.bind(null, tag, 'industry')),
+        ...insightPayload.clientTags.map(tag => addTag.bind(null, tag, 'client'))
+      ]
+      const dbCallPromises = dbCalls.map(dbCall => dbCall())
+
+      return Promise.all(dbCallPromises)
+        .then((res) => {
+          console.log('Successfully performed one or more DB writes ', res)
+        }).catch(e => {
+          console.log('Failed  to perform one  or more DB writes: ', e)
+        })
     
     }).catch((e) => {
       console.log('--> sendMessageToSlackResponseURL error', e);
