@@ -519,7 +519,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         industryTags,
         client: submissionData.client,
         relatedThemes: (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : [],
-        createdBy: cachedUserName || ''
+        createdBy: cachedUserName || '',
+        topic
       }
       
       topic = '' // reset the topic

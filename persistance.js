@@ -24,7 +24,7 @@ function addKeyLearning({
   return db
     .collection('keyLearnings')
     .doc()
-    .set({topic, keyLearning, guidingContext, client, clientTags, industryTags, createdBy, relatedThemes, createdAt: new Date() })
+    .set({topic, keyLearning, guidingContext, topic, client, clientTags, industryTags, createdBy, relatedThemes, createdAt: new Date() })
 }
 
 function addTag({tag}, type) {
