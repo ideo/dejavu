@@ -90,15 +90,15 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
 
   const [clientTagsQuerySnapshot, industryTagsQuerySnapshot] = await Promise.all([getClientTags(), getIndustryTags()])
 
-  clientTagsQuerySnapshot.forEach(documentSnapshot => {
-    const data = documentSnapshot.data()
-    clientTags.push(data.tag)
-  })
-  
-  industryTagsQuerySnapshot.forEach(documentSnapshot => {
-    const data = documentSnapshot.data()
-    industryTags.push(data.tag)
-  })
+  function populateTagData(querySnapshot, arr) {
+    querySnapshot.forEach(documentSnapshot => {
+      const data = documentSnapshot.data()
+      arr.push(data.tag)
+    })
+  }
+
+  populateTagData(clientTagsQuerySnapshot, clientTags)
+  populateTagData(industryTagsQuerySnapshot, industryTags)
 
   form.blocks[3].element.options = clientTags.map(tag => (
     {
