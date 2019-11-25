@@ -521,9 +521,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         clientTags,
         industryTags,
         client: submissionData.client,
-        relatedThemes: submissionData.relatedThemes.split(','),
-        topic,
-        createdBy: 'test user'
+        relatedThemes: submissionData.relatedThemes.split(',')
       }
 
       topic = '' // reset the topic
