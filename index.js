@@ -120,8 +120,8 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
     }
   ))
   console.log(JSON.stringify(form))
-  form.blocks[0].elements[0].text = `Topic: ${topic}`;
-  return form;
+  form.blocks[0].elements[0].text = `Topic: ${topic}`
+  return Promise.resolve(form)
 }
 
 function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
@@ -344,6 +344,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const [{ value }] = actions;
     if (value === 'true') {
       if (verb === 'add') {
+        const view = await createInsightsCollectionForm(insightsCollectionTemplate, topic)
         // User clicked on 'Yep' button and they want to 'add' insight
         fetch('https://slack.com/api/views.open', {
           method: 'POST',
@@ -353,7 +354,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           },
           body: JSON.stringify({
             trigger_id: triggerId,
-            view: JSON.stringify(createInsightsCollectionForm(insightsCollectionTemplate, topic))
+            view: JSON.stringify(view)
           })
         }).then(res => res.json())
           .then(parsedResponse => {
