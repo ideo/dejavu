@@ -165,10 +165,8 @@ controller.webserver.get('/', (req, res, next) => {
   The following endpoint serves "inustry tags"
 */
 controller.webserver.get('/client-tags/', async (req, res, next) => {
-  console.log(' ------> hit the endpoint: /api/client tags/')
   const clientTags = await getClientTags()
   clientTags.forEach(doc => console.log(doc.data()))
-  console.log(' ------> hit the endpoint: client tags ')
   res.status(200).end('Hello from Deja Vu')
 
   return next();
@@ -194,7 +192,6 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
   } = req;
 
   cachedUserName = userName
-  console.log('-------------------------------------------------------------------------------------------------- ', userName)
 
   // Immediately respond to Slack
   if (process.env.verificationToken !== token) {
@@ -524,22 +521,17 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         relatedThemes: (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : [],
         createdBy: cachedUserName || ''
       }
-
-      console.log('-> before topic')
       
       topic = '' // reset the topic
       
-      console.log('-> after topic')
       const dbCalls = [
         addKeyLearning.bind(null, insightPayload),
         ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
         ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
       ]
       
-      console.log('-> db calls ', dbCalls)
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
       
-      console.log('-> db callPromises ', dbCallPromises)
       return Promise.all(dbCallPromises)
         .then((res) => {
           console.log('Successfully performed one or more DB writes ', res)
@@ -548,7 +540,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         })
     
     }).catch((e) => {
-      console.log('Failed at #sendMessageToSlackResponseURL', e)
+      console.log('Failed', e)
 
       topic = '' // reset the topic
     });
