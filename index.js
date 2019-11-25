@@ -527,8 +527,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         // createdBy: cachedUserName
       }
 
-      console.log('payload: ', JSON.stringify(insightPayload))
-
       topic = '' // reset the topic
 
       const dbCalls = [
@@ -538,7 +536,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       ]
 
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
-
 
       return Promise.all(dbCallPromises)
         .then((res) => {
