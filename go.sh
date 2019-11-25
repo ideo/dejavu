@@ -3,4 +3,4 @@ timestamp() {
   date +"%T"
 }
 
-git add . && git commit -m '$(timestamp) WIP' && git push && git push heroku master
+git add . && git commit -m "$(timestamp) WIP" && git push && git push heroku master
