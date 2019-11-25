@@ -90,14 +90,15 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
 
   const [clientTagsQuerySnapshot, industryTagsQuerySnapshot] = await Promise.all([getClientTags(), getIndustryTags()])
 
-  clientTagsQuerySnapshot.forEach(documentSnapshot => {
-    const data = documentSnapshot.data()
-    clientTags.push(data.tag)
-  })
-  industryTagsQuerySnapshot.forEach(documentSnapshot => {
-    const data = documentSnapshot.data()
-    industryTags.push(data.tag)
-  })
+  function populateTagData(querySnapshot, arr) {
+    querySnapshot.forEach(documentSnapshot => {
+      const data = documentSnapshot.data()
+      arr.push(data.tag)
+    })
+  }
+
+  populateTagData(clientTagsQuerySnapshot, clientTags)
+  populateTagData(industryTagsQuerySnapshot, industryTags)
 
   form.blocks[3].element.options = clientTags.map(tag => (
     {
@@ -109,6 +110,7 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
       "value": tag
     }
   ))
+
   form.blocks[5].element.options = industryTags.map(tag => (
     {
       "text": {
@@ -119,7 +121,7 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
       "value": tag
     }
   ))
-  console.log(JSON.stringify(form))
+
   form.blocks[0].elements[0].text = `Topic: ${topic}`
   return Promise.resolve(form)
 }
@@ -518,7 +520,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         industryTags,
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes.split(','),
-        topic
+        topic,
+        createdBy: userName || ''
       }
 
       topic = '' // reset the topic
