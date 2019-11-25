@@ -521,28 +521,33 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         clientTags,
         industryTags,
         client: submissionData.client,
-        relatedThemes: submissionData.relatedThemes.split(',')
+        // relatedThemes: submissionData.relatedThemes.split(',')
       }
 
+      console.log('-> before topic')
+      
       topic = '' // reset the topic
-
+      
+      console.log('-> after topic')
       const dbCalls = [
         addKeyLearning.bind(null, insightPayload),
         ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
         ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
       ]
-
+      
+      console.log('-> db calls ', dbCalls)
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
-
+      
+      console.log('-> db callPromises ', dbCallPromises)
       return Promise.all(dbCallPromises)
         .then((res) => {
-          console.log('Successfully performed one or more DB writes ', JSON.stringify(res))
+          console.log('Successfully performed one or more DB writes ', res)
         }).catch(e => {
-          console.log('Failed  to perform one  or more DB writes: ', JSON.stringify(e))
+          console.log('Failed  to perform one  or more DB writes: ', e)
         })
     
     }).catch((e) => {
-      console.log('Failed at #sendMessageToSlackResponseURL', JSON.stringify(e))
+      console.log('Failed at #sendMessageToSlackResponseURL', e)
 
       topic = '' // reset the topic
     });
