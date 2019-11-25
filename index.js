@@ -330,6 +330,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   // Best practice to respond with empty 200
   res.status(200).end();
 
+  console.log('-----> user name: ', req.body.user_name)
+
   const {
     body: { payload }
   } = req;
