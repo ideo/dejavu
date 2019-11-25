@@ -526,8 +526,10 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes.split(','),
         topic,
-        createdBy: cachedUserName || ''
+        createdBy: cachedUserName || '',
+        createdAt: new Date()
       }
+      console.log('payload: ', JSON.stringify(insightPayload))
 
       topic = '' // reset the topic
 
@@ -539,7 +541,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
 
-      console.log('payload: ', JSON.stringify(insightPayload))
 
       return Promise.all(dbCallPromises)
         .then((res) => {
