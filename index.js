@@ -525,8 +525,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
       const dbCalls = [
         addKeyLearning.bind(null, insightPayload),
-        ...insightPayload.otherIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
-        ...insightPayload.otherClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
+        ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
+        ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
       ]
       const dbCallPromises = dbCalls.map(dbCall => dbCall())
 
