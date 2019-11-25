@@ -504,8 +504,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       cachedResponseUrl,
       responseBody,
       process.env.botToken
-    ).then((res) => {
-      // console.log('--> sendMessageToSlackResponseURL then', res);
+    ).then(() => {
       
       const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
       const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
@@ -524,7 +523,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes.split(','),
         topic,
-        // createdBy: cachedUserName
+        createdBy: 'test user'
       }
 
       topic = '' // reset the topic
