@@ -203,6 +203,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
   }
 
   // Log what we got!
+  /*
   console.log(
     '\nText: ',
     commandText,
@@ -213,7 +214,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
     '\nTrigger ID: ',
     triggerID
   );
-
+  */
   // The verb entered by the user
   verb = commandText.split(' ').shift();
 
@@ -474,6 +475,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     // A Modal submission happened
     const submissionPayload = Object.values(parsedPayload.view.state.values);
     const submissionData = flatten(submissionPayload)
+    
+    /*
     console.log(
       '\n -->We got a submission!',
       JSON.stringify(submissionData),
@@ -481,6 +484,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       topic,
       '\n'
     );
+    */
 
     const responseBody = {
       response_type: 'ephemeral',
@@ -489,13 +493,14 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Great! You research insight on ${topic} is being saved. I'll give you a link shortly...`
+            text: `Great! You research insight on ${topic} is now saved.`
           }
         }
       ]
     };
 
-    console.log('Insight recorded response body: ', responseBody);
+    //console.log('Insight recorded response body: ', responseBody);
+    
     // Push the response to Slack.
     sendMessageToSlackResponseURL(
       cachedResponseUrl,
