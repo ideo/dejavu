@@ -13,12 +13,10 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { addKeyLearning, getClientTags, getIndustryTags, addTag } = require('./persistance')
+const { addKeyLearning, searchForKeyLearning, getClientTags, getIndustryTags, addTag } = require('./persistance')
 
 // let clientTags = []
 // let industryTags = []
-
-
 
 const adapter = new SlackAdapter({
   // parameters used to secure webhook endpoint
@@ -51,7 +49,7 @@ const controller = new Botkit({ webhook_uri: '/api/messages', adapter })
 // Once the bot has booted up its internal services, you can use them to do stuff.
 controller.ready(() => {
   // load traditional developer-created local custom feature modules
-  controller.loadModules(__dirname + '/features');
+  controller.loadModules(__dirname + '/features')
 });
 
 const KNOWN_VERBS = ['add', 'search'];
@@ -59,15 +57,15 @@ const ACTIONS = {
   BLOCK_ACTIONS: 'block_actions',
   VIEW_SUBMISSION: 'view_submission',
   VIEW_CLOSED: 'view_closed'
-};
+}
 
 // Keep reference to the latest `topic.`
 // This mutates everytime user types in `/dejavu add [topic]`
-let topic = '';
+let topic = ''
 
 // for modal.open payloads, we do get a responseURL but for modal submissions we don't.
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
-let cachedResponseUrl = null;
+let cachedResponseUrl = null
 
 function flatten(arr) {
   let obj = {}
@@ -410,8 +408,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           process.env.botToken
         );
 
-
-
+        searchForKeyLearning(topic)
+        /*
         search(topic).then(res => {
           function getBlock(input) {
             return input.map(insight => (
@@ -447,6 +445,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         }).catch(err => {
           console.log('Failed to search: ', err)
         });
+        */
       }
       
     } else if (value === 'false') {

@@ -42,9 +42,15 @@ function addTag({tag}, type) {
     .set({tag})
 }
 
-function search() {
-
-}
+function searchForKeyLearning(keyword) {
+  const keyLearningsRef = db.collection('keyLearnings')
+  const queryRef = keyLearningsRef.where('relatedThemes', 'array-contains', normalize(keyword))
+  queryRef.get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      console.log(JSON.stringify(doc.data()))
+    })
+  })
+} 
 
 function getClientTags() {
   return db.collection('clientTags').get()
@@ -56,10 +62,8 @@ function getIndustryTags() {
 
 module.exports = {
   addKeyLearning,
+  searchForKeyLearning,
   getClientTags,
   getIndustryTags,
   addTag
 }
-
-
-
