@@ -146,10 +146,10 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
       }
     })
     .then(() => {
-      console.log('> Successfully sent message to Slack Response URL.');
+      console.log('> Successfully sent message to Slack Response URL.')
     })
     .catch(e => {
-      console.log('> Woops!', e);
+      console.log('> Woops!', e)
     });
 }
 
@@ -157,7 +157,7 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
   A little hello.
 */
 controller.webserver.get('/', (req, res, next) => {
-  res.status(200).end('Hello from Deja Vu');
+  res.status(200).end('Hello from Deja Vu')
   return next();
 });
 
@@ -169,13 +169,14 @@ controller.webserver.get('/client-tags/', async (req, res, next) => {
   const clientTags = await getClientTags()
   clientTags.forEach(doc => console.log(doc.data()))
   console.log(' ------> hit the endpoint: client tags ')
-  res.status(200).end('Hello from Deja Vu');
+  res.status(200).end('Hello from Deja Vu')
 
   return next();
 });
 
-// keeping this in the closure.
-let verb = null;
+// keeping these in the closure.
+let verb = null
+let cachedUserName = null
 
 /* 
   The following endpoint processes every slash command  ala `/dejavu search amex`
@@ -191,6 +192,8 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
       token
     }
   } = req;
+
+  cachedUserName = userName
 
   // Immediately respond to Slack
   if (process.env.verificationToken !== token) {
@@ -523,7 +526,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         client: submissionData.client,
         relatedThemes: submissionData.relatedThemes.split(','),
         topic,
-        createdBy: userName || ''
+        createdBy: cachedUserName || ''
       }
 
       topic = '' // reset the topic
