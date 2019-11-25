@@ -23,7 +23,7 @@ function addKeyLearning({
   return db
     .collection('keyLearnings')
     .doc()
-    .set({topic, keyLearning, guidingContext, clientTags, industryTags, createdBy, relatedThemes })
+    .set({topic, keyLearning, guidingContext, clientTags, industryTags, createdBy, relatedThemes, createdAt: new Date() })
 }
 
 function addTag({tag}, type) {
