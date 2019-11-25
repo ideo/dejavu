@@ -521,7 +521,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         clientTags,
         industryTags,
         client: submissionData.client,
-        // relatedThemes: submissionData.relatedThemes.split(',')
+        relatedThemes: submissionData.relatedThemes.split(',')
       }
 
       console.log('-> before topic')
