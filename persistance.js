@@ -12,7 +12,7 @@ function normalize(inputString) {
 }
 
 function addKeyLearning({
-  createdeBy = '',
+  createdBy = '',
   createdAt = new Date(),
   topic = '',
   keyLearning = '',
@@ -24,7 +24,7 @@ function addKeyLearning({
   return db
     .collection('keyLearnings')
     .doc()
-    .set({topic, keyLearning, guidingContext, clientTags, industryTags, relatedThemes, createdeBy, createdAt})
+    .set({topic, keyLearning, guidingContext, clientTags, industryTags, relatedThemes, createdBy, createdAt})
 }
 
 function addTag({tag}, type) {
