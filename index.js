@@ -134,7 +134,7 @@ async function createInsightsSearchForm(searchTemplate) {
 
   populateTagData(industryTagsQuerySnapshot, industryTags)
 
-  form.blocks[1].element.options = clientTags.map(tag => (
+  form.blocks[1].element.options = industryTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
