@@ -508,7 +508,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       const searchPayload = {
         industryTags
       }
-      searchForKeyLearning(industryTags[0])
+      searchForKeyLearning({ industruTag: industryTags[0] })
         .then(res => {
           return res.json()
         })
