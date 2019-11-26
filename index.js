@@ -503,7 +503,22 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     if (viewTitle.includes('search')) {
       // search modal was submitted
       console.log('--------> SEARCH') 
-      
+      const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
+
+      const searchPayload = {
+        industryTags
+      }
+      searchForKeyLearning(industryTags[0])
+        .then(res => {
+          return res.json()
+        })
+        .then(parsedResponse => {
+          console.log('----> search results: ', parsedResponse)
+        })
+        .catch(e => {
+          console.log('Failed at search: ', e)
+        })
+
     }
 
     if (viewTitle.includes('add'))  {

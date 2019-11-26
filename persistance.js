@@ -42,14 +42,16 @@ function addTag({tag}, type) {
     .set({tag})
 }
 
-function searchForKeyLearning(keyword) {
+function searchForKeyLearning({ industryTag }) {
   const keyLearningsRef = db.collection('keyLearnings')
-  const queryRef = keyLearningsRef.where('relatedThemes', 'array-contains', normalize(keyword))
+  const queryRef = keyLearningsRef.where('industryTags', 'array-contains', industryTag)
+  const results = []
   queryRef.get().then(querySnapshot => {
     querySnapshot.forEach(doc => {
-      console.log(JSON.stringify(doc.data()))
+      results.push(doc.data())
     })
   })
+  Promise.resolve(results)
 } 
 
 function getClientTags() {
