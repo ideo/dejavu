@@ -364,8 +364,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     cachedResponseUrl = responseUrl;
   }
   
-  console.log('----> parsedPayload, ', parsedPayload)
-
   // An action invoked by an interactive component
   if (type === ACTIONS.BLOCK_ACTIONS) {
     const { actions, trigger_id: triggerId } = parsedPayload;
@@ -508,7 +506,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       const searchPayload = {
         industryTags
       }
-      searchForKeyLearning({ industryTag: industryTags[0] })
+      searchForKeyLearning({ industryTags })
         .then(res => {
           console.log('----> search results: ', res)
         })
