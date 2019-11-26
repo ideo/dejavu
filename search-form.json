@@ -1,0 +1,47 @@
+{
+  "type": "modal",
+  "title": {
+    "type": "plain_text",
+    "text": "Search for Key Learnings",
+    "emoji": true
+  },
+  "submit": {
+    "type": "plain_text",
+    "text": "Save",
+    "emoji": true
+  },
+  "close": {
+    "type": "plain_text",
+    "text": "Cancel",
+    "emoji": true
+  },
+  "blocks": [
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Use the fields below to configure your search."
+        }
+      ]
+    },
+    {
+      "type": "input",
+      "optional": true,
+      "label": {
+        "type": "plain_text",
+        "text": "Industry Tags"
+      },
+      "element": {
+        "type": "multi_static_select",
+        "action_id": "industryTags",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select Industry Tag items",
+          "emoji": true
+        },
+        "options": []
+      }
+    }
+  ]
+}

@@ -3,7 +3,8 @@ const { Botkit } = require('botkit');
 // Fetch
 const fetch = require('node-fetch');
 // Import data for Slack blocks
-const insightsCollectionTemplate = require('./data.json') 
+const insightsCollectionTemplate = require('./add-form.json') 
+const insightsSearchTemplate = require('./search-form.json') 
 
 // Import a platform-specific adapter for slack.
 const {
@@ -81,19 +82,20 @@ function flatten(arr) {
   return obj
 }
 
+function populateTagData(querySnapshot, arr) {
+  querySnapshot.forEach(documentSnapshot => {
+    const data = documentSnapshot.data()
+    arr.push(data.tag)
+  })
+}
+
+
 async function createInsightsCollectionForm(collectionTemplate, topic) {
   const form = Object.assign({}, collectionTemplate);
   const clientTags = []
   const industryTags = []
 
   const [clientTagsQuerySnapshot, industryTagsQuerySnapshot] = await Promise.all([getClientTags(), getIndustryTags()])
-
-  function populateTagData(querySnapshot, arr) {
-    querySnapshot.forEach(documentSnapshot => {
-      const data = documentSnapshot.data()
-      arr.push(data.tag)
-    })
-  }
 
   populateTagData(clientTagsQuerySnapshot, clientTags)
   populateTagData(industryTagsQuerySnapshot, industryTags)
@@ -121,6 +123,28 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
   ))
 
   form.blocks[0].elements[0].text = `Topic: ${topic}`
+  return Promise.resolve(form)
+}
+
+async function createInsightsSearchForm(searchTemplate) {
+  const form = Object.assign({}, searchTemplate);
+  const industryTags = []
+
+  const [industryTagsQuerySnapshot] = await Promise.all([getIndustryTags()])
+
+  populateTagData(industryTagsQuerySnapshot, industryTags)
+
+  form.blocks[1].element.options = clientTags.map(tag => (
+    {
+      "text": {
+        "type": "plain_text",
+        "text": tag,
+        "emoji": true
+      },
+      "value": tag
+    }
+  ))
+
   return Promise.resolve(form)
 }
 
@@ -339,6 +363,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   if (responseUrl) {
     cachedResponseUrl = responseUrl;
   }
+  
+  console.log('----> parsedPayload, ', parsedPayload)
 
   // An action invoked by an interactive component
   if (type === ACTIONS.BLOCK_ACTIONS) {
@@ -388,11 +414,13 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           })
           .catch(e => console.log('Woops. ', e));
       } else if (verb === 'search') {
+        const view = await createInsightsSearchForm(insightsSearchTemplate)
+        
         const responseBody = {
           response_type: 'ephemeral',
           blocks: [
             {
-              type: 'section',
+            type: 'section',
               text: {
                 type: 'plain_text',
                 text:
@@ -400,15 +428,53 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               }
             }
           ]
-        };
-        // Push the response to Slack.
-        sendMessageToSlackResponseURL(
-          cachedResponseUrl,
-          responseBody,
-          process.env.botToken
-        );
+        }
 
-        searchForKeyLearning(topic)
+        // Push the response to Slack.
+        sendMessageToSlackResponseURL(cachedResponseUrl, responseBody,process.env.botToken)
+        
+        // open search modal
+        fetch('https://slack.com/api/views.open', {
+          method: 'POST',
+          headers: {  
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.botToken}`
+          },
+          body: JSON.stringify({
+            trigger_id: triggerId,
+            view: JSON.stringify(view)
+          })
+        }).then(res => res.json())
+          .then(parsedResponse => {
+            if (parsedResponse.ok) {
+              console.log('> Dejavu: successfully opened modal');
+            } else {
+              const responseBody = {
+                response_type: 'ephemeral',
+                blocks: [
+                  {
+                    type: 'section',
+                    text: {
+                      type: 'plain_text',
+                      text:
+                        'Oops. Something is amiss. I have notified my developer to resolve this issue ASAP. Sorry about that!'
+                    }
+                  }
+                ]
+              };
+
+              // Push the response to Slack.
+              sendMessageToSlackResponseURL(
+                cachedResponseUrl,
+                responseBody,
+                process.env.botToken
+              );
+              throw new Error(parsedResponse.error);
+            }
+          })
+          .catch(e => console.log('Woops. ', e));
+
+        //searchForKeyLearning(topic)
         /*
         search(topic).then(res => {
           function getBlock(input) {
@@ -464,11 +530,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       };
 
       // Push the response to Slack.
-      sendMessageToSlackResponseURL(
-        cachedResponseUrl,
-        responseBody,
-        process.env.botToken
-      );
+      sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
     }
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
     // A Modal submission happened
