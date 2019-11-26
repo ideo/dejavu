@@ -502,13 +502,13 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
     if (viewTitle.includes('search')) {
       // search modal was submitted
-      console.log('--------> SEARCH') 
       const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
+      console.log('--------> SEARCH ',industryTags ) 
 
       const searchPayload = {
         industryTags
       }
-      searchForKeyLearning({ industruTag: industryTags[0] })
+      searchForKeyLearning({ industryTag: industryTags[0] })
         .then(res => {
           return res.json()
         })
