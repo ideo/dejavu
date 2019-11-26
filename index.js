@@ -473,45 +473,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             }
           })
           .catch(e => console.log('Woops. ', e));
-
-        //searchForKeyLearning(topic)
-        /*
-        search(topic).then(res => {
-          function getBlock(input) {
-            return input.map(insight => (
-              {
-                type: 'section',
-                text: {
-                  type: 'plain_text',
-                  text: insight
-                }
-              }
-            ));
-          }
-
-          const insights = getBlock(res).length ? getBlock(res) : {
-            type: 'section',
-            text: {
-              type: 'plain_text',
-              text: `Woops, could not find any insight with this keyword. Try something else?`
-            }
-          }
-
-          const responseBody = {
-            response_type: 'ephemeral',
-            blocks: insights
-          };
-
-          sendMessageToSlackResponseURL(
-            cachedResponseUrl,
-            responseBody,
-            process.env.botToken
-          );
-
-        }).catch(err => {
-          console.log('Failed to search: ', err)
-        });
-        */
       }
       
     } else if (value === 'false') {
@@ -533,10 +494,88 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
     }
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
-    // A Modal submission happened
-    const submissionPayload = Object.values(parsedPayload.view.state.values);
-    const submissionData = flatten(submissionPayload)
-    
+    // A Modal submission happened. Was it search or add?
+    const viewTitle = parsedPayload.view.title.text.toLowerCase() 
+
+    if (viewTitle.includes('search')) {
+      // search modal was submitted
+      console.log('--------> SEARCH') 
+    }
+
+    if (viewTitle.includes('add'))  {
+      console.log('--------> ADD') 
+      // add modal was submitted
+      const submissionPayload = Object.values(parsedPayload.view.state.values);
+      const submissionData = flatten(submissionPayload)
+      
+      const responseBody = {
+        response_type: 'ephemeral',
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `Great! You research insight on ${topic} is now saved.`
+            }
+          }
+        ]
+      };
+  
+      //console.log('Insight recorded response body: ', responseBody);
+      
+      // Push the response to Slack.
+      sendMessageToSlackResponseURL(
+        cachedResponseUrl,
+        responseBody,
+        process.env.botToken
+      ).then(() => {
+        
+  
+        const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
+        const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
+  
+        const newIndustryTags = submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : []
+        const newClientTags = submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : []
+  
+        const clientTags = [...predefinedClientTags, ...newClientTags]
+        const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
+  
+        const insightPayload = {
+          keyLearning: submissionData.keyLearning,
+          guidingContext: submissionData.context,
+          clientTags,
+          industryTags,
+          client: submissionData.client,
+          relatedThemes: (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : [],
+          createdBy: cachedUserName || '',
+          topic
+        }
+        
+        topic = '' // reset the topic
+        
+        const dbCalls = [
+          addKeyLearning.bind(null, insightPayload),
+          ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
+          ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
+        ]
+        
+        const dbCallPromises = dbCalls.map(dbCall => dbCall())
+        
+        return Promise.all(dbCallPromises)
+          .then((res) => {
+            console.log('Successfully performed one or more DB writes ', res)
+          }).catch(e => {
+            console.log('Failed  to perform one  or more DB writes: ', e)
+          })
+      
+      }).catch((e) => {
+        console.log('Failed', e)
+  
+        topic = '' // reset the topic
+      });
+    }
+
+
     /*
     console.log(
       '\n -->We got a submission!',
@@ -547,70 +586,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     );
     */
 
-    const responseBody = {
-      response_type: 'ephemeral',
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: `Great! You research insight on ${topic} is now saved.`
-          }
-        }
-      ]
-    };
-
-    //console.log('Insight recorded response body: ', responseBody);
     
-    // Push the response to Slack.
-    sendMessageToSlackResponseURL(
-      cachedResponseUrl,
-      responseBody,
-      process.env.botToken
-    ).then(() => {
-      
-      const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
-      const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
-
-      const newIndustryTags = submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : []
-      const newClientTags = submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : []
-
-      const clientTags = [...predefinedClientTags, ...newClientTags]
-      const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
-
-      const insightPayload = {
-        keyLearning: submissionData.keyLearning,
-        guidingContext: submissionData.context,
-        clientTags,
-        industryTags,
-        client: submissionData.client,
-        relatedThemes: (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : [],
-        createdBy: cachedUserName || '',
-        topic
-      }
-      
-      topic = '' // reset the topic
-      
-      const dbCalls = [
-        addKeyLearning.bind(null, insightPayload),
-        ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
-        ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
-      ]
-      
-      const dbCallPromises = dbCalls.map(dbCall => dbCall())
-      
-      return Promise.all(dbCallPromises)
-        .then((res) => {
-          console.log('Successfully performed one or more DB writes ', res)
-        }).catch(e => {
-          console.log('Failed  to perform one  or more DB writes: ', e)
-        })
-    
-    }).catch((e) => {
-      console.log('Failed', e)
-
-      topic = '' // reset the topic
-    });
 
   } else if (type === ACTIONS.VIEW_CLOSED) {
 
