@@ -501,40 +501,47 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     if (viewTitle.includes('search')) {
       // search modal was submitted
       const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
+      let searchCriteria = ''
+      if (industryTags.length > 0) { searchCriteria = searchCriteria.concat(`Industry Tags: ${industryTags.join(',')}`) }
+
 
       searchForKeyLearning({ industryTags })
         .then(res => {
           
           const responseBody = {
             response_type: 'ephemeral',
-            blocks: []
+            blocks: [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": `Search criteria: ${searchCriteria}. \n\n*Search Results:*`
+                }
+              },
+              {
+                "type": "divider"
+              }
+            ]
           }
 
           res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}) => {
             responseBody.blocks.push({
               type: 'section',
               text: {
-                type: 'plain_text',
-                text: `
-                  Topic: ${topic}
-                  
-                  Client: ${client}
-
-                  Key Learning: ${keyLearning}
-
-                  Guiding Context: ${guidingContext}
-
-                  clientTags: ${clientTags.join(',')}
-
-                  Industry Tags: ${industryTags.join(',')}
-
-                  Related Themes: ${relatedThemes.join(',')}
-
-                  Created at ${createdAt}
-
-                  Created By: ${createdBy}
-                `
+                type: 'mrkdwn',
+                text: `*Client*: ${client} \n*Key Learning*: ${keyLearning}\n*Guiding Context*: ${guidingContext}\n*Client Tags*: ${clientTags.join(',')}\n*Industry Tags*: ${industryTags.join(',')}\n*Related Themes*: ${relatedThemes.join(',')}`
               }
+            }, {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": `Added by: ${createdBy} at ${createdAt.toString()}`
+                }
+              ]
+            },
+            {
+              "type": "divider"
             })
           })
             
