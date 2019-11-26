@@ -46,13 +46,15 @@ function searchForKeyLearning({ industryTags = [] }) {
   const keyLearningsRef = db.collection('keyLearnings')
   const queryRef = keyLearningsRef.where('client', '==', 'amex')
   const results = []
-  queryRef.get().then(querySnapshot => {
-    querySnapshot.forEach(doc => {
-       console.log('DOC ', doc.data())
-      results.push(doc.data())
-    })
+
+  return new Promise((resolve, reject) => {
+    queryRef.get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        results.push(doc.data())
+      })
+      resolve(results)
+    }).catch(e => reject(e))
   })
-  return Promise.resolve(results)
 } 
 
 function getClientTags() {
