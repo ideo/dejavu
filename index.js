@@ -496,18 +496,18 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
     // A Modal submission happened. Was it search or add?
     const viewTitle = parsedPayload.view.title.text.toLowerCase() 
+    // add modal was submitted
+    const submissionPayload = Object.values(parsedPayload.view.state.values);
+    const submissionData = flatten(submissionPayload)
 
     if (viewTitle.includes('search')) {
       // search modal was submitted
       console.log('--------> SEARCH') 
+      
     }
 
     if (viewTitle.includes('add'))  {
       console.log('--------> ADD') 
-      // add modal was submitted
-      const submissionPayload = Object.values(parsedPayload.view.state.values);
-      const submissionData = flatten(submissionPayload)
-      
       const responseBody = {
         response_type: 'ephemeral',
         blocks: [
@@ -530,7 +530,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         process.env.botToken
       ).then(() => {
         
-  
         const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
         const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
   
@@ -585,8 +584,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       '\n'
     );
     */
-
-    
 
   } else if (type === ACTIONS.VIEW_CLOSED) {
 
