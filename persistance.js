@@ -48,6 +48,7 @@ function searchForKeyLearning({ industryTags = [] }) {
   const results = []
   queryRef.get().then(querySnapshot => {
     querySnapshot.forEach(doc => {
+       console.log('DOC ', doc.data())
       results.push(doc.data())
     })
   })
