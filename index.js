@@ -539,12 +539,10 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                   "text": `Added by: ${createdBy} at ${createdAt.toString()}`
                 }
               ]
-            },
-            {
+            }, {
               "type": "divider"
             })
-          })
-            
+            console.log(JSON.stringify(responseBody))
           // Push the response to Slack.
           sendMessageToSlackResponseURL(
             cachedResponseUrl,
