@@ -501,14 +501,51 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     if (viewTitle.includes('search')) {
       // search modal was submitted
       const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
-      console.log('--------> SEARCH ',industryTags ) 
 
-      const searchPayload = {
-        industryTags
-      }
       searchForKeyLearning({ industryTags })
         .then(res => {
-          console.log('----> search results: ', res)
+          
+          const responseBody = {
+            response_type: 'ephemeral',
+            blocks: []
+          }
+
+          res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}) => {
+            responseBody.blocks.push({
+              type: 'section',
+              text: {
+                type: 'plain_text',
+                text: `
+                  Topic: ${topic}
+                  
+                  Client: ${client}
+
+                  Key Learning: ${keyLearning}
+
+                  Guiding Context: ${guidingContext}
+
+                  clientTags: ${clientTags.join(',')}
+
+                  Industry Tags: ${industryTags.join(',')}
+
+                  Related Themes: ${relatedThemes.join(',')}
+
+                  Created at ${createdAt}
+
+                  Created By: ${createdBy}
+                `
+              }
+            })
+          })
+            
+          // Push the response to Slack.
+          sendMessageToSlackResponseURL(
+            cachedResponseUrl,
+            responseBody,
+            process.env.botToken
+          )
+          
+
         })
         .catch(e => {
           console.log('Failed at search: ', e)
@@ -517,7 +554,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     }
 
     if (viewTitle.includes('add'))  {
-      console.log('--------> ADD') 
+      
       const responseBody = {
         response_type: 'ephemeral',
         blocks: [
@@ -529,10 +566,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             }
           }
         ]
-      };
-  
-      //console.log('Insight recorded response body: ', responseBody);
-      
+      }
+        
       // Push the response to Slack.
       sendMessageToSlackResponseURL(
         cachedResponseUrl,
