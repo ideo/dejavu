@@ -44,7 +44,7 @@ function addTag({tag}, type) {
 
 function searchForKeyLearning({ industryTags = [] }) {
   const keyLearningsRef = db.collection('keyLearnings')
-  const queryRef = keyLearningsRef.where('industryTags', 'array-contains-any', industryTags)
+  const queryRef = keyLearningsRef.where('client', '==', 'amex')
   const results = []
   queryRef.get().then(querySnapshot => {
     querySnapshot.forEach(doc => {
