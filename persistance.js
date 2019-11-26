@@ -51,7 +51,7 @@ function searchForKeyLearning({ industryTag }) {
       results.push(doc.data())
     })
   })
-  Promise.resolve(results)
+  return Promise.resolve(results)
 } 
 
 function getClientTags() {
