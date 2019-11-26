@@ -542,7 +542,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             }, {
               "type": "divider"
             })
-            console.log(JSON.stringify(responseBody))
+          })
+          console.log(JSON.stringify(responseBody))
           // Push the response to Slack.
           sendMessageToSlackResponseURL(
             cachedResponseUrl,
