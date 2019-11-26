@@ -510,10 +510,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       }
       searchForKeyLearning({ industryTag: industryTags[0] })
         .then(res => {
-          return res.json()
-        })
-        .then(parsedResponse => {
-          console.log('----> search results: ', parsedResponse)
+          console.log('----> search results: ', res)
         })
         .catch(e => {
           console.log('Failed at search: ', e)
