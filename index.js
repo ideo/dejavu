@@ -516,7 +516,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
           
           res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
-            if (index <= 3) {
+           
               const resultItem = [...resultItemTemplate]
             
               resultItem[0].text.text = `*Key Learning:*\n${keyLearning}`
@@ -526,7 +526,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               resultItem[2].elements[2].text = `📝 Related Themes: ${relatedThemes.join(',')}`
 
               responseBody.blocks.push(...resultItem)
-            }
+            
             
           })
           
