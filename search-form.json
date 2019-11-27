@@ -51,7 +51,7 @@
         "text": "Client Tags"
       },
       "element": {
-        "type": "multi_static_select",
+        "type": "static_select",
         "action_id": "clientTags",
         "placeholder": {
           "type": "plain_text",
@@ -69,7 +69,7 @@
         "text": "Industry Tags"
       },
       "element": {
-        "type": "multi_static_select",
+        "type": "static_select",
         "action_id": "industryTags",
         "placeholder": {
           "type": "plain_text",
