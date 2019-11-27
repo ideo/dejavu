@@ -45,6 +45,10 @@ function addTag({tag}, type) {
 function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
   const keyLearningsRef = db.collection('keyLearnings')
 
+  console.log('-----> themeTags', themeTags)
+  console.log('-----> clientTags', clientTags)
+  console.log('-----> industryTags', industryTags)
+
   let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags)
 
   if (industryTags.length > 0) {
