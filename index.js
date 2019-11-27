@@ -507,7 +507,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
 
       searchForKeyLearning({ industryTags })
-        .then(({ resulsts, size }) => {
+        .then(({ results, size }) => {
           
           const responseBody = {
             blocks: [
@@ -524,7 +524,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             ]
           } 
 
-          resulsts.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
+          results.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
               const resultItem = [{
                 "type": "section",
                 "text": {
