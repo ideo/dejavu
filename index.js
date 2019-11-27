@@ -514,17 +514,19 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           responseBody.blocks.push(context, divider)
 
 
-
-          res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}) => {
-            const resultItem = Object.assign({},  resultItemTemplate)
+          
+          res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
+            if (index <= 3) {
+              const resultItem = Object.assign({},  resultItemTemplate)
             
-            resultItem[0].text.text = `*Key Learning:*\n${keyLearning}`
-            resultItem[1].text.text = `*Guiding Context:*\n${guidingContext}`
-            resultItem[2].elements[0].text = `💼 Client: ${clientTags.join(',')}`
-            resultItem[2].elements[1].text = `🏷 Industry Tags: ${industryTags.join(',')}`
-            resultItem[2].elements[2].text = `📝 Related Themes: ${relatedThemes.join(',')}`
+              resultItem[0].text.text = `*Key Learning:*\n${keyLearning}`
+              resultItem[1].text.text = `*Guiding Context:*\n${guidingContext}`
+              resultItem[2].elements[0].text = `💼 Client: ${clientTags.join(',')}`
+              resultItem[2].elements[1].text = `🏷 Industry Tags: ${industryTags.join(',')}`
+              resultItem[2].elements[2].text = `📝 Related Themes: ${relatedThemes.join(',')}`
 
-            responseBody.blocks.push(resultItem)
+              responseBody.blocks.push(resultItem)
+            }
             
           })
           
