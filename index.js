@@ -535,11 +535,10 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     if (viewTitle.includes('search')) {
       // search modal was submitted
       const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
-      let searchCriteria = ''
-      if (industryTags.length > 0) { searchCriteria = searchCriteria.concat(`Industry Tags: ${industryTags.join(',')}`) }
-
-
-      searchForKeyLearning({ industryTags })
+      const clientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
+      const themeTags = submissionData.themeTags ? submissionData.themeTags.map(({value}) => value) : []
+      
+      searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(({ results }) => {
           
           const responseBody = {
