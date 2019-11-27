@@ -548,17 +548,27 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                   {
                     "type": "plain_text",
                     "emoji": true,
-                    "text": `💼 Client: ${clientTags.join(', ')}`
+                    "text": `💼 Client: ${clientTags.join(', ')}\n`
                   },
                   {
                     "type": "plain_text",
                     "emoji": true,
-                    "text": `🏷 Industry Tags: ${industryTags.join(', ')}`
+                    "text": `🏷 Industry Tags: ${industryTags.join(', ')}\n`
                   },
                   {
                     "type": "plain_text",
                     "emoji": true,
-                    "text":  `📝 Related Themes: ${relatedThemes.join(',')}`
+                    "text":  `📝 Related Themes: ${relatedThemes.join(',')}\n`
+                  },
+                  {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text":  `👩🏽‍🏫 Added By: ${createdBy}\n`
+                  },
+                  {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text":  `🗓 Recorded at: ${createdAt.toDate().toString()}\n`
                   }
                 ]
               },
