@@ -517,7 +517,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           
           res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
             if (index <= 3) {
-              const resultItem = Object.assign({},  resultItemTemplate)
+              const resultItem = [...resultItemTemplate]
             
               resultItem[0].text.text = `*Key Learning:*\n${keyLearning}`
               resultItem[1].text.text = `*Guiding Context:*\n${guidingContext}`
