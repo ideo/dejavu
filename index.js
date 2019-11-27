@@ -525,7 +525,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               resultItem[2].elements[1].text = `🏷 Industry Tags: ${industryTags.join(',')}`
               resultItem[2].elements[2].text = `📝 Related Themes: ${relatedThemes.join(',')}`
 
-              responseBody.blocks.push(resultItem)
+              responseBody.blocks.push(...resultItem)
             }
             
           })
