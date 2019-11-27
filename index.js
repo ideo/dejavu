@@ -548,7 +548,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                   {
                     "type": "plain_text",
                     "emoji": true,
-                    "text": `💼 Client: ${clientTags.join(', ')}\n\n🏷 Industry Tags: ${industryTags.join(', ')}\n\n📝 Related Themes: ${relatedThemes.join(',')}\n\n👩🏽‍Added By: ${createdBy}\n\n🗓 Recorded at: ${createdAt.toDate().toString()}`
+                    "text": `\n💼 Client: ${clientTags.join(', ')}\n\n🏷 Industry Tags: ${industryTags.join(', ')}\n\n📝 Related Themes: ${relatedThemes.join(',')}\n\n👩🏽‍Added By: ${createdBy}\n\n🗓 Recorded at: ${createdAt.toDate().toString()}`
                   }
                 ]
               },
