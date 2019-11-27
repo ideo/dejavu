@@ -510,20 +510,49 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         .then(res => {
           
           const responseBody = {blocks: []} 
-          const [context, divider, ...resultItemTemplate] = resultsTemplate.blocks
+          const [context, divider] = resultsTemplate.blocks
           responseBody.blocks.push(context, divider)
 
-
-          
           res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
            
-              const resultItem = [...resultItemTemplate]
+              const resultItem = [{
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": `*Key Learning:*\n${keyLearning}`
+                }
+              },
+              {
+                type: "section",
+                text: {
+                  type: "mrkdwn",
+                  text: `*Guiding Context:*\n${guidingContext}`
+                }
+              },
+              {
+                "type": "context",
+                "elements": [
+                  {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text": `💼 Client: ${clientTags.join(', ')}`
+                  },
+                  {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text": `🏷 Industry Tags: ${industryTags.join(', ')}`
+                  },
+                  {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text":  `📝 Related Themes: ${relatedThemes.join(',')}`
+                  }
+                ]
+              },
+              {
+                "type": "divider"
+              }]
             
-              resultItem[0].text.text = `*Key Learning:*\n${keyLearning}`
-              resultItem[1].text.text = `*Guiding Context:*\n${guidingContext}`
-              resultItem[2].elements[0].text = `💼 Client: ${clientTags.join(',')}`
-              resultItem[2].elements[1].text = `🏷 Industry Tags: ${industryTags.join(',')}`
-              resultItem[2].elements[2].text = `📝 Related Themes: ${relatedThemes.join(',')}`
 
               responseBody.blocks.push(...resultItem)
             
