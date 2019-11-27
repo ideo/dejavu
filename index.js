@@ -359,7 +359,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     body: { payload }
   } = req;
   
-  const parsedPayload = JSON.parse('INTERACTION -------- ', payload);
+  const parsedPayload = JSON.parse(payload);
+  console.log('payload --------> ', payload)
   const { type, response_url: responseUrl } = parsedPayload;
 
   if (responseUrl) {
