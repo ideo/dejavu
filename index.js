@@ -532,6 +532,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const submissionPayload = Object.values(parsedPayload.view.state.values);
     const submissionData = flatten(submissionPayload)
 
+    console.log('-----> submissionData', JSON.stringify(submissionData))
+
     if (viewTitle.includes('search')) {
       // search modal was submitted
       const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
