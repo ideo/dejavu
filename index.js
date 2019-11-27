@@ -580,7 +580,21 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                   "emoji": true,
                   "text": "Next 5 Results"
                 },
-                "value": "click_me_123"
+                "value": "load_next_batch"
+              }
+            ]
+          }, {
+            "type": "actions",
+            "elements": [
+              {
+                "type": "button",
+                "action_id": "load_previous_batch",
+                "text": {
+                  "type": "plain_text",
+                  "emoji": true,
+                  "text": "Previous 5 Results"
+                },
+                "value": "load_previous_batch"
               }
             ]
           })
