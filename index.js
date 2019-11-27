@@ -405,11 +405,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               };
 
               // Push the response to Slack.
-              sendMessageToSlackResponseURL(
-                cachedResponseUrl,
-                responseBody,
-                process.env.botToken
-              );
+              sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
               throw new Error(parsedResponse.error);
             }
           })
@@ -578,6 +574,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             "elements": [
               {
                 "type": "button",
+                "action_id": "load_next_batch",
                 "text": {
                   "type": "plain_text",
                   "emoji": true,
