@@ -581,11 +581,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                   "text": "Next 5 Results"
                 },
                 "value": "load_next_batch"
-              }
-            ]
-          }, {
-            "type": "actions",
-            "elements": [
+              },
               {
                 "type": "button",
                 "action_id": "load_previous_batch",
