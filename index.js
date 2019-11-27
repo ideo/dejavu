@@ -507,7 +507,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
 
       searchForKeyLearning({ industryTags })
-        .then(({ results, size }) => {
+        .then(({ results }) => {
           
           const responseBody = {
             blocks: [
@@ -515,7 +515,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": `Déjà vu found *${size} insights* based on your search criteria.`
+                  "text": `Déjà vu found the following insights based on your search criteria:`
                 }
               },
               {

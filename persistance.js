@@ -52,7 +52,7 @@ function searchForKeyLearning({ industryTags = [] }) {
       querySnapshot.forEach(doc => {
         results.push(doc.data())
       })
-      resolve({ results, size: querySnapshot.size })
+      resolve({ results })
     }).catch(e => reject(e))
   })
 } 
