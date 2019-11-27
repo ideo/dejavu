@@ -548,27 +548,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                   {
                     "type": "plain_text",
                     "emoji": true,
-                    "text": `💼 Client: ${clientTags.join(', ')}\n`
-                  },
-                  {
-                    "type": "plain_text",
-                    "emoji": true,
-                    "text": `🏷 Industry Tags: ${industryTags.join(', ')}\n`
-                  },
-                  {
-                    "type": "plain_text",
-                    "emoji": true,
-                    "text":  `📝 Related Themes: ${relatedThemes.join(',')}\n`
-                  },
-                  {
-                    "type": "plain_text",
-                    "emoji": true,
-                    "text":  `👩🏽‍🏫 Added By: ${createdBy}\n`
-                  },
-                  {
-                    "type": "plain_text",
-                    "emoji": true,
-                    "text":  `🗓 Recorded at: ${createdAt.toDate().toString()}\n`
+                    "text": `💼 Client: ${clientTags.join(', ')}\n🏷 Industry Tags: ${industryTags.join(', ')}\n📝 Related Themes: ${relatedThemes.join(',')}\n👩🏽‍🏫 Added By: ${createdBy}\n🗓 Recorded at: ${createdAt.toDate().toString()}`
                   }
                 ]
               },
