@@ -14,7 +14,7 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { addKeyLearning, searchForKeyLearning, getClientTags, getIndustryTags, getThemeTags, addTag, addTheme, sanitize } = require('./persistance')
+const { addKeyLearning, searchForKeyLearning, getClientTags, getIndustryTags, getThemeTags, addTag, sanitize } = require('./persistance')
 
 // let clientTags = []
 // let industryTags = []
@@ -137,6 +137,10 @@ async function createInsightsSearchForm(searchTemplate) {
   populateTagData(industryTagsQuerySnapshot, industryTags)
   populateTagData(clientTagsQuerySnapshot, clientTags)
   populateTagData(themeTagsQuerySnapshot, themeTags)
+
+  console.log('industryTags', industryTags)
+  console.log('clientTags', clientTags)
+  console.log('themeTags', themeTags)
 
   form.blocks[1].element.options = clientTags.map(tag => (
     {
@@ -676,7 +680,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           addKeyLearning.bind(null, insightPayload),
           ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
           ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client')),
-          ...relatedThemes.map(theme => addTheme.bind(null, {theme}))
+          ...newClientTags.map(tag => addTag.bind(null, {tag}, 'theme'))
         ]
         
         const dbCallPromises = dbCalls.map(dbCall => dbCall())

@@ -28,25 +28,18 @@ function addKeyLearning({
 }
 
 function addTag({tag}, type) {
-  const validTypes = ['client', 'industry']
+  const validTypes = ['client', 'industry', 'theme']
 
   if (!validTypes.includes(type)) {
     throw new Error('Tag type is invalid. Use one of: ', validTypes.join(' '))
   }
 
-  const COLLECTIONS_MAP = { client: 'clientTags', industry: 'industryTags' }
+  const COLLECTIONS_MAP = { client: 'clientTags', industry: 'industryTags', theme: 'themeTags' }
 
   return db
     .collection(COLLECTIONS_MAP[type])
     .doc()
     .set({tag})
-}
-
-function addTheme({ theme }) {
-  return db
-    .collection('themeTags')
-    .doc()
-    .set({theme})
 }
 
 function searchForKeyLearning({ industryTags = [], clientTags = [], relatedThemes = [] }) {
@@ -83,6 +76,5 @@ module.exports = {
   getIndustryTags,
   getThemeTags,
   addTag,
-  addTheme,
   sanitize
 }
