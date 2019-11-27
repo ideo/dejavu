@@ -507,14 +507,24 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
 
       searchForKeyLearning({ industryTags })
-        .then(res => {
+        .then(({ resulsts, size }) => {
           
-          const responseBody = {blocks: []} 
-          const [context, divider] = resultsTemplate.blocks
-          responseBody.blocks.push(context, divider)
+          const responseBody = {
+            blocks: [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": `Déjà vu found *${size} insights* based on your search criteria.`
+                }
+              },
+              {
+                "type": "divider"
+              }
+            ]
+          } 
 
-          res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
-           
+          resulsts.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
               const resultItem = [{
                 "type": "section",
                 "text": {
@@ -555,7 +565,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             
 
               responseBody.blocks.push(...resultItem)
-            
             
           })
           

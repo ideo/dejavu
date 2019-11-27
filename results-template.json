@@ -9,6 +9,43 @@
 		},
 		{
 			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Key Learning:*\nAmEx designs for a mass experience in a time when consumers are becoming more accustomed to experiences tailored to their needs (enabled by Big Data)."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Guiding Context:*\nHow will AmEx's relationship with its costumers affect its future?"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "plain_text",
+					"emoji": true,
+					"text": "💼 Client: Amex"
+				},
+				{
+					"type": "plain_text",
+					"emoji": true,
+					"text": "🏷 Industry Tags: Money, Financial"
+				},
+				{
+					"type": "plain_text",
+					"emoji": true,
+					"text": "📝 Related Themes: Tailored, Personalized, Customized, Customization, Personalization"
+				}
+			]
+		},
+		{
+			"type": "divider"
 		}
 	]
 }
