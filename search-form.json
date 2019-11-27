@@ -30,6 +30,24 @@
       "optional": true,
       "label": {
         "type": "plain_text",
+        "text": "Client Tags"
+      },
+      "element": {
+        "type": "multi_static_select",
+        "action_id": "clientTags",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select Client",
+          "emoji": true
+        },
+        "options": []
+      }
+    },
+    {
+      "type": "input",
+      "optional": true,
+      "label": {
+        "type": "plain_text",
         "text": "Industry Tags"
       },
       "element": {

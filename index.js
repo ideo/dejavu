@@ -129,12 +129,25 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
 async function createInsightsSearchForm(searchTemplate) {
   const form = Object.assign({}, searchTemplate);
   const industryTags = []
+  const clientTags = []
 
-  const [industryTagsQuerySnapshot] = await Promise.all([getIndustryTags()])
+  const [industryTagsQuerySnapshot, clientTagsQuerySnapshot] = await Promise.all([getIndustryTags(), getClientTags()])
 
   populateTagData(industryTagsQuerySnapshot, industryTags)
+  populateTagData(clientTagsQuerySnapshot, clientTags)
 
-  form.blocks[1].element.options = industryTags.map(tag => (
+  form.blocks[2].element.options = clientTags.map(tag => (
+    {
+      "text": {
+        "type": "plain_text",
+        "text": tag,
+        "emoji": true
+      },
+      "value": tag
+    }
+  ))
+
+  form.blocks[3].element.options = industryTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
