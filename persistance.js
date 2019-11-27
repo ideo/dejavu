@@ -48,7 +48,7 @@ function searchForKeyLearning({ industryTags = [] }) {
   const results = []
 
   return new Promise((resolve, reject) => {
-    queryRef.get().then(querySnapshot => {
+    queryRef.limit(5).get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         results.push(doc.data())
       })
