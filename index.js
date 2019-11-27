@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 // Import data for Slack blocks
 const insightsCollectionTemplate = require('./add-form.json') 
 const insightsSearchTemplate = require('./search-form.json') 
+const resultsTemplate = require('./results-template.json') 
 
 // Import a platform-specific adapter for slack.
 const {
@@ -508,49 +509,30 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       searchForKeyLearning({ industryTags })
         .then(res => {
           
-          const responseBody = {
-            response_type: 'ephemeral',
-            blocks: [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": `Search criteria: ${searchCriteria}. \n\n*Search Results:*`
-                }
-              },
-              {
-                "type": "divider"
-              }
-            ]
-          }
+          const responseBody = {blocks: []} 
+          const [context, divider, ...resultItemTemplate] = resultsTemplate.blocks
+          responseBody.blocks.push(context, divider)
+
+
 
           res.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}) => {
-            responseBody.blocks.push({
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: `*Client*: ${client} \n*Key Learning*: ${keyLearning}\n*Guiding Context*: ${guidingContext}\n*Client Tags*: ${clientTags.join(',')}\n*Industry Tags*: ${industryTags.join(',')}\n*Related Themes*: ${relatedThemes.join(',')}`
-              }
-            }, {
-              "type": "context",
-              "elements": [
-                {
-                  "type": "mrkdwn",
-                  "text": `Added by: ${createdBy} at ${createdAt.toString()}`
-                }
-              ]
-            }, {
-              "type": "divider"
-            })
+            const resultItem = Object.assign({},  resultItemTemplate)
+            
+            resultItem[0].text.text = `*Key Learning:*\n${keyLearning}`
+            resultItem[1].text.text = `*Guiding Context:*\n${guidingContext}`
+            resultItem[2].elements[0].text = `💼 Client: ${clientTags.join(',')}`
+            resultItem[2].elements[1].text = `🏷 Industry Tags: ${industryTags.join(',')}`
+            resultItem[2].elements[2].text = `📝 Related Themes: ${relatedThemes.join(',')}`
+
+            responseBody.blocks.push(resultItem)
+            
           })
-          console.log(JSON.stringify(responseBody))
-          // Push the response to Slack.
-          sendMessageToSlackResponseURL(
-            cachedResponseUrl,
-            responseBody,
-            process.env.botToken
-          )
           
+          console.log('\n Search Result: \n', JSIN.stringify(responseBody))
+
+          // Push the response to Slack.
+          sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
+      
 
         })
         .catch(e => {
