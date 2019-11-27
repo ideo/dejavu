@@ -5,7 +5,6 @@ const fetch = require('node-fetch');
 // Import data for Slack blocks
 const insightsCollectionTemplate = require('./add-form.json') 
 const insightsSearchTemplate = require('./search-form.json') 
-const resultsTemplate = require('./results-template.json') 
 
 // Import a platform-specific adapter for slack.
 const {
@@ -15,7 +14,7 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { addKeyLearning, searchForKeyLearning, getClientTags, getIndustryTags, addTag } = require('./persistance')
+const { addKeyLearning, searchForKeyLearning, getClientTags, getIndustryTags, addTag, addTheme, sanitize } = require('./persistance')
 
 // let clientTags = []
 // let industryTags = []
@@ -577,16 +576,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             "elements": [
               {
                 "type": "button",
-                "action_id": "load_next_batch",
-                "text": {
-                  "type": "plain_text",
-                  "emoji": true,
-                  "text": "Next 5 Results"
-                },
-                "value": "load_next_batch"
-              },
-              {
-                "type": "button",
                 "action_id": "load_previous_batch",
                 "text": {
                   "type": "plain_text",
@@ -594,6 +583,16 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                   "text": "Previous 5 Results"
                 },
                 "value": "load_previous_batch"
+              },
+              {
+                "type": "button",
+                "action_id": "load_next_batch",
+                "text": {
+                  "type": "plain_text",
+                  "emoji": true,
+                  "text": "Next 5 Results"
+                },
+                "value": "load_next_batch"
               }
             ]
           })
@@ -641,14 +640,16 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   
         const clientTags = [...predefinedClientTags, ...newClientTags]
         const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
-  
+        
+        const relatedThemes = (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : []
+
         const insightPayload = {
           keyLearning: submissionData.keyLearning,
           guidingContext: submissionData.context,
-          clientTags,
-          industryTags,
+          clientTags: clientTags.map(sanitize),
+          industryTags: industryTags.map(sanitize),
+          relatedThemes: relatedThemes.map(sanitize),
           client: submissionData.client,
-          relatedThemes: (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : [],
           createdBy: cachedUserName || '',
           topic
         }
@@ -658,7 +659,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         const dbCalls = [
           addKeyLearning.bind(null, insightPayload),
           ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
-          ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client'))
+          ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client')),
+          ...relatedThemes.map(theme => addTheme.bind(null, {theme}))
         ]
         
         const dbCallPromises = dbCalls.map(dbCall => dbCall())

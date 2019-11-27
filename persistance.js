@@ -7,8 +7,8 @@ admin.initializeApp({ credential: admin.credential.cert(serviceAccount)});
 
 let db = admin.firestore()
 
-function normalize(inputString) {
-  return inputString.toLowerCase()
+function sanitize(inputString) {
+  return inputString.trim().toLowerCase()
 }
 
 function addKeyLearning({
@@ -42,6 +42,13 @@ function addTag({tag}, type) {
     .set({tag})
 }
 
+function addTheme({ theme }) {
+  return db
+    .collection('themeTags')
+    .doc()
+    .set({theme})
+}
+
 function searchForKeyLearning({ industryTags = [] }) {
   const keyLearningsRef = db.collection('keyLearnings')
   const queryRef = keyLearningsRef.where('industryTags', 'array-contains-any', industryTags)
@@ -70,5 +77,7 @@ module.exports = {
   searchForKeyLearning,
   getClientTags,
   getIndustryTags,
-  addTag
+  addTag,
+  addTheme,
+  sanitize
 }
