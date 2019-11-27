@@ -42,10 +42,10 @@ function addTag({tag}, type) {
     .set({tag})
 }
 
-function searchForKeyLearning({ industryTags = [], clientTags = [], relatedThemes = [] }) {
+function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
   const keyLearningsRef = db.collection('keyLearnings')
 
-  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', relatedThemes)
+  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags)
 
   if (industryTags.length > 0) {
     queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags)
