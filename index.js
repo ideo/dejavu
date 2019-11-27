@@ -567,6 +567,24 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               responseBody.blocks.push(...resultItem)
             
           })
+
+          responseBody.blocks.push({
+            "type": "divider"
+          },
+          {
+            "type": "actions",
+            "elements": [
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "emoji": true,
+                  "text": "Next 5 Results"
+                },
+                "value": "click_me_123"
+              }
+            ]
+          })
           
           console.log('\n Search Result: \n', JSON.stringify(responseBody))
 
