@@ -528,7 +528,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             
           })
           
-          console.log('\n Search Result: \n', JSIN.stringify(responseBody))
+          console.log('\n Search Result: \n', JSON.stringify(responseBody))
 
           // Push the response to Slack.
           sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
