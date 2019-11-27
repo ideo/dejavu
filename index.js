@@ -538,7 +538,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       // search modal was submitted
       const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
       const clientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
-      const themeTags = submissionData.themeTags ? submissionData.themeTags.map(({value}) => value) : []
+      const themeTags = submissionData.relatedThemes ? submissionData.relatedThemes.map(({value}) => value) : []
       
       searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(({ results }) => {
