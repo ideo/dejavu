@@ -37,7 +37,7 @@
         "action_id": "clientTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Select Client",
+          "text": "Select client",
           "emoji": true
         },
         "options": []
@@ -55,7 +55,25 @@
         "action_id": "industryTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Select Industry Tag items",
+          "text": "Select industry tags",
+          "emoji": true
+        },
+        "options": []
+      }
+    },
+    {
+      "type": "input",
+      "optional": true,
+      "label": {
+        "type": "plain_text",
+        "text": "Related Themes"
+      },
+      "element": {
+        "type": "multi_static_select",
+        "action_id": "relatedThemes",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select related themes",
           "emoji": true
         },
         "options": []

@@ -49,9 +49,9 @@ function addTheme({ theme }) {
     .set({theme})
 }
 
-function searchForKeyLearning({ industryTags = [] }) {
+function searchForKeyLearning({ industryTags = [], clientTags = [], relatedThemes = [] }) {
   const keyLearningsRef = db.collection('keyLearnings')
-  const queryRef = keyLearningsRef.where('industryTags', 'array-contains-any', industryTags)
+  const queryRef = keyLearningsRef.where('industryTags', 'array-contains-any', [])
   const results = []
 
   return new Promise((resolve, reject) => {
