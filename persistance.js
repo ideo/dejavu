@@ -44,7 +44,18 @@ function addTag({tag}, type) {
 
 function searchForKeyLearning({ industryTags = [], clientTags = [], relatedThemes = [] }) {
   const keyLearningsRef = db.collection('keyLearnings')
-  const queryRef = keyLearningsRef.where('industryTags', 'array-contains-any', [])
+
+  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', relatedThemes)
+
+  if (industryTags.length > 0) {
+    queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags)
+  }
+
+  if (clientTags.length > 0) {
+    queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags)
+
+  }
+
   const results = []
 
   return new Promise((resolve, reject) => {

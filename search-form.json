@@ -21,9 +21,27 @@
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "Use the fields below to configure your search."
+          "text": "Use the fields below to configure your search. *Themes* field is mandatory, and the rest are optional. Please keep in mind that not all combinations will surface relevant results."
         }
       ]
+    },
+    {
+      "type": "input",
+      "optional": false,
+      "label": {
+        "type": "plain_text",
+        "text": "Related Themes"
+      },
+      "element": {
+        "type": "multi_static_select",
+        "action_id": "relatedThemes",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select related themes",
+          "emoji": true
+        },
+        "options": []
+      }
     },
     {
       "type": "input",
@@ -60,24 +78,7 @@
         },
         "options": []
       }
-    },
-    {
-      "type": "input",
-      "optional": true,
-      "label": {
-        "type": "plain_text",
-        "text": "Related Themes"
-      },
-      "element": {
-        "type": "multi_static_select",
-        "action_id": "relatedThemes",
-        "placeholder": {
-          "type": "plain_text",
-          "text": "Select related themes",
-          "emoji": true
-        },
-        "options": []
-      }
     }
+    
   ]
 }
