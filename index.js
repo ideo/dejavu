@@ -371,7 +371,13 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   if (type === ACTIONS.BLOCK_ACTIONS) {
     const { actions, trigger_id: triggerId } = parsedPayload;
     const [{ value }] = actions;
-    if (value === 'true') {
+    
+    if (value === 'load_previous_batch') {
+      console.log('-----> load prev batch')
+    } else if (value === 'load_next_batch') {
+      console.log('-----> load next batch')
+
+    } else if (value === 'true') {
       if (verb === 'add') {
         const view = await createInsightsCollectionForm(insightsCollectionTemplate, topic)
         // User clicked on 'Yep' button and they want to 'add' insight
@@ -567,9 +573,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           })
 
           responseBody.blocks.push({
-            "type": "divider"
-          },
-          {
             "type": "actions",
             "elements": [
               {
