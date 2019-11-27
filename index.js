@@ -14,7 +14,7 @@ const {
 } = require('botbuilder-adapter-slack')
 
 // Import persistance layer
-const { addKeyLearning, searchForKeyLearning, getClientTags, getIndustryTags, addTag, addTheme, sanitize } = require('./persistance')
+const { addKeyLearning, searchForKeyLearning, getClientTags, getIndustryTags, getThemeTags, addTag, addTheme, sanitize } = require('./persistance')
 
 // let clientTags = []
 // let industryTags = []
@@ -130,13 +130,15 @@ async function createInsightsSearchForm(searchTemplate) {
   const form = Object.assign({}, searchTemplate);
   const industryTags = []
   const clientTags = []
+  const themeTags = []
 
-  const [industryTagsQuerySnapshot, clientTagsQuerySnapshot] = await Promise.all([getIndustryTags(), getClientTags()])
+  const [industryTagsQuerySnapshot, clientTagsQuerySnapshot, themeTagsQuerySnapshot] = await Promise.all([getIndustryTags(), getClientTags(), getThemeTags()])
 
   populateTagData(industryTagsQuerySnapshot, industryTags)
   populateTagData(clientTagsQuerySnapshot, clientTags)
+  populateTagData(themeTagsQuerySnapshot, themeTags)
 
-  form.blocks[2].element.options = clientTags.map(tag => (
+  form.blocks[1].element.options = clientTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
@@ -147,7 +149,18 @@ async function createInsightsSearchForm(searchTemplate) {
     }
   ))
 
-  form.blocks[3].element.options = industryTags.map(tag => (
+  form.blocks[2].element.options = industryTags.map(tag => (
+    {
+      "text": {
+        "type": "plain_text",
+        "text": tag,
+        "emoji": true
+      },
+      "value": tag
+    }
+  ))
+
+  form.blocks[3].element.options = themeTags.map(tag => (
     {
       "text": {
         "type": "plain_text",

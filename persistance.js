@@ -72,11 +72,16 @@ function getIndustryTags() {
   return db.collection('industryTags').get()
 }
 
+function getThemeTags() {
+  return db.collection('themeTags').get()
+}
+
 module.exports = {
   addKeyLearning,
   searchForKeyLearning,
   getClientTags,
   getIndustryTags,
+  getThemeTags,
   addTag,
   addTheme,
   sanitize
