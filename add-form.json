@@ -73,14 +73,14 @@
       "optional": true,
       "label": {
         "type": "plain_text",
-        "text": "Client Tags"
+        "text": "Client (if already exists in this dropdown)"
       },
       "element": {
         "type": "multi_static_select",
         "action_id": "clientTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Select tag items",
+          "text": "Select client",
           "emoji": true
         },
         "options": []
@@ -94,12 +94,12 @@
         "action_id": "otherClientTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Any other client tags that you'd like to add, separated by commas."
+          "text": "Add client name. (if not found in above dropdown menu)"
         }
       },
       "label": {
         "type": "plain_text",
-        "text": "More Client Tags"
+        "text": "If adding multiple, separate them by commas. Clients that you save here will show up in future searches."
       }
     },
     {
