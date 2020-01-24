@@ -99,7 +99,7 @@
       },
       "label": {
         "type": "plain_text",
-        "text": "Add new client. Clients that you add here will show up in future searches."
+        "text": "Add new client name. \nClients that you add here will show up in future searches."
       }
     },
     {
