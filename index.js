@@ -60,10 +60,6 @@ const ACTIONS = {
   VIEW_CLOSED: 'view_closed'
 }
 
-// Keep reference to the latest `topic.`
-// This mutates everytime user types in `/dejavu add [topic]`
-let topic = ''
-
 // for modal.open payloads, we do get a responseURL but for modal submissions we don't.
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
 let cachedResponseUrl = null
@@ -90,7 +86,7 @@ function populateTagData(querySnapshot, arr) {
 }
 
 
-async function createInsightsCollectionForm(collectionTemplate, topic) {
+async function createInsightsCollectionForm(collectionTemplate) {
   const form = Object.assign({}, collectionTemplate);
   const clientTags = []
   const industryTags = []
@@ -122,7 +118,7 @@ async function createInsightsCollectionForm(collectionTemplate, topic) {
     }
   ))
 
-  form.blocks[0].elements[0].text = `Topic: ${topic}`
+  // form.blocks[0].elements[0].text = `Topic: ${topic}`
   return Promise.resolve(form)
 }
 
@@ -282,7 +278,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
             'type': 'section',
             'text': {
               'type': 'mrkdwn',
-              'text': `Woops, my bad. I can only understand the following tasks: add, search like so: \n \`/dejavu [add, search] [topic or keyword]\``
+              'text': `Woops, my bad. I can only understand the following tasks: add, search like so: \n \`/dejavu add\` or \`/dejavu search\``
             }
           }
         ]}),
@@ -309,9 +305,6 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
     });
   } else {
     // We know what the user meant. So we continue with the interaction flow.
-    const [, ...rest] = commandText.split(' ');
-    // The user has declared their topic of interest. Hold onto it.
-    topic = rest.join(' ');
     // Push the response to Slack.
     fetch(responseUrl, {
       method: 'POST',
@@ -408,7 +401,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
     } else if (value === 'true') {
       if (verb === 'add') {
-        const view = await createInsightsCollectionForm(insightsCollectionTemplate, topic)
+        const view = await createInsightsCollectionForm(insightsCollectionTemplate)
         // User clicked on 'Yep' button and they want to 'add' insight
         fetch('https://slack.com/api/views.open', {
           method: 'POST',
@@ -456,7 +449,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               text: {
                 type: 'plain_text',
                 text:
-                  `Copy that. Searching for insights related to ${topic}. Hang tight ...`
+                  `Copy that. Searching for Key Learnings related to your search. Hang tight ...`
               }
             }
           ]
@@ -516,7 +509,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Gotcha. Feel free to call me again anytime like so: \`/dejavu [add, search] [topic or keyword]\``
+              text: `Gotcha. Feel free to call me again anytime like so: \`/dejavu add\` or \`/dejavu [add, search]\``
             }
           }
         ]
@@ -558,7 +551,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             ]
           } 
 
-          results.forEach(({ topic, createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
+          results.forEach(({ createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
               const resultItem = [{
                 "type": "section",
                 "text": {
@@ -640,7 +633,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Great! You research insight on ${topic} is now saved.`
+              text: `Great! You Key Learning has beedn saved.`
             }
           }
         ]
@@ -671,12 +664,9 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           industryTags: industryTags.map(sanitize),
           relatedThemes: relatedThemes.map(sanitize),
           client: submissionData.client,
-          createdBy: cachedUserName || '',
-          topic
+          createdBy: cachedUserName || ''
         }
-        
-        topic = '' // reset the topic
-        
+                
         const dbCalls = [
           addKeyLearning.bind(null, insightPayload),
           ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
@@ -695,21 +685,9 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       
       }).catch((e) => {
         console.log('Failed', e)
-  
-        topic = '' // reset the topic
       });
     }
 
-
-    /*
-    console.log(
-      '\n -->We got a submission!',
-      JSON.stringify(submissionData),
-      '---> topic is: ',
-      topic,
-      '\n'
-    );
-    */
 
   } else if (type === ACTIONS.VIEW_CLOSED) {
 
