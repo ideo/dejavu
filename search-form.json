@@ -17,27 +17,18 @@
   },
   "blocks": [
     {
-      "type": "context",
-      "elements": [
-        {
-          "type": "mrkdwn",
-          "text": "test"
-        }
-      ]
-    },
-    {
       "type": "input",
-      "optional": false,
+      "optional": true,
       "label": {
         "type": "plain_text",
-        "text": "Related Themes (Required) You can choose more than one tag. The more tags you select, the fewer results you're likely to get"
+        "text": "Industry"
       },
       "element": {
-        "type": "multi_static_select",
-        "action_id": "relatedThemes",
+        "type": "static_select",
+        "action_id": "industryTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Select related themes",
+          "text": "Select industry tags",
           "emoji": true
         },
         "options": []
@@ -48,7 +39,7 @@
       "optional": true,
       "label": {
         "type": "plain_text",
-        "text": "Client Tags"
+        "text": "Client"
       },
       "element": {
         "type": "static_select",
@@ -63,22 +54,21 @@
     },
     {
       "type": "input",
-      "optional": true,
+      "optional": false,
       "label": {
         "type": "plain_text",
-        "text": "Industry Tags"
+        "text": "Related Themes (Required) \n You can choose more than one tag. \nThe more tags you select, the fewer results you're likely to get"
       },
       "element": {
-        "type": "static_select",
-        "action_id": "industryTags",
+        "type": "multi_static_select",
+        "action_id": "relatedThemes",
         "placeholder": {
           "type": "plain_text",
-          "text": "Select industry tags",
+          "text": "Select related themes",
           "emoji": true
         },
         "options": []
       }
     }
-    
   ]
 }
