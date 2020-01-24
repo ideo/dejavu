@@ -110,12 +110,12 @@
         "action_id": "otherIndustryTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "If you didn't find relevant industry tags anove, add them here separated by commas. They will show up in future searches."
+          "text": "Add new Industry tag(s) separated by commas."
         }
       },
       "label": {
         "type": "plain_text",
-        "text": "More Industry Tags"
+        "text": "Add new Industry Tags. \nIf you didn't find relevant industry tags anove, add them here separated by commas. They will show up in future searches."
       }
     },
     {
