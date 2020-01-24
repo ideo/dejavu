@@ -49,7 +49,8 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   console.log('-----> clientTags', clientTags)
   console.log('-----> industryTags', industryTags)
 
-  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', ['experiences'])
+  
+  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags)
 
   if (industryTags.length > 0) {
     queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags)
