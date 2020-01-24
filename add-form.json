@@ -17,24 +17,6 @@
   },
   "blocks": [
     {
-      "type": "context",
-      "elements": [
-        {
-          "type": "mrkdwn",
-          "text": "Topic: food"
-        }
-      ]
-    },
-    {
-      "type": "context",
-      "elements": [
-        {
-          "type": "mrkdwn",
-          "text": "Write here anything you think it might be important for a future team to understand. Don't worry if you're not certain it'll be critical for them. Just write here anything you found interesting or important. Our search function can sort the wheat from the chaff!"
-        }
-      ]
-    },
-    {
       "type": "input",
       "element": {
         "type": "plain_text_input",
