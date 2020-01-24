@@ -21,7 +21,7 @@
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "Use the fields below to configure your search. *Themes* field is mandatory, and the rest are optional. Please keep in mind that not all combinations will surface relevant results."
+          "text": ""
         }
       ]
     },
@@ -30,7 +30,7 @@
       "optional": false,
       "label": {
         "type": "plain_text",
-        "text": "Related Themes"
+        "text": "Related Themes (Required) \n You can choose more than one tag. The more tags you select, the fewer results you're likely to get"
       },
       "element": {
         "type": "multi_static_select",

@@ -509,7 +509,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Gotcha. Feel free to call me again anytime like so: \`/dejavu add\` or \`/dejavu [add, search]\``
+              text: `Gotcha. Feel free to call me again anytime like so: \`/dejavu add\` or \`/dejavu search\``
             }
           }
         ]
