@@ -315,7 +315,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
             'type': 'section',
             'text': {
               'type': 'mrkdwn',
-              'text': `Great! From what I understand you want to ${verb === 'add' ? 'add to' : 'search for'} insights related to ${rest.join(' ')}. Is that correct?`
+              'text': `Great! From what I understand you want to ${verb === 'add' ? 'save' : 'search for'} Key Learnings. Is that correct?`
             }
           }, {
           'type': 'actions',
