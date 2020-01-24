@@ -24,7 +24,17 @@ function addKeyLearning({
   return db
     .collection('keyLearnings')
     .doc()
-    .set({topic, keyLearning, guidingContext, topic, client, clientTags, industryTags, createdBy, relatedThemes, createdAt: new Date() })
+    .set({
+      topic, 
+      keyLearning, 
+      guidingContext, 
+      client, 
+      clientTags: clientTags.map(tag => sanitize(tag)), 
+      industryTags: industryTags.map(tag => sanitize(tag)), 
+      createdBy, 
+      relatedThemes: relatedThemes.map(tag => sanitize(tag)),
+      createdAt: new Date() 
+  })
 }
 
 function addTag({tag}, type) {
@@ -49,16 +59,14 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   console.log('-----> clientTags', clientTags)
   console.log('-----> industryTags', industryTags)
 
-  
-  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags)
+  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
 
   if (industryTags.length > 0) {
-    queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags)
+    queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag))
   }
 
   if (clientTags.length > 0) {
-    queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags)
-
+    queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag))
   }
 
   const results = []
