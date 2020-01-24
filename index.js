@@ -305,7 +305,6 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
     });
   } else {
     // We know what the user meant. So we continue with the interaction flow.
-        const [, ...rest] = commandText.split(' ');
     // Push the response to Slack.
     fetch(responseUrl, {
       method: 'POST',
@@ -316,7 +315,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
             'type': 'section',
             'text': {
               'type': 'mrkdwn',
-              'text': `Great! From what I understand you want to ${verb === 'add' ? 'add to' : 'search for'} insights related to ${rest.join(' ')}. Is that correct?`
+              'text': `Great! From what I understand you want to ${verb === 'add' ? 'save' : 'search for'} Key Learnings. Is that correct?`
             }
           }, {
           'type': 'actions',
@@ -510,7 +509,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Gotcha. Feel free to call me again anytime like so: \`/dejavu add\` or \`/dejavu [add, search]\``
+              text: `Gotcha. Feel free to call me again anytime like so: \`/dejavu add\` or \`/dejavu search\``
             }
           }
         ]
