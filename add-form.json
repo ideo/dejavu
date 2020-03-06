@@ -121,17 +121,19 @@
     {
       "type": "input",
       "optional": true,
-      "element": {
-        "type": "plain_text_input",
-        "action_id": "relatedThemes",
-        "placeholder": {
-          "type": "plain_text",
-          "text": "What are some related themes?"
-        }
-      },
       "label": {
         "type": "plain_text",
         "text": "Related Themes"
+      },
+      "element": {
+        "type": "multi_static_select",
+        "action_id": "relatedThemes",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Choose from a list of existing related themes.",
+          "emoji": true
+        },
+        "options": []
       }
     },
     {
@@ -139,16 +141,16 @@
       "optional": true,
       "element": {
         "type": "plain_text_input",
-        "action_id": "client",
+        "action_id": "otherRelatedThemes",
         "placeholder": {
           "type": "plain_text",
-          "text": "Who is the client on this project?"
+          "text": "Add new Industry tag(s) separated by commas."
         }
       },
       "label": {
         "type": "plain_text",
-        "text": "Client"
+        "text": "Add new Industry Tags. \nIf you didn't find relevant industry tags above, add them here separated by commas. They will show up in future searches."
       }
-    }
+    },
   ]
 }

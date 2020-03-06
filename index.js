@@ -90,11 +90,13 @@ async function createInsightsCollectionForm(collectionTemplate) {
   const form = Object.assign({}, collectionTemplate);
   const clientTags = []
   const industryTags = []
+  const themeTags = []
 
-  const [clientTagsQuerySnapshot, industryTagsQuerySnapshot] = await Promise.all([getClientTags(), getIndustryTags()])
+  const [clientTagsQuerySnapshot, industryTagsQuerySnapshot, themeTagsQuerySnapshot] = await Promise.all([getClientTags(), getIndustryTags(), getThemeTags()])
 
   populateTagData(clientTagsQuerySnapshot, clientTags)
   populateTagData(industryTagsQuerySnapshot, industryTags)
+  populateTagData(themeTagsQuerySnapshot, themeTags)
 
   form.blocks[2].element.options = clientTags.map(tag => (
     {
@@ -117,6 +119,17 @@ async function createInsightsCollectionForm(collectionTemplate) {
       "value": tag
     }
   ))
+  
+  form.blocks[6].element.options = industryTags.map(tag => (
+    {
+      "text": {
+        "type": "plain_text",
+        "text": tag,
+        "emoji": true
+      },
+      "value": tag
+    }
+  ))
 
   // form.blocks[0].elements[0].text = `Topic: ${topic}`
   return Promise.resolve(form)
@@ -127,8 +140,8 @@ async function createInsightsSearchForm(searchTemplate) {
   const industryTags = []
   const clientTags = []
   const themeTags = []
-
   const [industryTagsQuerySnapshot, clientTagsQuerySnapshot, themeTagsQuerySnapshot] = await Promise.all([getIndustryTags(), getClientTags(), getThemeTags()])
+
 
   populateTagData(industryTagsQuerySnapshot, industryTags)
   populateTagData(clientTagsQuerySnapshot, clientTags)
