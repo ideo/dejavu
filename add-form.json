@@ -127,7 +127,7 @@
       },
       "element": {
         "type": "multi_static_select",
-        "action_id": "relatedThemes",
+        "action_id": "relatedThemeTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Choose from a list of existing related themes.",
@@ -141,7 +141,7 @@
       "optional": true,
       "element": {
         "type": "plain_text_input",
-        "action_id": "otherRelatedThemes",
+        "action_id": "otherRelatedThemeTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Add new Related themes(s) separated by commas."

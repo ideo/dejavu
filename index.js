@@ -131,7 +131,6 @@ async function createInsightsCollectionForm(collectionTemplate) {
     }
   ))
 
-  // form.blocks[0].elements[0].text = `Topic: ${topic}`
   return Promise.resolve(form)
 }
 
@@ -613,7 +612,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               },
               {
                 "type": "button",
-                "action_id": "load_next_batch",
+                "action_id": "load_next_batch", 
                 "text": {
                   "type": "plain_text",
                   "emoji": true,
@@ -661,22 +660,22 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         
         const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
         const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
+        const predefinedRelatedThemeTags = submissionData.relatedThemes ? submissionData.relatedThemeTags.map(({value}) => value) : []
   
         const newIndustryTags = submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : []
         const newClientTags = submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : []
-  
+        const newRelatedThemeTags = submissionData.otherRelatedThemes ? submissionData.otherRelatedThemeTags.split(',') : []
+        
         const clientTags = [...predefinedClientTags, ...newClientTags]
         const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
-        
-        const relatedThemes = (submissionData.relatedThemes && submissionData.relatedThemes.length > 0) ? submissionData.relatedThemes.split(',') : []
+        const relatedThemeTags = [...predefinedRelatedThemeTags, ...newRelatedThemeTags]
 
         const insightPayload = {
           keyLearning: submissionData.keyLearning,
           guidingContext: submissionData.context,
           clientTags: clientTags.map(sanitize),
           industryTags: industryTags.map(sanitize),
-          relatedThemes: relatedThemes.map(sanitize),
-          client: submissionData.client,
+          relatedThemeTags: relatedThemeTags.map(sanitize),
           createdBy: cachedUserName || ''
         }
                 
@@ -684,7 +683,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           addKeyLearning.bind(null, insightPayload),
           ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
           ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client')),
-          ...newClientTags.map(tag => addTag.bind(null, {tag}, 'theme'))
+          ...newRelatedThemeTags.map(tag => addTag.bind(null, {tag}, 'theme'))
         ]
         
         const dbCallPromises = dbCalls.map(dbCall => dbCall())
@@ -693,7 +692,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           .then((res) => {
             console.log('Successfully performed one or more DB writes ', res)
           }).catch(e => {
-            console.log('Failed  to perform one  or more DB writes: ', e)
+            console.log('Failed to perform one or more DB writes: ', e)
           })
       
       }).catch((e) => {
