@@ -144,12 +144,12 @@
         "action_id": "otherRelatedThemes",
         "placeholder": {
           "type": "plain_text",
-          "text": "Add new Industry tag(s) separated by commas."
+          "text": "Add new Related themes(s) separated by commas."
         }
       },
       "label": {
         "type": "plain_text",
-        "text": "Add new Industry Tags. \nIf you didn't find relevant industry tags above, add them here separated by commas. They will show up in future searches."
+        "text": "Add new Related themes. \nIf you didn't find relevant related themes above, add them here separated by commas. They will show up in future searches."
       }
     }
   ]
