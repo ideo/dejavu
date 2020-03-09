@@ -66,7 +66,7 @@ let cachedResponseUrl = null
 
 function flatten(arr) {
   let obj = {}
-  const keys = ['keyLearning', 'context', 'otherClientTags', 'otherIndustryTags', 'client', 'clientTags', 'industryTags', 'relatedThemes']
+  const keys = ['keyLearning', 'context', 'newClientTags', 'newIndustryTags', 'newRelatedThemeTags', 'predefinedClientTags', 'predefinedIndustryTags', 'predefinedRelatedThemeTags', 'createdBy', 'createdAt']
   arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
@@ -538,6 +538,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const submissionData = flatten(submissionPayload)
 
     console.log('-----> submissionData', JSON.stringify(submissionData))
+    console.log('-----> submissionPayload', JSON.stringify(submissionPayload))
 
     if (viewTitle.includes('search')) {
       // search modal was submitted
@@ -675,7 +676,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           guidingContext: submissionData.context,
           clientTags: clientTags.map(sanitize),
           industryTags: industryTags.map(sanitize),
-          relatedThemeTags: relatedThemeTags.map(sanitize),
+          relatedThemes: relatedThemes.map(sanitize),
           createdBy: cachedUserName || ''
         }
                 

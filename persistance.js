@@ -27,7 +27,7 @@ function addKeyLearning({
       guidingContext,  
       clientTags, 
       industryTags, 
-      relatedThemeTags,
+      relatedThemes,
       createdBy, 
       createdAt: new Date() 
   })
