@@ -676,7 +676,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           guidingContext: submissionData.context,
           clientTags: clientTags.map(sanitize),
           industryTags: industryTags.map(sanitize),
-          relatedThemes: relatedThemes.map(sanitize),
+          relatedThemes: relatedThemeTags.map(sanitize),
           createdBy: cachedUserName || ''
         }
                 

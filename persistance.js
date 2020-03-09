@@ -17,7 +17,7 @@ function addKeyLearning({
   guidingContext = '', 
   clientTags = [], 
   industryTags = [], 
-  relatedThemeTags = [] }) {
+  relatedThemes = [] }) {
 
   return db
     .collection('keyLearnings')
