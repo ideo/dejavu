@@ -120,7 +120,7 @@ async function createInsightsCollectionForm(collectionTemplate) {
     }
   ))
   
-  form.blocks[6].element.options = industryTags.map(tag => (
+  form.blocks[6].element.options = themeTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
