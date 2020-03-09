@@ -76,12 +76,12 @@
         "action_id": "otherClientTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Add new client name(s) separated by commas."
+          "text": "Add a new client name"
         }
       },
       "label": {
         "type": "plain_text",
-        "text": "Add new client(s). \nIf you did not find your client name above, add it below and it will show up in future searches."
+        "text": "Add new client. \nIf you did not find your client name above, add it below and it will show up in future searches."
       }
     },
     {
@@ -96,7 +96,7 @@
         "action_id": "industryTags",
         "placeholder": {
           "type": "plain_text",
-          "text": "Choose from a list of existing client tags.",
+          "text": "Choose from a list of existing industry tags.",
           "emoji": true
         },
         "options": []
