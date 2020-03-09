@@ -537,15 +537,18 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const submissionPayload = Object.values(parsedPayload.view.state.values);
     const submissionData = flatten(submissionPayload)
 
-    console.log('-----> submissionData', JSON.stringify(submissionData))
-    console.log('-----> submissionPayload', JSON.stringify(submissionPayload))
-
     if (viewTitle.includes('search')) {
+      
+      console.log('\n ----- search ------ \n');
+      console.log(JSON.stringify(submissionData))
+
+      
       // search modal was submitted
       const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
       const clientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
       const themeTags = submissionData.relatedThemes ? submissionData.relatedThemes.map(({value}) => value) : []
-      
+
+
       searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(({ results }) => {
           
