@@ -98,7 +98,7 @@ async function createInsightsCollectionForm(collectionTemplate) {
   populateTagData(industryTagsQuerySnapshot, industryTags)
   populateTagData(themeTagsQuerySnapshot, themeTags)
 
-  form.blocks[2].element.options = clientTags.map(tag => (
+  form.blocks[3].element.options = clientTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
@@ -109,7 +109,7 @@ async function createInsightsCollectionForm(collectionTemplate) {
     }
   ))
 
-  form.blocks[4].element.options = industryTags.map(tag => (
+  form.blocks[5].element.options = industryTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
@@ -120,7 +120,7 @@ async function createInsightsCollectionForm(collectionTemplate) {
     }
   ))
   
-  form.blocks[6].element.options = themeTags.map(tag => (
+  form.blocks[7].element.options = themeTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
