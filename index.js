@@ -541,13 +541,11 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       
       console.log('\n ----- search ------ \n');
       console.log(JSON.stringify(submissionData))
-
       
       // search modal was submitted
-      const industryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
-      const clientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
-      const themeTags = submissionData.relatedThemes ? submissionData.relatedThemes.map(({value}) => value) : []
-
+      const industryTags = submissionData.predefinedIndustryTags ? submissionData.predefinedIndustryTags.map(({value}) => value) : []
+      const clientTags = submissionData.predefinedClientTags ? submissionData.predefinedClientTags.map(({value}) => value) : []
+      const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({value}) => value) : []
 
       searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(({ results }) => {
