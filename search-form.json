@@ -25,7 +25,7 @@
       },
       "element": {
         "type": "static_select",
-        "action_id": "industryTags",
+        "action_id": "predefinedIndustryTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Select industry tags",
@@ -43,7 +43,7 @@
       },
       "element": {
         "type": "static_select",
-        "action_id": "clientTags",
+        "action_id": "predefinedClientTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Select client",
@@ -61,7 +61,7 @@
       },
       "element": {
         "type": "multi_static_select",
-        "action_id": "relatedThemes",
+        "action_id": "predefinedRelatedThemeTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Select related themes",
