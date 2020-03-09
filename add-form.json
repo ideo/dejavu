@@ -59,7 +59,7 @@
       },
       "element": {
         "type": "multi_static_select",
-        "action_id": "clientTags",
+        "action_id": "predefinedClientTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Choose from a list of existing clients",
@@ -73,7 +73,7 @@
       "optional": true,
       "element": {
         "type": "plain_text_input",
-        "action_id": "otherClientTags",
+        "action_id": "newClientTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Add a new client name"
@@ -93,7 +93,7 @@
       },
       "element": {
         "type": "multi_static_select",
-        "action_id": "industryTags",
+        "action_id": "predefinedIndustryTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Choose from a list of existing industry tags.",
@@ -107,7 +107,7 @@
       "optional": true,
       "element": {
         "type": "plain_text_input",
-        "action_id": "otherIndustryTags",
+        "action_id": "newIndustryTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Add new Industry tag(s) separated by commas."
@@ -127,7 +127,7 @@
       },
       "element": {
         "type": "multi_static_select",
-        "action_id": "relatedThemeTags",
+        "action_id": "predefinedRelatedThemeTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Choose from a list of existing related themes.",
@@ -141,7 +141,7 @@
       "optional": true,
       "element": {
         "type": "plain_text_input",
-        "action_id": "otherRelatedThemeTags",
+        "action_id": "newRelatedThemeTags",
         "placeholder": {
           "type": "plain_text",
           "text": "Add new Related themes(s) separated by commas."

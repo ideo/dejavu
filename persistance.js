@@ -13,26 +13,22 @@ function sanitize(inputString) {
 
 function addKeyLearning({
   createdBy = '',
-  topic = '',
   keyLearning = '',
-  client = '',
   guidingContext = '', 
   clientTags = [], 
   industryTags = [], 
-  relatedThemes = [] }) {
+  relatedThemeTags = [] }) {
 
   return db
     .collection('keyLearnings')
     .doc()
     .set({
-      topic, 
       keyLearning, 
-      guidingContext, 
-      client, 
-      clientTags: clientTags.map(tag => sanitize(tag)), 
-      industryTags: industryTags.map(tag => sanitize(tag)), 
+      guidingContext,  
+      clientTags, 
+      industryTags, 
+      relatedThemeTags,
       createdBy, 
-      relatedThemes: relatedThemes.map(tag => sanitize(tag)),
       createdAt: new Date() 
   })
 }

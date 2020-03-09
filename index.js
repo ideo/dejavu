@@ -658,13 +658,13 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         process.env.botToken
       ).then(() => {
         
-        const predefinedIndustryTags = submissionData.industryTags ? submissionData.industryTags.map(({value}) => value) : []
-        const predefinedClientTags = submissionData.clientTags ? submissionData.clientTags.map(({value}) => value) : []
-        const predefinedRelatedThemeTags = submissionData.relatedThemes ? submissionData.relatedThemeTags.map(({value}) => value) : []
+        const predefinedClientTags = submissionData.predefinedClientTags ? submissionData.predefinedClientTags.map(({value}) => value) : []
+        const predefinedIndustryTags = submissionData.predefinedIndustryTags ? submissionData.predefinedIndustryTags.map(({value}) => value) : []
+        const predefinedRelatedThemeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({value}) => value) : []
   
-        const newIndustryTags = submissionData.otherIndustryTags ? submissionData.otherIndustryTags.split(',') : []
-        const newClientTags = submissionData.otherClientTags ? submissionData.otherClientTags.split(',') : []
-        const newRelatedThemeTags = submissionData.otherRelatedThemes ? submissionData.otherRelatedThemeTags.split(',') : []
+        const newClientTags = submissionData.newClientTags ? submissionData.newClientTags.split(',') : []
+        const newIndustryTags = submissionData.newIndustryTags ? submissionData.newIndustryTags.split(',') : []
+        const newRelatedThemeTags = submissionData.newRelatedThemeTags ? submissionData.newRelatedThemeTags.split(',') : []
         
         const clientTags = [...predefinedClientTags, ...newClientTags]
         const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
