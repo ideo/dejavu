@@ -538,10 +538,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const submissionData = flatten(submissionPayload)
 
     if (viewTitle.includes('search')) {
-      
-      console.log('\n ----- search ------ \n');
-      console.log(JSON.stringify(submissionData))
-      
+            
       // search modal was submitted
       const industryTags = submissionData.predefinedIndustryTags ? submissionData.predefinedIndustryTags.map(({value}) => value) : []
       const clientTags = submissionData.predefinedClientTags ? submissionData.predefinedClientTags.map(({value}) => value) : []
@@ -550,13 +547,17 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(({ results }) => {
           
+          let message = result.length > 0 
+            ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
+            : `Déjà could not find any reaults for this search. Try other keywords?`
+
           const responseBody = {
             blocks: [
               {
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": `Déjà vu found the following insights based on your search criteria:`
+                  "text": message
                 }
               },
               {
@@ -647,7 +648,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Great! You Key Learning has beedn saved.`
+              text: `Great! You Key Learning has been saved.`
             }
           }
         ]

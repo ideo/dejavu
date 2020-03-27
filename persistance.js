@@ -68,7 +68,10 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   const results = []
 
   return new Promise((resolve, reject) => {
-    queryRef.limit(5).get().then(querySnapshot => {
+    queryRef.get().then(querySnapshot => {
+      if (querySnapshot.empty) {
+        console.log('No matching documents. 😞');
+      } 
       querySnapshot.forEach(doc => {
         results.push(doc.data())
       })
