@@ -90,7 +90,7 @@
       },
       "label": {
         "type": "plain_text",
-        "text": "Add new client. \nIf you did not find your client name above, add it below and it will show up in future searches."
+        "text": "If you did not find your client name above, add it below and it will show up in future searches."
       }
     },
     {
@@ -124,7 +124,7 @@
       },
       "label": {
         "type": "plain_text",
-        "text": "Add new Industry Tags. \nIf you didn't find relevant industry tags above, add them here separated by commas. They will show up in future searches."
+        "text": "If you didn't find relevant industry tags above, add them here separated by commas. They will show up in future searches."
       }
     },
     {
@@ -158,7 +158,7 @@
       },
       "label": {
         "type": "plain_text",
-        "text": "Add new Related themes. \nIf you didn't find relevant related themes above, add them here separated by commas. They will show up in future searches."
+        "text": "If you didn't find relevant related themes above, add them here separated by commas. They will show up in future searches."
       }
     }
   ]
