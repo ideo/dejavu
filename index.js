@@ -648,7 +648,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Great! You Key Learning has been saved.`
+              text: `Great! Your Key Learning has been saved.`
             }
           }
         ]
