@@ -77,6 +77,8 @@ function flatten(arr) {
       }
     })
   })
+
+  console.log('\n \n obj is: ', obj, '\n \n')
   return obj
 }
 
