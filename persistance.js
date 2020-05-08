@@ -55,19 +55,22 @@ function dedupeById(results) {
 
 function tryQuery(query, outputArray, nextQueries = []) {
 
-  return query.get().then(querySnapshot => {
-    if (querySnapshot.empty) {
-      console.log('No results found for query ', query)
-    }
-    querySnapshot.forEach(doc => {
-      outputArray.push(doc.data())
+  return Promise.all([
+    query,
+    ...nextQueries
+  ]).then(querySnapshots => {
+    const results = []
+
+    querySnapshots.forEach(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        results.push(doc.data())
+      })
     })
-    const _nextQueries = [...nextQueries]
-    const _nextQuery = _nextQueries.shift()
-    if (_nextQuery) {
-      return tryQuery(_nextQuery, outputArray, _nextQueries)
-    }
-  }).catch(e => console.log('🚩Query failed ', e))
+
+    return results
+  }).catch(e => {
+    console.log('🚩Query failed ', e)
+  })
 
 }
 

@@ -558,7 +558,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
 
       searchForKeyLearning({ industryTags, clientTags, themeTags })
-        .then(({ results }) => {
+        .then(results => {
+          console.log('-> results: ', results)
           
           let message = results.length > 0 
             ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
