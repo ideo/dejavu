@@ -65,11 +65,13 @@ const ACTIONS = {
 let cachedResponseUrl = null
 
 function flatten(arr) {
+  console.log('\n \n flatten input', arr, '\n \n')
   let obj = {}
   const keys = ['keyLearning', 'context', 'newClientTags', 'newIndustryTags', 'newRelatedThemeTags', 'predefinedClientTags', 'predefinedIndustryTags', 'predefinedRelatedThemeTags', 'createdBy', 'createdAt']
   arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
+        console.log('\n \n ----> KEY IS IN ELEMENT', element[key], element, key , '\n \n' )
         let value = element[key].value || element[key].selected_options || null
         obj[key] = value
       }
