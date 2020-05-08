@@ -407,7 +407,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   } = req;
   
   const parsedPayload = JSON.parse(payload);
-  console.log('payload --------> ', payload)
+  // console.log('payload --------> ', payload)
   const { type, response_url: responseUrl } = parsedPayload;
 
   if (responseUrl) {
@@ -549,8 +549,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     // add modal was submitted
     const submissionPayload = Object.values(parsedPayload.view.state.values);
     const submissionData = flatten(submissionPayload)
-    console.log('\n \n Submission Data ', submissionData, '\n \n')
-    console.log('\n \n Submission Payload ', submissionPayload, '\n \n')
     if (viewTitle.includes('search')) {
             
       // search modal was submitted

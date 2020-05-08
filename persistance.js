@@ -77,7 +77,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     '🔎\nSearching for key learning with themeTags: ', 
     themeTags, 
     '\nclient tags: ', 
-    clientTage, 
+    clientTags, 
     '\nindustryTags: ', 
     industryTags
   )
