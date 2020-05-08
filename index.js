@@ -67,7 +67,19 @@ let cachedResponseUrl = null
 function flatten(arr) {
   console.log('\n \n flatten input', arr, '\n \n')
   let obj = {}
-  const keys = ['keyLearning', 'context', 'newClientTags', 'newIndustryTags', 'newRelatedThemeTags', 'predefinedClientTags', 'predefinedIndustryTags', 'predefinedRelatedThemeTags', 'createdBy', 'createdAt']
+  const keys = [
+    'keyLearning', 
+    'context', 
+    'newClientTags', 
+    'newIndustryTags', 
+    'newRelatedThemeTags', 
+    'predefinedClientTags', 
+    'predefinedIndustryTags', 
+    'predefinedRelatedThemeTags', 
+    'createdBy', 
+    'createdAt'
+  ]
+
   arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
@@ -545,9 +557,9 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     if (viewTitle.includes('search')) {
             
       // search modal was submitted
-      const industryTags = submissionData.predefinedIndustryTags ? submissionData.predefinedIndustryTags.map(({value}) => value) : []
-      const clientTags = submissionData.predefinedClientTags ? submissionData.predefinedClientTags.map(({value}) => value) : []
       const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({value}) => value) : []
+      const industryTags = submissionData.predefinedIndustryTags ? [submissionData.predefinedIndustryTags] : []
+      const clientTags = submissionData.predefinedClientTags ? [submissionData.predefinedClientTags] : []
 
       console.log('index.js ----> client tags: ', clientTags, '\n', submissionData.predefinedClientTags )
       console.log('index.js ----> themeTags tags: ', themeTags, '\n', submissionData.predefinedRelatedThemeTags )
