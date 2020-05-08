@@ -67,14 +67,20 @@ function tryQuery(query, outputArray, nextQueries = []) {
     if (_nextQuery) {
       return tryQuery(_nextQuery, outputArray, _nextQueries)
     }
-  }).catch(e => console.log('Query:', query , 'failed ', e))
+  }).catch(e => console.log('🚩Query failed ', e))
 
 }
 
 function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
-  console.log('-----> themeTags', themeTags)
-  console.log('-----> clientTags', clientTags)
-  console.log('-----> industryTags', industryTags)
+  
+  console.log(
+    '🔎\nSearching for key learning with themeTags: ', 
+    themeTags, 
+    '\nclient tags: ', 
+    clientTage, 
+    '\nindustryTags: ', 
+    industryTags
+  )
 
   const results = [
     /* 1. everything that matches all present criteria  */

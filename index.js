@@ -65,7 +65,6 @@ const ACTIONS = {
 let cachedResponseUrl = null
 
 function flatten(arr) {
-  console.log('\n \n flatten input', arr, '\n \n')
   let obj = {}
   const keys = [
     'keyLearning', 
@@ -83,14 +82,12 @@ function flatten(arr) {
   arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
-        console.log('\n \n ----> KEY IS IN ELEMENT', element[key], element, key , element[key].value, element[key].selected_options, (element[key].selected_option && element[key].selected_option.value),  '\n \n' )
         let value = element[key].value || element[key].selected_options || (element[key].selected_option && element[key].selected_option.value)  || null
         obj[key] = value
       }
     })
   })
 
-  console.log('\n \n obj is: ', obj, '\n \n')
   return obj
 }
 
@@ -561,9 +558,6 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       const industryTags = submissionData.predefinedIndustryTags ? [submissionData.predefinedIndustryTags] : []
       const clientTags = submissionData.predefinedClientTags ? [submissionData.predefinedClientTags] : []
 
-      console.log('index.js ----> client tags: ', clientTags, '\n', submissionData.predefinedClientTags )
-      console.log('index.js ----> themeTags tags: ', themeTags, '\n', submissionData.predefinedRelatedThemeTags )
-      console.log('index.js ----> industryTags tags: ', industryTags, '\n', submissionData.predefinedIndustryTags )
 
       searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(({ results }) => {
