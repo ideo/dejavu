@@ -544,6 +544,10 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       const clientTags = submissionData.predefinedClientTags ? submissionData.predefinedClientTags.map(({value}) => value) : []
       const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({value}) => value) : []
 
+      console.log('index.js ----> client tags: ', clientTags, '\n', submissionData.predefinedClientTags )
+      console.log('index.js ----> themeTags tags: ', themeTags, '\n', submissionData.predefinedRelatedThemeTags )
+      console.log('index.js ----> industryTags tags: ', industryTags, '\n', submissionData.predefinedIndustryTags )
+
       searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(({ results }) => {
           
