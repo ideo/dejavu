@@ -48,36 +48,68 @@ function addTag({tag}, type) {
     .set({tag})
 }
 
-function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
-  const keyLearningsRef = db.collection('keyLearnings')
+function dedupeById(results) {
+  // TODO: use the `id` attribute to dedupe this list, and return it.
+  return results
+}
 
+function tryQuery(query, outputArray, nextQueries = []) {
+
+  return query.get().then(querySnapshot => {
+    if (querySnapshot.empty) {
+      console.log('No results found for query ', query)
+    }
+    querySnapshot.forEach(doc => {
+      outputArray.push(doc.data())
+    })
+    const _nextQueries = [...nextQueries]
+    const _nextQuery = _nextQueries.shift()
+    if (_nextQuery) {
+      return tryQuery(_nextQuery, outputArray, _nextQueries)
+    }
+  }).catch(e => console.log('Query:', query , 'failed ', e))
+
+}
+
+function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
   console.log('-----> themeTags', themeTags)
   console.log('-----> clientTags', clientTags)
   console.log('-----> industryTags', industryTags)
 
-  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
+  const results = [
+    /* 1. everything that matches all present criteria  */
+    /* 2. everything that matches theme and industry criteria  */
+    /* 3. everything that matches theme and client criteria   */
+    /* 4. everything that matches theme criteria only */
+  ]
 
-  if (industryTags.length > 0) {
-    queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
+  const keyLearningsRef = db.collection('keyLearnings')
+
+  let relatedThemeQuery = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
+  let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+  let relatedThemeIndustryQuery = relatedThemeQuery.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
+  let compoundQuery = relatedThemeIndustryQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+
+  let hasClientTags = clientTags.length > 0
+  let hasIndustryTags = industryTags.length > 0
+
+  let nextQueriesArray = []
+  
+  if (hasIndustryTags) {
+    nextQueriesArray.push(relatedThemeIndustryQuery)
   }
 
-  if (clientTags.length > 0) {
-    queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+  if (hasClientTags) {
+    nextQueriesArray.push(relatedThemeClientQuery)
   }
 
-  const results = []
+  nextQueriesArray.push(relatedThemeQuery)
 
-  return new Promise((resolve, reject) => {
-    queryRef.get().then(querySnapshot => {
-      if (querySnapshot.empty) {
-        console.log('No matching documents. 😞');
-      } 
-      querySnapshot.forEach(doc => {
-        results.push(doc.data())
-      })
-      resolve({ results })
-    }).catch(e => reject(e))
-  })
+  // 1. perform the query with all criteria
+  return tryQuery(compoundQuery, results, nextQueriesArray)
+  
+  // TODO: if the query didn't return any result, change the language to say: "We found no results for all your criteria. These results meet some of your criteria:"
+
 } 
 
 function getClientTags() {
