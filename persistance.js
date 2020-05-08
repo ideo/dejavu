@@ -3,7 +3,7 @@ const admin = require('firebase-admin');
 
 let serviceAccount = require(path.join(__dirname, './google-credentials-heroku.json'))
 
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount)});
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 
 let db = admin.firestore()
 
@@ -14,26 +14,26 @@ function sanitize(inputString) {
 function addKeyLearning({
   createdBy = '',
   keyLearning = '',
-  guidingContext = '', 
-  clientTags = [], 
-  industryTags = [], 
+  guidingContext = '',
+  clientTags = [],
+  industryTags = [],
   relatedThemes = [] }) {
 
   return db
     .collection('keyLearnings')
     .doc()
     .set({
-      keyLearning, 
-      guidingContext,  
-      clientTags, 
-      industryTags, 
+      keyLearning,
+      guidingContext,
+      clientTags,
+      industryTags,
       relatedThemes,
-      createdBy, 
-      createdAt: new Date() 
-  })
+      createdBy,
+      createdAt: new Date()
+    })
 }
 
-function addTag({tag}, type) {
+function addTag({ tag }, type) {
   const validTypes = ['client', 'industry', 'theme']
 
   if (!validTypes.includes(type)) {
@@ -45,7 +45,7 @@ function addTag({tag}, type) {
   return db
     .collection(COLLECTIONS_MAP[type])
     .doc()
-    .set({tag})
+    .set({ tag })
 }
 
 function dedupeById(results) {
@@ -63,11 +63,12 @@ function tryQuery(query, outputArray, nextQueries = []) {
 
     querySnapshots.forEach(querySnapshot => {
       if (querySnapshot && querySnapshot.length) {
+        console.log(querySnapshot)
         querySnapshot.forEach(doc => {
           results.push(doc.data())
         })
-      } 
-      
+      }
+
     })
 
     return results
@@ -78,13 +79,13 @@ function tryQuery(query, outputArray, nextQueries = []) {
 }
 
 function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
-  
+
   console.log(
-    '🔎\nSearching for key learning with themeTags: ', 
-    themeTags, 
-    '\nclient tags: ', 
-    clientTags, 
-    '\nindustryTags: ', 
+    '🔎\nSearching for key learning with themeTags: ',
+    themeTags,
+    '\nclient tags: ',
+    clientTags,
+    '\nindustryTags: ',
     industryTags
   )
 
@@ -106,7 +107,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   let hasIndustryTags = industryTags.length > 0
 
   let nextQueriesArray = []
-  
+
   if (hasIndustryTags) {
     nextQueriesArray.push(relatedThemeIndustryQuery)
   }
@@ -119,10 +120,10 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
 
   // 1. perform the query with all criteria
   return tryQuery(compoundQuery, results, nextQueriesArray)
-  
+
   // TODO: if the query didn't return any result, change the language to say: "We found no results for all your criteria. These results meet some of your criteria:"
 
-} 
+}
 
 function getClientTags() {
   return db.collection('clientTags').get()
