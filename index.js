@@ -71,8 +71,8 @@ function flatten(arr) {
   arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
-        console.log('\n \n ----> KEY IS IN ELEMENT', element[key], element, key , element[key].value, element[key].selected_options,  '\n \n' )
-        let value = element[key].value || element[key].selected_options || null
+        console.log('\n \n ----> KEY IS IN ELEMENT', element[key], element, key , element[key].value, element[key].selected_options, (element[key].selected_option && element[key].selected_option.value),  '\n \n' )
+        let value = element[key].value || element[key].selected_options || (element[key].selected_option && element[key].selected_option.value)  || null
         obj[key] = value
       }
     })
