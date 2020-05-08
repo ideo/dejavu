@@ -62,9 +62,12 @@ function tryQuery(query, outputArray, nextQueries = []) {
     const results = []
 
     querySnapshots.forEach(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        results.push(doc.data())
-      })
+      if (querySnapshot && querySnapshot.length) {
+        querySnapshot.forEach(doc => {
+          results.push(doc.data())
+        })
+      } 
+      
     })
 
     return results
