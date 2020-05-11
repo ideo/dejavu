@@ -79,7 +79,7 @@ function tryQuery(query, outputArray, nextQueries = []) {
 }
 
 async function getAll() {
-  const snapshot = await firebase.firestore().collection('keyLearnings').get()
+  const snapshot = await db.collection('keyLearnings').get()
   return snapshot.docs.map(doc => doc.data());
 }
 
