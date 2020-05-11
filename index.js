@@ -609,7 +609,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                 "type": "divider"
               }]
             
-
+              console.log('--------> response body blocks \n', resultItem, '')
               responseBody.blocks.push(...resultItem)
             
           })

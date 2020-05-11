@@ -102,10 +102,10 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   ]
 
   const keyLearningsRef = db.collection('keyLearnings')
-
+  console.log('------ sanitized', themeTags.map(tag => sanitize(tag)))
   let relatedThemeQuery = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
   
-  return getAll()
+  return relatedThemeQuery.get()
   
   // let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
   // let relatedThemeIndustryQuery = relatedThemeQuery.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
