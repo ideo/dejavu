@@ -78,6 +78,11 @@ function tryQuery(query, outputArray, nextQueries = []) {
 
 }
 
+async function getAll() {
+  const snapshot = await firebase.firestore().collection('keyLearnings').get()
+  return snapshot.docs.map(doc => doc.data());
+}
+
 function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
 
   console.log(
@@ -99,28 +104,31 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   const keyLearningsRef = db.collection('keyLearnings')
 
   let relatedThemeQuery = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
-  let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
-  let relatedThemeIndustryQuery = relatedThemeQuery.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
-  let compoundQuery = relatedThemeIndustryQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+  
+  return getAll()
+  
+  // let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+  // let relatedThemeIndustryQuery = relatedThemeQuery.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
+  // let compoundQuery = relatedThemeIndustryQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
 
-  let hasClientTags = clientTags.length > 0
-  let hasIndustryTags = industryTags.length > 0
+  // let hasClientTags = clientTags.length > 0
+  // let hasIndustryTags = industryTags.length > 0
 
-  let nextQueriesArray = []
+  // let nextQueriesArray = []
 
-  if (hasIndustryTags) {
-    nextQueriesArray.push(relatedThemeIndustryQuery)
-  }
+  // if (hasIndustryTags) {
+  //   nextQueriesArray.push(relatedThemeIndustryQuery)
+  // }
 
-  if (hasClientTags) {
-    nextQueriesArray.push(relatedThemeClientQuery)
-  }
+  // if (hasClientTags) {
+  //   nextQueriesArray.push(relatedThemeClientQuery)
+  // }
 
-  nextQueriesArray.push(relatedThemeQuery)
+  // nextQueriesArray.push(relatedThemeQuery)
 
   
   // 1. perform the query with all criteria
-  return tryQuery(compoundQuery, results, nextQueriesArray)
+  // return tryQuery(compoundQuery, results, nextQueriesArray)
 
   // TODO: if the query didn't return any result, change the language to say: "We found no results for all your criteria. These results meet some of your criteria:"
 
