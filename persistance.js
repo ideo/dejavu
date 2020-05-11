@@ -129,12 +129,6 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   ).catch(e => {
     console.log('-----> failed at get: ', e)
   })
-
-  return new Promise((resolve, reject) => {
-    queryRef.get().then(
-      resolve({ results })
-    }).catch(e => reject(e))
-  })
   
   // let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
   // let relatedThemeIndustryQuery = relatedThemeQuery.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
