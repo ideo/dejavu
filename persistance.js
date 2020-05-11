@@ -109,11 +109,11 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   let hasIndustryTags = industryTags.length > 0
 
   if (hasIndustryTags) {
-    queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
+    // queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
   }
 
   if (hasClientTags) {
-    queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+    // queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
   }
 
 
