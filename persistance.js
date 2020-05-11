@@ -116,15 +116,22 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     // queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
   }
 
-
-  return new Promise((resolve, reject) => {
-    queryRef.get().then(querySnapshot => {
+  return queryRef.get().then(
+    querySnapshot => {
       if (querySnapshot.empty) {
         console.log('No matching documents. 😞');
       } 
       querySnapshot.forEach(doc => {
         results.push(doc.data())
       })
+      return results
+    }
+  ).catch(e => {
+    console.log('-----> failed at get: ', e)
+  })
+
+  return new Promise((resolve, reject) => {
+    queryRef.get().then(
       resolve({ results })
     }).catch(e => reject(e))
   })
