@@ -102,25 +102,38 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   ]
 
   const keyLearningsRef = db.collection('keyLearnings')
-  console.log('------ sanitized', themeTags.map(tag => sanitize(tag)))
-  let relatedThemeQuery = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
-  
-  return relatedThemeQuery.get().then(querySnapshot => {
-    querySnapshot.forEach(function(doc) {
-      results.push(doc.data())
-      console.log(doc.id, ' => ', doc.data());
-    });
-    return results
-  }).catch(e => {
-    console.log('-----> FAILED AT ', relatedThemeQuery.get())
+
+  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
+
+  let hasClientTags = clientTags.length > 0
+  let hasIndustryTags = industryTags.length > 0
+
+  if (hasIndustryTags) {
+    queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
+  }
+
+  if (hasClientTags) {
+    queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+  }
+
+
+  return new Promise((resolve, reject) => {
+    queryRef.get().then(querySnapshot => {
+      if (querySnapshot.empty) {
+        console.log('No matching documents. 😞');
+      } 
+      querySnapshot.forEach(doc => {
+        results.push(doc.data())
+      })
+      resolve({ results })
+    }).catch(e => reject(e))
   })
   
   // let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
   // let relatedThemeIndustryQuery = relatedThemeQuery.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
   // let compoundQuery = relatedThemeIndustryQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
 
-  // let hasClientTags = clientTags.length > 0
-  // let hasIndustryTags = industryTags.length > 0
+  
 
   // let nextQueriesArray = []
 
