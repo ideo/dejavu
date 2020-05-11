@@ -105,7 +105,15 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   console.log('------ sanitized', themeTags.map(tag => sanitize(tag)))
   let relatedThemeQuery = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
   
-  return relatedThemeQuery.get()
+  return relatedThemeQuery.get().then(querySnapshot => {
+    querySnapshot.forEach(function(doc) {
+      results.push(doc.data())
+      console.log(doc.id, ' => ', doc.data());
+    });
+    return results
+  }).catch(e => {
+    console.log('-----> FAILED AT ', relatedThemeQuery.get())
+  })
   
   // let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
   // let relatedThemeIndustryQuery = relatedThemeQuery.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
