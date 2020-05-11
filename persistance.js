@@ -108,19 +108,19 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
 
   let nextQueriesArray = []
 
-  // if (hasIndustryTags) {
-  //   nextQueriesArray.push(relatedThemeIndustryQuery)
-  // }
+  if (hasIndustryTags) {
+    nextQueriesArray.push(relatedThemeIndustryQuery)
+  }
 
-  // if (hasClientTags) {
-  //   nextQueriesArray.push(relatedThemeClientQuery)
-  // }
+  if (hasClientTags) {
+    nextQueriesArray.push(relatedThemeClientQuery)
+  }
 
   nextQueriesArray.push(relatedThemeQuery)
 
-  return relatedThemeQuery()
+  
   // 1. perform the query with all criteria
-  // return tryQuery(compoundQuery, results, nextQueriesArray)
+  return tryQuery(compoundQuery, results, nextQueriesArray)
 
   // TODO: if the query didn't return any result, change the language to say: "We found no results for all your criteria. These results meet some of your criteria:"
 
