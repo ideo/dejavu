@@ -112,17 +112,17 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
 
   const keyLearningsRef = db.collection('keyLearnings')
 
-  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
+  let queryRef = keyLearningsRef.where(`clientMap.${clientTag}`, '==', true)
 
   let hasClientTags = clientTags.length > 0
   let hasIndustryTags = industryTags.length > 0
 
   if (hasIndustryTags) {
-    queryRef = queryRef.where(`clientMap.${clientTag}`, '==', true)
+    // queryRef = queryRef.where(`clientMap.${clientTag}`, '==', true)
   }
 
   if (hasClientTags) {
-    queryRef = queryRef.where(`industryMap.${industryTag}`, '==', true)
+    // queryRef = queryRef.where(`industryMap.${industryTag}`, '==', true)
   }
 
   return queryRef.get().then(
