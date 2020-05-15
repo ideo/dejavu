@@ -94,12 +94,21 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     industryTags
   )
 
+  /* 
+    clientTags and themTags actually only ever contain 1 value. So let's 
+  */
   const results = [
     /* 1. everything that matches all present criteria  */
     /* 2. everything that matches theme and industry criteria  */
     /* 3. everything that matches theme and client criteria   */
     /* 4. everything that matches theme criteria only */
   ]
+
+  let [industryTag] =  industryTags
+  industryTag = sanitize(industryTag)
+
+  let [clientTag] =  clientTags
+  clientTag = sanitize(clientTag)
 
   const keyLearningsRef = db.collection('keyLearnings')
 
@@ -109,11 +118,11 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   let hasIndustryTags = industryTags.length > 0
 
   if (hasIndustryTags) {
-    // queryRef = queryRef.where('industryTags', 'array-contains-any', industryTags.map(tag => sanitize(tag)))
+    queryRef = queryRef.where(`clientMap.${client}`, '==', true)
   }
 
   if (hasClientTags) {
-    // queryRef = queryRef.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
+    queryRef = queryRef.where(`industryMap.${industry}`, '==', true)
   }
 
   return queryRef.get().then(
