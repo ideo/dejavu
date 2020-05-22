@@ -234,16 +234,15 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
     });
 }
 
-function performSearch({ industryTags, clientTags, themeTags, cursor, limit  }) {
+function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
   searchForKeyLearning({ industryTags, clientTags, themeTags, cursor, limit })
     .then(({ results, total }) => {
       // console.log('-> results: ', results)
-      _total = total 
-      console.log('------> count > ', total)
-      
+      _total = total
+
       let message = results.length > 0
-        ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
-        : `Déjà could not find any reaults for this search. Try other keywords?`
+        ? `Déjà vu found the  ${_total} insights based on your search criteria:`
+        : `Déjà could not find any reaults for this search, or you have reached the end of the results for this search.`
 
       const responseBody = {
         blocks: [
@@ -297,33 +296,71 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit  }) 
       /*
         Commenting out pagination for now.
       */
+      const nextBatchAction = {
+        "type": "button",
+        "action_id": "load_next_batch",
+        "text": {
+          "type": "plain_text",
+          "emoji": true,
+          "text": "Next 5 Results"
+        },
+        "value": "load_next_batch"
+      }
 
+      const prevBatchAction = {
+        "type": "button",
+        "action_id": "load_previous_batch",
+        "text": {
+          "type": "plain_text",
+          "emoji": true,
+          "text": "Previous 5 Results"
+        },
+        "value": "load_previous_batch"
+      }
 
-      responseBody.blocks.push({
+      const actionsBlock = {
         "type": "actions",
         "elements": [
-          {
-            "type": "button",
-            "action_id": "load_previous_batch",
-            "text": {
-              "type": "plain_text",
-              "emoji": true,
-              "text": "Previous 5 Results"
-            },
-            "value": "load_previous_batch"
-          },
-          {
-            "type": "button",
-            "action_id": "load_next_batch",
-            "text": {
-              "type": "plain_text",
-              "emoji": true,
-              "text": "Next 5 Results"
-            },
-            "value": "load_next_batch"
-          }
         ]
-      })
+      }
+
+      if (_cursor > 0) {
+        actionsBlock.elements.push(prevBatchAction)
+      }
+
+      if (_cursor < _total) {
+        actionsBlock.elements.push(nextBatchAction)
+      }
+
+      if (actionsBlock.elements.length > 0) {
+        responseBody.blocks.push({
+          "type": "actions",
+          "elements": [
+            {
+              "type": "button",
+              "action_id": "load_previous_batch",
+              "text": {
+                "type": "plain_text",
+                "emoji": true,
+                "text": "Previous page of results"
+              },
+              "value": "load_previous_batch"
+            },
+            {
+              "type": "button",
+              "action_id": "load_next_batch",
+              "text": {
+                "type": "plain_text",
+                "emoji": true,
+                "text": "Next batch of results"
+              },
+              "value": "load_next_batch"
+            }
+          ]
+        })
+      }
+
+
 
 
       // console.log('\n Search Result: \n', JSON.stringify(responseBody))
@@ -536,6 +573,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
     if (value === 'load_previous_batch') {
       console.log('-----> load prev batch')
+      _cursor = _cursor - _limit
+      performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit })
     } else if (value === 'load_next_batch') {
       console.log('-----> load next batch')
       _cursor = _cursor + _limit
