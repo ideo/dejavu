@@ -120,19 +120,21 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   let hasIndustryTags = industryTags.length > 0
 
   if (hasClientTags) {
-    console.log(' -> has client tags ', clientTag)
-    queryRef = queryRef.where(`clientMap.${clientTag}`, '==', true)
+    //console.log(' -> has client tags ', clientTag)
+    //queryRef = queryRef.where(`clientMap.${clientTag}`, '==', true)
   }
 
   if (hasIndustryTags) {
-    console.log(' -> has industry tags ', industryTag)
-    queryRef = queryRef.where(`industryMap.${industryTag}`, '==', true)
+    //console.log(' -> has industry tags ', industryTag)
+    //queryRef = queryRef.where(`industryMap.${industryTag}`, '==', true)
   }
 
-  return queryRef.get().then(
+  const promises = []
+
+  promises.push(queryRef.get().then(
     querySnapshot => {
       if (querySnapshot.empty) {
-        console.log('No matching documents. 😞');
+        console.log('No matching documents for key . 😞');
       } 
       querySnapshot.forEach(doc => {
         results.push(doc.data())
@@ -141,6 +143,47 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     }
   ).catch(e => {
     console.log('-----> failed at get: ', e)
+  }))
+  
+  if (hasIndustryTags) {
+    promises.push(keyLearningsRef.where(`industryMap.${industryTag}`, '==', true).then(
+      querySnapshot => {
+        if (querySnapshot.empty) {
+          console.log('No matching documents for industry map 😞');
+        } 
+        querySnapshot.forEach(doc => {
+          results.push(doc.data())
+        })
+        return results
+      }
+    ))
+  }
+
+  if (hasClientTags) {
+    promises.push(keyLearningsRef.where(`clientMap.${clientTag}`, '==', true).then(
+      querySnapshot => {
+        if (querySnapshot.empty) {
+          console.log('No matching documents for client map 😞');
+        } 
+        querySnapshot.forEach(doc => {
+          results.push(doc.data())
+        })
+        return results
+      }
+    ))
+  }
+
+  return Promise.all(promises).then(([ themes, industry, client ]) => {
+    let res = [...themes]
+    if (industry) {
+      res = [...res, ...industry]
+    }
+    if (client) {
+      res = [...res, ...client]
+    }
+    return res
+  }).catch(e => {
+    console.log('-> Promise all failed at #searchForKeyLearnings ', e)
   })
   
   // let relatedThemeClientQuery = relatedThemeQuery.where('clientTags', 'array-contains-any', clientTags.map(tag => sanitize(tag)))
