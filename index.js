@@ -559,7 +559,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
       searchForKeyLearning({ industryTags, clientTags, themeTags })
         .then(results => {
-          console.log('-> results: ', results)
+          // console.log('-> results: ', results)
           
           let message = results.length > 0 
             ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
@@ -609,7 +609,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
                 "type": "divider"
               }]
             
-              console.log('--------> response body blocks \n', resultItem, '')
+              // console.log('--------> response body blocks \n', resultItem, '')
               responseBody.blocks.push(...resultItem)
             
           })
@@ -646,7 +646,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           })
           */
           
-          console.log('\n Search Result: \n', JSON.stringify(responseBody))
+          // console.log('\n Search Result: \n', JSON.stringify(responseBody))
 
           // Push the response to Slack.
           sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)

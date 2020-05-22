@@ -1,5 +1,6 @@
 const path = require('path')
 const admin = require('firebase-admin');
+const uniqBy = require('lodash.uniqby')
 
 let serviceAccount = require(path.join(__dirname, './google-credentials-heroku.json'))
 
@@ -181,7 +182,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     if (client) {
       res = [...res, ...client]
     }
-    return res
+    return uniqBy(res, 'id')
   }).catch(e => {
     console.log('-> Promise all failed at #searchForKeyLearnings ', e)
   })
