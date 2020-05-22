@@ -146,7 +146,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   }))
   
   if (hasIndustryTags) {
-    promises.push(keyLearningsRef.where(`industryMap.${industryTag}`, '==', true).then(
+    promises.push(keyLearningsRef.where(`industryMap.${industryTag}`, '==', true).get().then(
       querySnapshot => {
         if (querySnapshot.empty) {
           console.log('No matching documents for industry map 😞');
@@ -160,7 +160,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   }
 
   if (hasClientTags) {
-    promises.push(keyLearningsRef.where(`clientMap.${clientTag}`, '==', true).then(
+    promises.push(keyLearningsRef.where(`clientMap.${clientTag}`, '==', true).get().then(
       querySnapshot => {
         if (querySnapshot.empty) {
           console.log('No matching documents for client map 😞');
