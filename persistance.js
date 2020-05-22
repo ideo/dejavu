@@ -117,7 +117,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   let hasClientTags = clientTags.length > 0
   let hasIndustryTags = industryTags.length > 0
 
-  if (hadClientTags) {
+  if (hasClientTags) {
     console.log(' -> has client tags ', clientTag)
     queryRef = queryRef.where(`clientMap.${clientTag}`, '==', true)
   }
