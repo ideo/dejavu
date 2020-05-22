@@ -66,6 +66,7 @@ let _client = null
 let _industry = null
 let _cursor = 0
 let _limit = 5
+let _total = 0
 
 // for modal.open payloads, we do get a responseURL but for modal submissions we don't.
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
@@ -235,9 +236,11 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
 
 function performSearch({ industryTags, clientTags, themeTags, cursor, limit  }) {
   searchForKeyLearning({ industryTags, clientTags, themeTags, cursor, limit })
-    .then(results => {
+    .then(({ results, count }) => {
       // console.log('-> results: ', results)
-
+      _total = count 
+      console.log('------> count > ', count)
+      
       let message = results.length > 0
         ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
         : `Déjà could not find any reaults for this search. Try other keywords?`

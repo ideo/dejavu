@@ -184,7 +184,11 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     }
     console.log('\n******** id ', res.map(({id}) => id), '\n')
     console.log('\n length w/o uniq ', res.length, ' \n length w uniq ', uniqBy(res, 'id').length, ' cursor: ', cursor, 'limit ', limit)
-    return uniqBy(res, 'id').filter((_, index) => (index >= cursor && index < (cursor + limit)))
+    const results = uniqBy(res, 'id')
+    return {
+      results: results.filter((_, index) => (index >= cursor && index < (cursor + limit))),
+      total: results.length
+    }
   }).catch(e => {
     console.log('-> Promise all failed at #searchForKeyLearnings ', e)
   })
