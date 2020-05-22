@@ -239,7 +239,8 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
     .then(({ results, total }) => {
       // console.log('-> results: ', results)
       _total = total
-
+      let message = ''
+      
       if (results.length > 0) {
         `Déjà vu found the  ${_total} insights based on your search criteria:`
       } else {
