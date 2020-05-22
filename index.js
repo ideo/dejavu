@@ -65,7 +65,7 @@ let _theme = null
 let _client = null
 let _industry = null
 let _cursor = 0
-let _limit = 3
+let _limit = 5
 let _total = 0
 
 // for modal.open payloads, we do get a responseURL but for modal submissions we don't.
@@ -239,19 +239,11 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
     .then(({ results, total }) => {
       // console.log('-> results: ', results)
       _total = total
-      let message = ''
-
-      if (results.length > 0) {
-        `Déjà vu found the  ${_total} insights based on your search criteria:`
-      } else {
-        if (_total === _cursor) {
-          message = `You have reached the end of search results.`
-        } else {
-
-          message = `Déjà could not find any reaults for this search. Try another search maybe?`
-        }
-      }
       
+      let message = results.length > 0
+        ? `Déjà vu found the  ${_total} insights based on your search criteria:`
+        : `Déjà could not find any reaults for this search, or you have reached the end of the results for this search.`
+
       const responseBody = {
         blocks: [
           {
