@@ -138,7 +138,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
         console.log('No matching documents for key . 😞');
       } 
       querySnapshot.forEach(doc => {
-        results.push(doc.data())
+        results.push(Object.assign({}, doc.data(), {id: doc.id}))
       })
       return results
     }
@@ -153,7 +153,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
           console.log('No matching documents for industry map 😞');
         } 
         querySnapshot.forEach(doc => {
-          results.push(doc.data())
+          results.push(Object.assign({}, doc.data(), {id: doc.id}))
         })
         return results
       }
@@ -167,7 +167,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
           console.log('No matching documents for client map 😞');
         } 
         querySnapshot.forEach(doc => {
-          results.push(doc.data())
+          results.push(Object.assign({}, doc.data(), {id: doc.id}))
         })
         return results
       }
