@@ -618,7 +618,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
             Commenting out pagination for now.
           */
         
-          /*
+          
           responseBody.blocks.push({
             "type": "actions",
             "elements": [
@@ -644,7 +644,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               }
             ]
           })
-          */
+          
           
           // console.log('\n Search Result: \n', JSON.stringify(responseBody))
 
