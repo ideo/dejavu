@@ -105,10 +105,13 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   ]
 
   let [industryTag] =  industryTags
-  industryTag = sanitize(industryTag)
+  if (industryTag) { industryTag = sanitize(industryTag) }
+  
 
   let [clientTag] =  clientTags
   clientTag = sanitize(clientTag)
+  if (clientTag) { clientTag = sanitize(clientTag) }
+
 
   const keyLearningsRef = db.collection('keyLearnings')
 
