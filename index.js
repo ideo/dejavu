@@ -241,8 +241,8 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
       _total = total
       
       let message = results.length > 0
-        ? `##Déjà vu found ${_total} insights based on your search criteria:`
-        : `##Déjà could not find any reaults for this search, or you have reached the end of the results for this search.`
+        ? `*Déjà vu found ${_total} insights based on your search criteria:*`
+        : `*Déjà could not find any reaults for this search, or you have reached the end of the results for this search.*`
 
       const responseBody = {
         blocks: [
