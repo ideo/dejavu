@@ -240,10 +240,17 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
       // console.log('-> results: ', results)
       _total = total
 
-      let message = results.length > 0
-        ? `Déjà vu found the  ${_total} insights based on your search criteria:`
-        : `Déjà could not find any reaults for this search, or you have reached the end of the results for this search.`
+      if (results.length > 0) {
+        `Déjà vu found the  ${_total} insights based on your search criteria:`
+      } else {
+        if (_total === _cursor) {
+          message = `You have reached the end of search results.`
+        } else {
 
+          message = `Déjà could not find any reaults for this search. Try another search maybe?`
+        }
+      }
+      
       const responseBody = {
         blocks: [
           {
@@ -302,7 +309,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
         "text": {
           "type": "plain_text",
           "emoji": true,
-          "text": "Next 5 Results"
+          "text": "Next page"
         },
         "value": "load_next_batch"
       }
@@ -313,7 +320,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
         "text": {
           "type": "plain_text",
           "emoji": true,
-          "text": "Previous 5 Results"
+          "text": "Previous page"
         },
         "value": "load_previous_batch"
       }
@@ -333,31 +340,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
       }
 
       if (actionsBlock.elements.length > 0) {
-        responseBody.blocks.push({
-          "type": "actions",
-          "elements": [
-            {
-              "type": "button",
-              "action_id": "load_previous_batch",
-              "text": {
-                "type": "plain_text",
-                "emoji": true,
-                "text": "Previous page of results"
-              },
-              "value": "load_previous_batch"
-            },
-            {
-              "type": "button",
-              "action_id": "load_next_batch",
-              "text": {
-                "type": "plain_text",
-                "emoji": true,
-                "text": "Next batch of results"
-              },
-              "value": "load_next_batch"
-            }
-          ]
-        })
+        responseBody.blocks.push(actionsBlock)
       }
 
 
