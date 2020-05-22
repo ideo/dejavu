@@ -84,7 +84,7 @@ async function getAll() {
   return snapshot.docs.map(doc => doc.data());
 }
 
-function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [] }) {
+function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [], cursor = 0, limit = 5 }) {
 
   console.log(
     '🔎\nSearching for key learning with themeTags: ',
@@ -183,8 +183,8 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
       res = [...res, ...client]
     }
     console.log('\n******** id ', res.map(({id}) => id), '\n')
-    console.log('\n length w/o uniq ', res.length, ' \n length w uniq ', uniqBy(res, 'id').length)
-    return uniqBy(res, 'id').filter((item, index) => index < 6)
+    console.log('\n length w/o uniq ', res.length, ' \n length w uniq ', uniqBy(res, 'id').length, ' cursor: ', cursor, 'limit ', limit)
+    return uniqBy(res, 'id').filter((_, index) => (index >= cursor && index < (cursor + limit)))
   }).catch(e => {
     console.log('-> Promise all failed at #searchForKeyLearnings ', e)
   })

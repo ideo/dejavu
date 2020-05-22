@@ -3,8 +3,8 @@ const { Botkit } = require('botkit');
 // Fetch
 const fetch = require('node-fetch');
 // Import data for Slack blocks
-const insightsCollectionTemplate = require('./add-form.json') 
-const insightsSearchTemplate = require('./search-form.json') 
+const insightsCollectionTemplate = require('./add-form.json')
+const insightsSearchTemplate = require('./search-form.json')
 
 // Import a platform-specific adapter for slack.
 const {
@@ -60,6 +60,13 @@ const ACTIONS = {
   VIEW_CLOSED: 'view_closed'
 }
 
+// keep these here because of pagination
+let _theme = null
+let _client = null
+let _industry = null
+let _cursor = 0
+let _limit = 5
+
 // for modal.open payloads, we do get a responseURL but for modal submissions we don't.
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
 let cachedResponseUrl = null
@@ -67,22 +74,22 @@ let cachedResponseUrl = null
 function flatten(arr) {
   let obj = {}
   const keys = [
-    'keyLearning', 
-    'context', 
-    'newClientTags', 
-    'newIndustryTags', 
-    'newRelatedThemeTags', 
-    'predefinedClientTags', 
-    'predefinedIndustryTags', 
-    'predefinedRelatedThemeTags', 
-    'createdBy', 
+    'keyLearning',
+    'context',
+    'newClientTags',
+    'newIndustryTags',
+    'newRelatedThemeTags',
+    'predefinedClientTags',
+    'predefinedIndustryTags',
+    'predefinedRelatedThemeTags',
+    'createdBy',
     'createdAt'
   ]
 
   arr.forEach((element) => {
     keys.forEach(key => {
       if (key in element) {
-        let value = element[key].value || element[key].selected_options || (element[key].selected_option && element[key].selected_option.value)  || null
+        let value = element[key].value || element[key].selected_options || (element[key].selected_option && element[key].selected_option.value) || null
         obj[key] = value
       }
     })
@@ -132,7 +139,7 @@ async function createInsightsCollectionForm(collectionTemplate) {
       "value": tag
     }
   ))
-  
+
   form.blocks[7].element.options = themeTags.map(tag => (
     {
       "text": {
@@ -214,7 +221,7 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
       } else {
         throw new Error(
           '> Message sent to slack, but it came back with a non-200 response: ' +
-            JSON.stringify(res)
+          JSON.stringify(res)
         );
       }
     })
@@ -224,6 +231,109 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
     .catch(e => {
       console.log('> Woops!', e)
     });
+}
+
+function performSearch({ industryTags, clientTags, themeTags, cursor, limit  }) {
+  searchForKeyLearning({ industryTags, clientTags, themeTags, cursor, limit })
+    .then(results => {
+      // console.log('-> results: ', results)
+
+      let message = results.length > 0
+        ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
+        : `Déjà could not find any reaults for this search. Try other keywords?`
+
+      const responseBody = {
+        blocks: [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": message
+            }
+          },
+          {
+            "type": "divider"
+          }
+        ]
+      }
+
+      results.forEach(({ createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags }, index) => {
+        const resultItem = [{
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": `*Key Learning:*\n${keyLearning}`
+          }
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `*Guiding Context:*\n${guidingContext}`
+          }
+        },
+        {
+          "type": "context",
+          "elements": [
+            {
+              "type": "plain_text",
+              "emoji": true,
+              "text": `\n💼 Client: ${clientTags.join(', ')}\n\n🏷 Industry Tags: ${industryTags.join(', ')}\n\n📝 Related Themes: ${relatedThemes.join(',')}\n\n👩🏽‍Added By: ${createdBy}\n\n🗓 Recorded at: ${createdAt.toDate().toString()}`
+            }
+          ]
+        },
+        {
+          "type": "divider"
+        }]
+
+        // console.log('--------> response body blocks \n', resultItem, '')
+        responseBody.blocks.push(...resultItem)
+
+      })
+
+      /*
+        Commenting out pagination for now.
+      */
+
+
+      responseBody.blocks.push({
+        "type": "actions",
+        "elements": [
+          {
+            "type": "button",
+            "action_id": "load_previous_batch",
+            "text": {
+              "type": "plain_text",
+              "emoji": true,
+              "text": "Previous 5 Results"
+            },
+            "value": "load_previous_batch"
+          },
+          {
+            "type": "button",
+            "action_id": "load_next_batch",
+            "text": {
+              "type": "plain_text",
+              "emoji": true,
+              "text": "Next 5 Results"
+            },
+            "value": "load_next_batch"
+          }
+        ]
+      })
+
+
+      // console.log('\n Search Result: \n', JSON.stringify(responseBody))
+
+      // Push the response to Slack.
+      sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
+
+
+    })
+    .catch(e => {
+      console.log('Failed at search: ', e)
+    })
+
 }
 
 /* 
@@ -306,19 +416,20 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
               'text': `Woops, my bad. I can only understand the following tasks: add, search like so: \n \`/dejavu add\` or \`/dejavu search\``
             }
           }
-        ]}),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      })
+        ]
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(res => {
         if (res.status === 200) {
           return true;
         } else {
           throw new Error(
             '> Message sent to slack, but it came back with a non-200 response: ' +
-              JSON.stringify(res)
+            JSON.stringify(res)
           );
         }
       })
@@ -327,7 +438,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
       })
       .catch(e => {
         console.log('> Woops!', e);
-    });
+      });
   } else {
     // We know what the user meant. So we continue with the interaction flow.
     // Push the response to Slack.
@@ -343,53 +454,54 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
               'text': `Great! From what I understand you want to ${verb === 'add' ? 'save' : 'search for'} Key Learnings. Is that correct?`
             }
           }, {
-          'type': 'actions',
-          'block_id': 'dejavu-intent-confirmation-buttons-block',
-          'elements': [
-            {
-              'type': 'button',
-              'value': 'true',
-              'style': 'primary',
-              'action_id': 'dejavu-intent-confirmation-buttons-true',
-              'text': {
-                'type': 'plain_text',
-                'text': 'Yep!'
+            'type': 'actions',
+            'block_id': 'dejavu-intent-confirmation-buttons-block',
+            'elements': [
+              {
+                'type': 'button',
+                'value': 'true',
+                'style': 'primary',
+                'action_id': 'dejavu-intent-confirmation-buttons-true',
+                'text': {
+                  'type': 'plain_text',
+                  'text': 'Yep!'
+                }
+              },
+              {
+                'type': 'button',
+                'value': 'false',
+                'style': 'danger',
+                'action_id': 'dejavu-intent-confirmation-buttons-false',
+                'text': {
+                  'type': 'plain_text',
+                  'text': 'Nope.'
+                }
               }
-            },
-            {
-              'type': 'button',
-              'value': 'false',
-              'style': 'danger',
-              'action_id': 'dejavu-intent-confirmation-buttons-false',
-              'text': {
-                'type': 'plain_text',
-                'text': 'Nope.'
-              }
-            }
-          ]}
-        ] 
+            ]
+          }
+        ]
       }),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       }
     })
-    .then(res => {
-      if (res.status === 200) {
-        return true;
-      } else {
-        throw new Error(
-          '> Message sent to slack, but it came back with a non-200 response: ' +
+      .then(res => {
+        if (res.status === 200) {
+          return true;
+        } else {
+          throw new Error(
+            '> Message sent to slack, but it came back with a non-200 response: ' +
             JSON.stringify(res)
-        );
-      }
-    })
-    .then(() => {
-      console.log('> Successfully sent message to Slack Response URL.');
-    })
-    .catch(e => {
-      console.log('> Woops!', e);
-    });
+          );
+        }
+      })
+      .then(() => {
+        console.log('> Successfully sent message to Slack Response URL.');
+      })
+      .catch(e => {
+        console.log('> Woops!', e);
+      });
   }
 
   return next();
@@ -405,7 +517,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   const {
     body: { payload }
   } = req;
-  
+
   const parsedPayload = JSON.parse(payload);
   // console.log('payload --------> ', payload)
   const { type, response_url: responseUrl } = parsedPayload;
@@ -413,24 +525,25 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   if (responseUrl) {
     cachedResponseUrl = responseUrl;
   }
-  
+
   // An action invoked by an interactive component
   if (type === ACTIONS.BLOCK_ACTIONS) {
     const { actions, trigger_id: triggerId } = parsedPayload;
     const [{ value }] = actions;
-    
+
     if (value === 'load_previous_batch') {
       console.log('-----> load prev batch')
     } else if (value === 'load_next_batch') {
       console.log('-----> load next batch')
-
+      _cursor = _cursor + _limit
+      performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit })
     } else if (value === 'true') {
       if (verb === 'add') {
         const view = await createInsightsCollectionForm(insightsCollectionTemplate)
         // User clicked on 'Yep' button and they want to 'add' insight
         fetch('https://slack.com/api/views.open', {
           method: 'POST',
-          headers: {  
+          headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${process.env.botToken}`
           },
@@ -465,12 +578,12 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           .catch(e => console.log('Woops. ', e));
       } else if (verb === 'search') {
         const view = await createInsightsSearchForm(insightsSearchTemplate)
-        
+
         const responseBody = {
           response_type: 'ephemeral',
           blocks: [
             {
-            type: 'section',
+              type: 'section',
               text: {
                 type: 'plain_text',
                 text:
@@ -481,12 +594,12 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         }
 
         // Push the response to Slack.
-        sendMessageToSlackResponseURL(cachedResponseUrl, responseBody,process.env.botToken)
-        
+        sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
+
         // open search modal
         fetch('https://slack.com/api/views.open', {
           method: 'POST',
-          headers: {  
+          headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${process.env.botToken}`
           },
@@ -524,7 +637,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           })
           .catch(e => console.log('Woops. ', e));
       }
-      
+
     } else if (value === 'false') {
       // User clicked on 'Nope' button
       const responseBody = {
@@ -545,122 +658,28 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     }
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
     // A Modal submission happened. Was it search or add?
-    const viewTitle = parsedPayload.view.title.text.toLowerCase() 
+    const viewTitle = parsedPayload.view.title.text.toLowerCase()
     // add modal was submitted
     const submissionPayload = Object.values(parsedPayload.view.state.values);
     const submissionData = flatten(submissionPayload)
     if (viewTitle.includes('search')) {
-            
+
       // search modal was submitted
-      const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({value}) => value) : []
+      const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({ value }) => value) : []
       const industryTags = submissionData.predefinedIndustryTags ? [submissionData.predefinedIndustryTags] : []
       const clientTags = submissionData.predefinedClientTags ? [submissionData.predefinedClientTags] : []
 
+      _theme = themeTags
+      _client = clientTags
+      _industry = industryTags
 
-      searchForKeyLearning({ industryTags, clientTags, themeTags })
-        .then(results => {
-          // console.log('-> results: ', results)
-          
-          let message = results.length > 0 
-            ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
-            : `Déjà could not find any reaults for this search. Try other keywords?`
-
-          const responseBody = {
-            blocks: [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": message
-                }
-              },
-              {
-                "type": "divider"
-              }
-            ]
-          } 
-
-          results.forEach(({ createdBy, createdAt, keyLearning, guidingContext, client, relatedThemes, clientTags, industryTags}, index) => {
-              const resultItem = [{
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": `*Key Learning:*\n${keyLearning}`
-                }
-              },
-              {
-                type: "section",
-                text: {
-                  type: "mrkdwn",
-                  text: `*Guiding Context:*\n${guidingContext}`
-                }
-              },
-              {
-                "type": "context",
-                "elements": [
-                  {
-                    "type": "plain_text",
-                    "emoji": true,
-                    "text": `\n💼 Client: ${clientTags.join(', ')}\n\n🏷 Industry Tags: ${industryTags.join(', ')}\n\n📝 Related Themes: ${relatedThemes.join(',')}\n\n👩🏽‍Added By: ${createdBy}\n\n🗓 Recorded at: ${createdAt.toDate().toString()}`
-                  }
-                ]
-              },
-              {
-                "type": "divider"
-              }]
-            
-              // console.log('--------> response body blocks \n', resultItem, '')
-              responseBody.blocks.push(...resultItem)
-            
-          })
-
-          /*
-            Commenting out pagination for now.
-          */
-        
-          
-          responseBody.blocks.push({
-            "type": "actions",
-            "elements": [
-              {
-                "type": "button",
-                "action_id": "load_previous_batch",
-                "text": {
-                  "type": "plain_text",
-                  "emoji": true,
-                  "text": "Previous 5 Results"
-                },
-                "value": "load_previous_batch"
-              },
-              {
-                "type": "button",
-                "action_id": "load_next_batch", 
-                "text": {
-                  "type": "plain_text",
-                  "emoji": true,
-                  "text": "Next 5 Results"
-                },
-                "value": "load_next_batch"
-              }
-            ]
-          })
-          
-          
-          // console.log('\n Search Result: \n', JSON.stringify(responseBody))
-
-          // Push the response to Slack.
-          sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
-      
-
-        })
-        .catch(e => {
-          console.log('Failed at search: ', e)
-        })
+      performSearch({ industryTags, clientTags, themeTags, cursor: _cursor, limit: _limit })
 
     }
 
-    if (viewTitle.includes('add'))  {
-      
+
+    if (viewTitle.includes('add')) {
+
       const responseBody = {
         response_type: 'ephemeral',
         blocks: [
@@ -673,22 +692,22 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           }
         ]
       }
-        
+
       // Push the response to Slack.
       sendMessageToSlackResponseURL(
         cachedResponseUrl,
         responseBody,
         process.env.botToken
       ).then(() => {
-        
-        const predefinedClientTags = submissionData.predefinedClientTags ? submissionData.predefinedClientTags.map(({value}) => value) : []
-        const predefinedIndustryTags = submissionData.predefinedIndustryTags ? submissionData.predefinedIndustryTags.map(({value}) => value) : []
-        const predefinedRelatedThemeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({value}) => value) : []
-  
+
+        const predefinedClientTags = submissionData.predefinedClientTags ? submissionData.predefinedClientTags.map(({ value }) => value) : []
+        const predefinedIndustryTags = submissionData.predefinedIndustryTags ? submissionData.predefinedIndustryTags.map(({ value }) => value) : []
+        const predefinedRelatedThemeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({ value }) => value) : []
+
         const newClientTags = submissionData.newClientTags ? submissionData.newClientTags.split(',') : []
         const newIndustryTags = submissionData.newIndustryTags ? submissionData.newIndustryTags.split(',') : []
         const newRelatedThemeTags = submissionData.newRelatedThemeTags ? submissionData.newRelatedThemeTags.split(',') : []
-        
+
         const clientTags = [...predefinedClientTags, ...newClientTags]
         const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
         const relatedThemeTags = [...predefinedRelatedThemeTags, ...newRelatedThemeTags]
@@ -701,23 +720,23 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
           relatedThemes: relatedThemeTags.map(sanitize),
           createdBy: cachedUserName || ''
         }
-                
+
         const dbCalls = [
           addKeyLearning.bind(null, insightPayload),
-          ...newIndustryTags.map(tag => addTag.bind(null, {tag}, 'industry')),
-          ...newClientTags.map(tag => addTag.bind(null, {tag}, 'client')),
-          ...newRelatedThemeTags.map(tag => addTag.bind(null, {tag}, 'theme'))
+          ...newIndustryTags.map(tag => addTag.bind(null, { tag }, 'industry')),
+          ...newClientTags.map(tag => addTag.bind(null, { tag }, 'client')),
+          ...newRelatedThemeTags.map(tag => addTag.bind(null, { tag }, 'theme'))
         ]
-        
+
         const dbCallPromises = dbCalls.map(dbCall => dbCall())
-        
+
         return Promise.all(dbCallPromises)
           .then((res) => {
             console.log('Successfully performed one or more DB writes ', res)
           }).catch(e => {
             console.log('Failed to perform one or more DB writes: ', e)
           })
-      
+
       }).catch((e) => {
         console.log('Failed', e)
       });
@@ -727,7 +746,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   } else if (type === ACTIONS.VIEW_CLOSED) {
 
     console.log('Modal view closed')
-  
+
   }
 
   return next();
@@ -776,7 +795,7 @@ if (process.env.USERS) {
 async function getTokenForTeam(teamId) {
   if (tokenCache[teamId]) {
     return new Promise(resolve => {
-      setTimeout(function() {
+      setTimeout(function () {
         resolve(tokenCache[teamId]);
       }, 150);
     });
@@ -788,7 +807,7 @@ async function getTokenForTeam(teamId) {
 async function getBotUserByTeam(teamId) {
   if (userCache[teamId]) {
     return new Promise(resolve => {
-      setTimeout(function() {
+      setTimeout(function () {
         resolve(userCache[teamId]);
       }, 150);
     });
