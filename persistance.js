@@ -182,6 +182,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     if (client) {
       res = [...res, ...client]
     }
+    console.log('\n******** id ', res.map(({id}) => id), '\n')
     return uniqBy(res, 'id')
   }).catch(e => {
     console.log('-> Promise all failed at #searchForKeyLearnings ', e)
