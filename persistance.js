@@ -106,10 +106,9 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
 
   let [industryTag] =  industryTags
   if (industryTag) { industryTag = sanitize(industryTag) }
-  
 
-  let [clientTag] =  clientTags
-  clientTag = sanitize(clientTag)
+
+  let [clientTag] = clientTags
   if (clientTag) { clientTag = sanitize(clientTag) }
 
 
