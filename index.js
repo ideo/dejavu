@@ -236,10 +236,10 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
 
 function performSearch({ industryTags, clientTags, themeTags, cursor, limit  }) {
   searchForKeyLearning({ industryTags, clientTags, themeTags, cursor, limit })
-    .then(({ results, count }) => {
+    .then(({ results, total }) => {
       // console.log('-> results: ', results)
-      _total = count 
-      console.log('------> count > ', count)
+      _total = total 
+      console.log('------> count > ', total)
       
       let message = results.length > 0
         ? `Déjà vu found the following ${results.length} insights based on your search criteria:`
