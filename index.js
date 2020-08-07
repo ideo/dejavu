@@ -529,7 +529,12 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
 controller.webserver.post('/api/interactions', async (req, res, next) => {
   // Best practice to respond with empty 200
   res.status(200).end();
-
+  console.log(`
+    \n
+    Interaction –
+    \n
+    ${body}
+  `)
   const {
     body: { payload }
   } = req;
@@ -602,7 +607,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               text: {
                 type: 'plain_text',
                 text:
-                  `Copy that. Searching for Key Learnings related to your search. Hang tight ...`
+                  `Copy that. Opening the search modal now ...`
               }
             }
           ]
@@ -674,26 +679,26 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
     // A Modal submission happened. Was it search or add?
     const viewTitle = parsedPayload.view.title.text.toLowerCase()
-    // add modal was submitted
     const submissionPayload = Object.values(parsedPayload.view.state.values);
     const submissionData = flatten(submissionPayload)
     if (viewTitle.includes('search')) {
-
+      
       // search modal was submitted
       const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({ value }) => value) : []
       const industryTags = submissionData.predefinedIndustryTags ? [submissionData.predefinedIndustryTags] : []
       const clientTags = submissionData.predefinedClientTags ? [submissionData.predefinedClientTags] : []
-
+      
       _theme = themeTags
       _client = clientTags
       _industry = industryTags
-
+      
       performSearch({ industryTags, clientTags, themeTags, cursor: _cursor, limit: _limit })
-
+      
     }
-
-
+    
+    
     if (viewTitle.includes('add')) {
+      // add modal was submitted
 
       const responseBody = {
         response_type: 'ephemeral',
