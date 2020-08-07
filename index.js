@@ -342,7 +342,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
       // console.log('\n Search Result: \n', JSON.stringify(responseBody))
 
       // Push the response to Slack.
-      sendMessageToSlackResponseURL(responseUrl, responseBody, process.env.botToken)
+      sendMessageToSlackResponseURL(responseURL, responseBody, process.env.botToken)
 
 
     })
