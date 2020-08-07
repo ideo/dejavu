@@ -529,15 +529,17 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
 controller.webserver.post('/api/interactions', async (req, res, next) => {
   // Best practice to respond with empty 200
   res.status(200).end();
+  
+  const {
+    body, body: { payload }
+  } = req;
+
   console.log(`
     \n
     Interaction –
     \n
     ${body}
   `)
-  const {
-    body: { payload }
-  } = req;
 
   const parsedPayload = JSON.parse(payload);
   // console.log('payload --------> ', payload)
