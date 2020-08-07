@@ -70,7 +70,7 @@ let _total = 0
 
 // for modal.open payloads, we do get a responseURL but for modal submissions we don't.
 // to respond with a message in respons to form submission, we hold onto the responseURL here.
-let cachedResponseUrl = null
+// let responseUrl = null
 
 function flatten(arr) {
   let obj = {}
@@ -342,7 +342,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
       // console.log('\n Search Result: \n', JSON.stringify(responseBody))
 
       // Push the response to Slack.
-      sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
+      sendMessageToSlackResponseURL(responseUrl, responseBody, process.env.botToken)
 
 
     })
@@ -384,7 +384,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
     body: {
       text: commandText,
       user_name: userName,
-      response_url: responseUrl,
+      response_url: responseURL,
       trigger_id: triggerID,
       token
     }
@@ -420,7 +420,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
   // Decide what the appropriate response should be
   if (!KNOWN_VERBS.includes(verb)) {
     // Push the response to Slack.
-    fetch(responseUrl, {
+    fetch(responseURL, {
       method: 'POST',
       body: JSON.stringify({
         'response_type': 'ephemeral',
@@ -458,7 +458,7 @@ controller.webserver.post('/api/slash-commands', (req, res, next) => {
   } else {
     // We know what the user meant. So we continue with the interaction flow.
     // Push the response to Slack.
-    fetch(responseUrl, {
+    fetch(responseURL, {
       method: 'POST',
       body: JSON.stringify({
         'response_type': 'ephemeral',
@@ -536,11 +536,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
   const parsedPayload = JSON.parse(payload);
   // console.log('payload --------> ', payload)
-  const { type, response_url: responseUrl } = parsedPayload;
+  const { type, response_url: responseURL } = parsedPayload;
 
-  if (responseUrl) {
-    cachedResponseUrl = responseUrl;
-  }
 
   // An action invoked by an interactive component
   if (type === ACTIONS.BLOCK_ACTIONS) {
@@ -589,7 +586,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
               };
 
               // Push the response to Slack.
-              sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
+              sendMessageToSlackResponseURL(responseURL, responseBody, process.env.botToken)
               throw new Error(parsedResponse.error);
             }
           })
@@ -612,7 +609,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         }
 
         // Push the response to Slack.
-        sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
+        sendMessageToSlackResponseURL(responseURL, responseBody, process.env.botToken)
 
         // open search modal
         fetch('https://slack.com/api/views.open', {
@@ -646,7 +643,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
               // Push the response to Slack.
               sendMessageToSlackResponseURL(
-                cachedResponseUrl,
+                responseURL,
                 responseBody,
                 process.env.botToken
               );
@@ -672,7 +669,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       };
 
       // Push the response to Slack.
-      sendMessageToSlackResponseURL(cachedResponseUrl, responseBody, process.env.botToken)
+      sendMessageToSlackResponseURL(responseURL, responseBody, process.env.botToken)
     }
   } else if (type === ACTIONS.VIEW_SUBMISSION) {
     // A Modal submission happened. Was it search or add?
@@ -713,7 +710,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
 
       // Push the response to Slack.
       sendMessageToSlackResponseURL(
-        cachedResponseUrl,
+        responseURL,
         responseBody,
         process.env.botToken
       ).then(() => {

@@ -95,9 +95,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     industryTags
   )
 
-  /* 
-    clientTags and themTags actually only ever contain 1 value. So let's 
-  */
+  
   const results = [
     /* 1. everything that matches all present criteria  */
     /* 2. everything that matches theme and industry criteria  */
@@ -105,6 +103,9 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     /* 4. everything that matches theme criteria only */
   ]
 
+  /* 
+    clientTags and themeTags actually only ever contain 1 value. So let's destructure that
+  */  
   let [industryTag] =  industryTags
   if (industryTag) { industryTag = sanitize(industryTag) }
 
@@ -112,15 +113,22 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
   let [clientTag] = clientTags
   if (clientTag) { clientTag = sanitize(clientTag) }
 
-
   const keyLearningsRef = db.collection('keyLearnings')
+  const sanitizedThemeTags = themeTags.map(tag => sanitize(tag))
+  
+  console.log(`
+    \n
+    theme tags, sanitized:
+    ${sanitizedThemeTags}
+    \n
+  `)
 
-  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', themeTags.map(tag => sanitize(tag)))
+  let queryRef = keyLearningsRef.where('relatedThemes', 'array-contains-any', sanitizedThemeTags)
 
   let hasClientTags = clientTags.length > 0
   let hasIndustryTags = industryTags.length > 0
 
-  if (hasClientTags) {
+  if (hasClientTags) {  
     //console.log(' -> has client tags ', clientTag)
     //queryRef = queryRef.where(`clientMap.${clientTag}`, '==', true)
   }
@@ -178,6 +186,11 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     let res = [...themes]
     if (industry) {
       res = [...res, ...industry]
+      // [Any theme matched, industry matched, client matched]
+      // How many results matched ALL themes
+      // How many results matched SOME themes
+      // How many results matched industry
+      // How many results matched client
     }
     if (client) {
       res = [...res, ...client]
@@ -187,7 +200,7 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     const results = uniqBy(res, 'id')
     return {
       results: results.filter((_, index) => (index >= cursor && index < (cursor + limit))),
-      total: results.length
+      total: results.length 
     }
   }).catch(e => {
     console.log('-> Promise all failed at #searchForKeyLearnings ', e)
