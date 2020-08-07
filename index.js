@@ -538,7 +538,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     \n
     Interaction –
     \n
-    ${body}
+    ${JSON.stringify(body)}
   `)
 
   const parsedPayload = JSON.parse(payload);
