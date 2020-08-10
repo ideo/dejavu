@@ -82,6 +82,7 @@
       "element": {
         "action_id": "my_action_id",
         "type": "conversations_select",
+        "default_to_current_conversation": true,
         "response_url_enabled": true
       }
     }
