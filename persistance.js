@@ -84,7 +84,7 @@ async function getAll() {
   return snapshot.docs.map(doc => doc.data());
 }
 
-function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [], cursor = 0, limit = 5 }) {
+function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = [], cursor = 0, limit = 3 }) {
 
   console.log(
     '🔎\nSearching for key learning with themeTags: ',
