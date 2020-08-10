@@ -21,7 +21,7 @@
       "optional": false,
       "label": {
         "type": "plain_text",
-        "text": "Related Themes (Required) \n You can choose more than one tag. \nThe more tags you select, the fewer results you're likely to get"
+        "text": "Related Themes\n You can choose multiple."
       },
       "element": {
         "type": "multi_static_select",
