@@ -704,7 +704,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const submissionData = flatten(submissionPayload)
     if (viewTitle.includes('search')) {
       
-      console.log('----------\n', JSON.stringify(parsedPayload), '\n----------------')
+      // console.log('----------\n', JSON.stringify(parsedPayload), '\n----------------')
 
       // search modal was submitted
       const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({ value }) => value) : []
@@ -723,6 +723,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     
     if (viewTitle.includes('add')) {
       // add modal was submitted
+      console.log('----------\n', JSON.stringify(parsedPayload), '\n----------------')
 
       const responseBody = {
         response_type: 'ephemeral',
