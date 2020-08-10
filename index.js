@@ -264,6 +264,13 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit, res
           "type": "section",
           "text": {
             "type": "mrkdwn",
+            "text": `*${index + 1}•`
+          }
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
             "text": `*Key Learning:*\n${keyLearning}`
           }
         },
