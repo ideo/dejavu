@@ -293,9 +293,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
 
       })
 
-      /*
-        Commenting out pagination for now.
-      */
+      
       const nextBatchAction = {
         "type": "button",
         "action_id": "load_next_batch",
@@ -555,11 +553,11 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const [{ value }] = actions;
 
     if (value === 'load_previous_batch') {
-      console.log('-----> load prev batch')
+      // console.log('-----> load prev batch')
       _cursor = _cursor - _limit
       performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit })
     } else if (value === 'load_next_batch') {
-      console.log('-----> load next batch')
+      // console.log('-----> load next batch')
       _cursor = _cursor + _limit
       performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit })
     } else if (value === 'true') {
@@ -688,6 +686,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     const submissionData = flatten(submissionPayload)
     if (viewTitle.includes('search')) {
       
+      console.log('----------\n', JSON.stringify(parsedPayload), '\n----------------')
+
       // search modal was submitted
       const themeTags = submissionData.predefinedRelatedThemeTags ? submissionData.predefinedRelatedThemeTags.map(({ value }) => value) : []
       const industryTags = submissionData.predefinedIndustryTags ? [submissionData.predefinedIndustryTags] : []
