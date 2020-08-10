@@ -65,7 +65,7 @@ let _theme = null
 let _client = null
 let _industry = null
 let _cursor = 0
-let _limit = 5
+let _limit = 3
 let _total = 0
 
 // for modal.open payloads, we do get a responseURL but for modal submissions we don't.
