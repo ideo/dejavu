@@ -723,7 +723,7 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     
     if (viewTitle.includes('add')) {
       // add modal was submitted
-      console.log('----------\n', JSON.stringify(parsedPayload), '\n----------------')
+      // console.log('----------\n', JSON.stringify(parsedPayload), '\n----------------')
       const responseURL = parsedPayload.response_urls[0].response_url
 
       const responseBody = {
