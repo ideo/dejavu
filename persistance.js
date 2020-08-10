@@ -197,7 +197,8 @@ function searchForKeyLearning({ industryTags = [], clientTags = [], themeTags = 
     }
     console.log('\n******** id ', res.map(({id}) => id), '\n')
     console.log('\n length w/o uniq ', res.length, ' \n length w uniq ', uniqBy(res, 'id').length, ' cursor: ', cursor, 'limit ', limit)
-    const results = uniqBy(res, 'id')
+    // const results = uniqBy(res, 'id')
+    const results = res
     return {
       results: results.filter((_, index) => (index >= cursor && index < (cursor + limit))),
       total: results.length 
