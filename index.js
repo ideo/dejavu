@@ -242,7 +242,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit, res
       
       let message = results.length > 0
         ? `✨💥 *Déjà vu found ${_total} insights based on your search criteria:* ✨💥`
-        : `✨💥*Déjà could not find any reaults for this search, or you have reached the end of the results for this search.*✨💥`
+        : `✨💥*Déjà could not find any reaults for this search, or you have reached the end of the results for this search.* ✨💥`
 
       const responseBody = {
         blocks: [
@@ -326,7 +326,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit, res
         actionsBlock.elements.push(prevBatchAction)
       }
 
-      if (_cursor < _total) {
+      if ((_cursor + _limit) < _total) {
         actionsBlock.elements.push(nextBatchAction)
       }
 
