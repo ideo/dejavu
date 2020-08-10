@@ -241,7 +241,7 @@ function performSearch({ industryTags, clientTags, themeTags, cursor, limit, res
       _total = total
       
       let message = results.length > 0
-        ? `👁✨👁*Déjà vu found ${_total} insights based on your search criteria, pagniated in batches of ${limit}:*`
+        ? `\n👁✨👁\n*Déjà vu found ${_total} Key Learnings based on your search\nPaginated in batches of ${limit}:*\n`
         : `*Déjà could not find any reaults for this search. Try again?*`
 
       const responseBody = {
