@@ -77,7 +77,7 @@
       "optional": true,
       "label": {
         "type": "plain_text",
-        "text": "Select a channel to post the result on",
+        "text": "Select a channel to post the result on"
       },
       "element": {
         "action_id": "my_action_id",
