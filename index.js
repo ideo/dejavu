@@ -563,6 +563,24 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     } else if (value === 'true') {
       if (verb === 'add') {
         const view = await createInsightsCollectionForm(insightsCollectionTemplate)
+
+        const responseBody = {
+          response_type: 'ephemeral',
+          blocks: [
+            {
+              type: 'section',
+              text: {
+                type: 'plain_text',
+                text:
+                  `Copy that. Opening the entry modal now ...`
+              }
+            }
+          ]
+        }
+
+        // Push the response to Slack.
+        sendMessageToSlackResponseURL(responseURL, responseBody, process.env.botToken)
+
         // User clicked on 'Yep' button and they want to 'add' insight
         fetch('https://slack.com/api/views.open', {
           method: 'POST',
