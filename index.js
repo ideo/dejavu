@@ -234,7 +234,7 @@ function sendMessageToSlackResponseURL(responseURL, JSONMessage, token) {
     });
 }
 
-function performSearch({ industryTags, clientTags, themeTags, cursor, limit }) {
+function performSearch({ industryTags, clientTags, themeTags, cursor, limit, responseURL }) {
   searchForKeyLearning({ industryTags, clientTags, themeTags, cursor, limit })
     .then(({ results, total }) => {
       // console.log('-> results: ', results)
@@ -697,7 +697,8 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
       _client = clientTags
       _industry = industryTags
       
-      performSearch({ industryTags, clientTags, themeTags, cursor: _cursor, limit: _limit })
+      const responseURL = parsedPayload.response_urls[0].response_url
+      performSearch({ industryTags, clientTags, themeTags, cursor: _cursor, limit: _limit , responseURL })
       
     }
     
