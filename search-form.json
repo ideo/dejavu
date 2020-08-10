@@ -18,6 +18,24 @@
   "blocks": [
     {
       "type": "input",
+      "optional": false,
+      "label": {
+        "type": "plain_text",
+        "text": "Related Themes (Required) \n You can choose more than one tag. \nThe more tags you select, the fewer results you're likely to get"
+      },
+      "element": {
+        "type": "multi_static_select",
+        "action_id": "predefinedRelatedThemeTags",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select related themes",
+          "emoji": true
+        },
+        "options": []
+      }
+    },
+    {
+      "type": "input",
       "optional": true,
       "label": {
         "type": "plain_text",
@@ -52,25 +70,6 @@
         "options": []
       }
     },
-    {
-      "type": "input",
-      "optional": false,
-      "label": {
-        "type": "plain_text",
-        "text": "Related Themes (Required) \n You can choose more than one tag. \nThe more tags you select, the fewer results you're likely to get"
-      },
-      "element": {
-        "type": "multi_static_select",
-        "action_id": "predefinedRelatedThemeTags",
-        "placeholder": {
-          "type": "plain_text",
-          "text": "Select related themes",
-          "emoji": true
-        },
-        "options": []
-      }
-    },
-
     {
       "block_id": "my_block_id",
       "type": "input",

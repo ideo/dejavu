@@ -171,7 +171,7 @@ async function createInsightsSearchForm(searchTemplate) {
   console.log('clientTags', clientTags)
   console.log('themeTags', themeTags)
 
-  form.blocks[2].element.options = themeTags.map(tag => (
+  form.blocks[0].element.options = themeTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
@@ -182,7 +182,7 @@ async function createInsightsSearchForm(searchTemplate) {
     }
   ))
 
-  form.blocks[1].element.options = clientTags.map(tag => (
+  form.blocks[1].element.options = industryTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
@@ -193,7 +193,7 @@ async function createInsightsSearchForm(searchTemplate) {
     }
   ))
 
-  form.blocks[0].element.options = industryTags.map(tag => (
+  form.blocks[2].element.options = clientTags.map(tag => (
     {
       "text": {
         "type": "plain_text",
