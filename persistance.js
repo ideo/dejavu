@@ -16,6 +16,8 @@ function addKeyLearning({
   createdBy = '',
   keyLearning = '',
   guidingContext = '',
+  clientMap = {},
+  industryMap = {},
   clientTags = [],
   industryTags = [],
   relatedThemes = [] }) {
@@ -27,6 +29,8 @@ function addKeyLearning({
       keyLearning,
       guidingContext,
       clientTags,
+      clientMap,
+      industryMap,
       industryTags,
       relatedThemes,
       createdBy,
