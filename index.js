@@ -533,20 +533,21 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   const {
     body, body: { payload }
   } = req;
+  
   const parsedPayload = JSON.parse(payload);
+ 
 
-  console.log(`
-    \n
-    Interaction –
-    \n
-    ${parsedPayload.trigger_id}
-    \n
-  `)
-
-  const parsedPayload = JSON.parse(payload);
   // console.log('payload --------> ', payload)
   const { type, response_url: responseURL } = parsedPayload;
 
+  console.log(`
+  \n
+  Response URL –
+  \n
+  ${responseURL}
+  \n
+  ${parsedPayload.trigger_id}
+`)
 
   // An action invoked by an interactive component
   if (type === ACTIONS.BLOCK_ACTIONS) {
