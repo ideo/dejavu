@@ -555,11 +555,11 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
     if (value === 'load_previous_batch') {
       // console.log('-----> load prev batch')
       _cursor = _cursor - _limit
-      performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit })
+      performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit, responseURL })
     } else if (value === 'load_next_batch') {
       // console.log('-----> load next batch')
       _cursor = _cursor + _limit
-      performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit })
+      performSearch({ industryTags: _industry, clientTags: _client, themeTags: _theme, cursor: _cursor, limit: _limit, responseURL })
     } else if (value === 'true') {
       if (verb === 'add') {
         const view = await createInsightsCollectionForm(insightsCollectionTemplate)
