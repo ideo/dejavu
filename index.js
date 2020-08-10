@@ -533,14 +533,14 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
   const {
     body, body: { payload }
   } = req;
+  const parsedPayload = JSON.parse(payload);
 
   console.log(`
     \n
     Interaction –
     \n
-    ${JSON.stringify(payload)}
+    ${parsedPayload.trigger_id}
     \n
-    ${payload}
   `)
 
   const parsedPayload = JSON.parse(payload);
