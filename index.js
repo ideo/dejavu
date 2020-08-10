@@ -738,11 +738,27 @@ controller.webserver.post('/api/interactions', async (req, res, next) => {
         const industryTags = [...predefinedIndustryTags, ...newIndustryTags]
         const relatedThemeTags = [...predefinedRelatedThemeTags, ...newRelatedThemeTags]
 
+        let clientMap = {}
+        let industryMap = {}
+
+        const _industryTags =  industryTags.map(sanitize)
+        const _clientTags =  clientTags.map(sanitize)
+
+        _industryTags.forEach((tag) => {
+          industryMap[tag] = true
+        })
+
+        _clientTags.forEach((tag) => {
+          clientMap[tag] = true
+        })
+
         const insightPayload = {
           keyLearning: submissionData.keyLearning,
           guidingContext: submissionData.context,
-          clientTags: clientTags.map(sanitize),
-          industryTags: industryTags.map(sanitize),
+          industryMap,
+          clientMap,
+          clientTags: _clientTags,
+          industryTags: _industryTags,
           relatedThemes: relatedThemeTags.map(sanitize),
           createdBy: cachedUserName || ''
         }
