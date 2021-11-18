@@ -68,10 +68,6 @@ let _cursor = 0
 let _limit = 3
 let _total = 0
 
-// for modal.open payloads, we do get a responseURL but for modal submissions we don't.
-// to respond with a message in respons to form submission, we hold onto the responseURL here.
-// let responseUrl = null
-
 function flatten(arr) {
   let obj = {}
   const keys = [
@@ -108,7 +104,7 @@ function populateTagData(querySnapshot, arr) {
 
 
 async function createInsightsCollectionForm(collectionTemplate) {
-  const form = Object.assign({}, collectionTemplate);
+  const form = Object.assign({}, collectionTemplate)
   const clientTags = []
   const industryTags = []
   const themeTags = []
@@ -156,20 +152,19 @@ async function createInsightsCollectionForm(collectionTemplate) {
 }
 
 async function createInsightsSearchForm(searchTemplate) {
-  const form = Object.assign({}, searchTemplate);
+  const form = Object.assign({}, searchTemplate)
   const industryTags = []
   const clientTags = []
   const themeTags = []
   const [industryTagsQuerySnapshot, clientTagsQuerySnapshot, themeTagsQuerySnapshot] = await Promise.all([getIndustryTags(), getClientTags(), getThemeTags()])
 
-
   populateTagData(industryTagsQuerySnapshot, industryTags)
   populateTagData(clientTagsQuerySnapshot, clientTags)
   populateTagData(themeTagsQuerySnapshot, themeTags)
 
-  console.log('industryTags', industryTags)
-  console.log('clientTags', clientTags)
-  console.log('themeTags', themeTags)
+  //console.log('industryTags', industryTags)
+  //console.log('clientTags', clientTags)
+  //console.log('themeTags', themeTags)
 
   form.blocks[0].element.options = themeTags.map(tag => (
     {
